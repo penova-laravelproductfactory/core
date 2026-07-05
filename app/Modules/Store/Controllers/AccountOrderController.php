@@ -28,6 +28,7 @@ class AccountOrderController extends Controller
         $orders = Order::where('user_id', $request->user()->id)
             ->withCount('items')
             ->latest()
+            ->orderByDesc('id')
             ->paginate(10)
             ->through(fn (Order $order) => [
                 'number' => $order->number,

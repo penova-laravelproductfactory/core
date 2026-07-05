@@ -57,7 +57,7 @@ test('index lists only the current user orders', function () {
     $me = makeUser('me@example.com');
     $other = makeUser('other@example.com');
 
-    $mine = makeOrderFor($me);
+    makeOrderFor($me);
     makeOrderFor($me);
     makeOrderFor($other); // must NOT appear
 

@@ -56,7 +56,10 @@ const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
             <h2 class="mb-3 text-sm font-semibold text-slate-700">اقلام سفارش</h2>
             <ul class="divide-y divide-slate-100">
                 <li v-for="(item, i) in order.items" :key="i" class="flex items-center justify-between py-2 text-sm">
-                    <span class="text-slate-700">{{ item.product_name }} × {{ item.quantity }}</span>
+                    <div>
+                        <div class="text-slate-700">{{ item.product_name }} × {{ item.quantity }}</div>
+                        <div class="mt-0.5 text-xs text-slate-400">قیمت واحد: {{ formatPrice(item.price) }} تومان</div>
+                    </div>
                     <span class="text-slate-500">{{ formatPrice(item.subtotal) }} تومان</span>
                 </li>
             </ul>
