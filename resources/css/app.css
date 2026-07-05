@@ -52,7 +52,25 @@
     --font-yekan: 'Yekan Bakh', ui-sans-serif, system-ui, sans-serif;
 
     --color-brand: #ff4431;
-    --color-brand-hover: #e63b2a;
+    --color-brand-hover: #e63a29;
+
+    /* Secondary accent — blue */
+    --color-accent: #2596be;
+    --color-accent-hover: #1f80a3;
+    --color-accent-light: #7cc3dd;
+
+    /* Warm neutral scale (sand): off-white → near-black. Named "sand" to
+       avoid colliding with Tailwind's built-in "stone". */
+    --color-sand-50: #fbfaf9;
+    --color-sand-100: #f1ede8;
+    --color-sand-200: #efeae4;
+    --color-sand-300: #e7e2dc;
+    --color-sand-400: #d6d0c9;
+    --color-sand-500: #a9a29b;
+    --color-sand-600: #78716c;
+    --color-sand-700: #57534e;
+    --color-sand-800: #44403c;
+    --color-sand-900: #1c1917;
 }
 
 /*
