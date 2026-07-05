@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Store\Controllers\AccountOrderController;
 use App\Modules\Store\Controllers\CartAddController;
 use App\Modules\Store\Controllers\CartRemoveController;
 use App\Modules\Store\Controllers\CheckoutShowController;
@@ -34,4 +35,9 @@ Route::middleware('auth')->group(function () {
 
     // Owner-only: the confirmation page checks order->user_id.
     Route::get('/store/orders/{number}/confirmation', OrderConfirmationController::class)->name('store.checkout.confirmation');
+
+    // Customer order history — owner-scoped in the controller (index
+    // filters by user_id; show 404s for a non-owner).
+    Route::get('/store/account/orders', [AccountOrderController::class, 'index'])->name('store.account.orders.index');
+    Route::get('/store/account/orders/{number}', [AccountOrderController::class, 'show'])->name('store.account.orders.show');
 });
