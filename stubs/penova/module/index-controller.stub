@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Modules\{{ name }}\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\{{ name }}\Models\{{ entity }};
+use Inertia\Inertia;
+use Inertia\Response;
+
+/**
+ * Modules\{{ name }} — the list page ({{ module }}.index).
+ * Plain pagination; swap in Core's DataTableBuilder when the list
+ * needs search/sort.
+ */
+class {{ name }}IndexController extends Controller
+{
+    public function __invoke(): Response
+    {
+        return Inertia::render('Modules/{{ name }}/Index', [
+            'items' => {{ entity }}::latest()->paginate(10),
+        ]);
+    }
+}

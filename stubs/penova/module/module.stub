@@ -10,7 +10,8 @@ use Illuminate\Support\ServiceProvider;
 /**
  * {{ name }} — <one line: what this module does>.
  *
- * Scaffolded by `php artisan penova:module {{ name }}`. Start from
+ * Scaffolded by `php artisan penova:module {{ name }}` with a working
+ * Index/Create/Store CRUD for the {{ entity }} model. Start from
  * app/Modules/README.md: it documents every hook below, the invokable-
  * controller convention, and the permissions workflow.
  *
@@ -36,17 +37,17 @@ class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
                 ->group(__DIR__.'/routes.php');
         }
 
-        // Optional: $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
     }
 
     /**
      * @see PenovaModule — sidebar contribution.
      *
      * NOTE: the item stays HIDDEN until the '{{ module }}.view'
-     * permission is seeded and granted (see permissions() below and the
-     * README's Permissions section). Remove the 'permission' key to show
-     * the item to every authenticated panel user. Icon keys map in
-     * resources/js/Core/Layouts/AdminLayout.vue
+     * permission is seeded and granted — register
+     * {{ name }}PermissionsSeeder (Database/Seeders) in
+     * database/seeders/DatabaseSeeder.php and run `php artisan db:seed`.
+     * Icon keys map in resources/js/Core/Layouts/AdminLayout.vue
      * (home|users|shield|cog|clock|bell|calendar|sparkles|squares).
      */
     public static function menu(): array
@@ -55,7 +56,7 @@ class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
             [
                 'key' => '{{ module }}',
                 'label' => '{{ name }}', // TODO: replace with the Persian label
-                'route' => '{{ module }}.index', // must match a name in routes.php
+                'route' => '{{ module }}.index',
                 'icon' => 'squares',
                 'order' => 500,
                 'permission' => '{{ module }}.view',
@@ -82,18 +83,14 @@ class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
 
     /**
      * @see PenovaModule — the module's permission manifest. The slugs
-     * are CREATED by the module's permissions seeder (Database/Seeders,
-     * registered in database/seeders/DatabaseSeeder.php); keep manifest,
-     * seeder, and route middleware in sync. Convention:
-     *
-     *   '{{ module }}.view'   → read-only pages + widget data endpoints
-     *   '{{ module }}.manage' → create / edit actions
+     * are CREATED by {{ name }}PermissionsSeeder; keep manifest, seeder,
+     * and route middleware in sync.
      */
     public static function permissions(): array
     {
         return [
-            // '{{ module }}.view',
-            // '{{ module }}.manage',
+            '{{ module }}.view',
+            '{{ module }}.manage',
         ];
     }
 }

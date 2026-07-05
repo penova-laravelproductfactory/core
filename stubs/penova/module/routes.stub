@@ -1,5 +1,8 @@
 <?php
 
+use App\Modules\{{ name }}\Controllers\{{ name }}CreateController;
+use App\Modules\{{ name }}\Controllers\{{ name }}IndexController;
+use App\Modules\{{ name }}\Controllers\{{ name }}StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -8,22 +11,25 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Plain route definitions only — {{ name }}ServiceProvider::boot() loads
 | this file inside the panel group (admin URI prefix + auth middleware
-| from config('penova.admin')). Route names carry the module's own
-| "{{ module }}." prefix explicitly; "penova.*" names are reserved for Core.
+| from config('penova.admin')), so URIs land at /admin/{{ slug }}/... .
+| Route names carry the module's own "{{ module }}." prefix explicitly;
+| "penova.*" names are reserved for Core.
 |
 | One INVOKABLE controller per action (see app/Modules/README.md).
-| Register static paths (e.g. /x/today-count) BEFORE parameterised ones
-| (/x/{model}) so they are never captured by route-model binding.
+| Register static paths (e.g. /{{ slug }}/today-count) BEFORE
+| parameterised ones (/{{ slug }}/{model}) so they are never captured
+| by route-model binding.
+|
+| Permissions (seeded by {{ name }}PermissionsSeeder):
+|   {{ module }}.view   → read-only pages + widget data endpoints
+|   {{ module }}.manage → create / store / edit / update
 */
 
-// Example (uncomment and adjust once the controller exists):
-//
-// use App\Modules\{{ name }}\Controllers\{{ name }}IndexController;
-//
-// Route::middleware('permission:{{ module }}.view')->group(function () {
-//     Route::get('/{{ module }}', {{ name }}IndexController::class)->name('{{ module }}.index');
-// });
-//
-// Route::middleware('permission:{{ module }}.manage')->group(function () {
-//     // create / store / edit / update routes
-// });
+Route::middleware('permission:{{ module }}.view')->group(function () {
+    Route::get('/{{ slug }}', {{ name }}IndexController::class)->name('{{ module }}.index');
+});
+
+Route::middleware('permission:{{ module }}.manage')->group(function () {
+    Route::get('/{{ slug }}/create', {{ name }}CreateController::class)->name('{{ module }}.create');
+    Route::post('/{{ slug }}', {{ name }}StoreController::class)->name('{{ module }}.store');
+});

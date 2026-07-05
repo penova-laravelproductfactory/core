@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Modules\{{ name }}\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\{{ name }}\Models\{{ entity }};
+use App\Modules\{{ name }}\Requests\Store{{ entity }}Request;
+use Illuminate\Http\RedirectResponse;
+
+/**
+ * Modules\{{ name }} — persists a new {{ entity }} ({{ module }}.store).
+ */
+class {{ name }}StoreController extends Controller
+{
+    public function __invoke(Store{{ entity }}Request $request): RedirectResponse
+    {
+        {{ entity }}::create($request->validated());
+
+        return redirect()->route('{{ module }}.index')->with('success', __('Item created.'));
+    }
+}

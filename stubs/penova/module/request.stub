@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Modules\{{ name }}\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * Modules\{{ name }} — validation for creating a {{ entity }}.
+ */
+class Store{{ entity }}Request extends FormRequest
+{
+    public function authorize(): bool
+    {
+        // Route middleware (permission:{{ module }}.manage) is the gate;
+        // add a policy check here when the module grows one.
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+        ];
+    }
+}

@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Modules\{{ name }}\Database\Seeders;
+
+use App\Core\Roles\Models\Permission;
+use App\Core\Roles\Models\Role;
+use Illuminate\Database\Seeder;
+
+/**
+ * Modules\{{ name }} — seeds the module's permissions and grants them
+ * to the Core admin role. Register it in
+ * database/seeders/DatabaseSeeder.php AFTER PenovaCoreSeeder, then run
+ * `php artisan db:seed`. Idempotent.
+ */
+class {{ name }}PermissionsSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $permissions = collect([
+            ['name' => 'View {{ name }}', 'slug' => '{{ module }}.view'],
+            ['name' => 'Manage {{ name }}', 'slug' => '{{ module }}.manage'],
+        ])->map(fn (array $permission) => Permission::firstOrCreate(
+            ['slug' => $permission['slug']],
+            $permission,
+        ));
+
+        Role::where('slug', 'admin')->first()
+            ?->permissions()->syncWithoutDetaching($permissions->pluck('id'));
+    }
+}

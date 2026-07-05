@@ -1,0 +1,35 @@
+<script setup>
+/**
+ * Modules\{{ name }} — scaffolded create page, rendered by
+ * {{ name }}CreateController via Inertia::render('Modules/{{ name }}/Create').
+ * Posts to {{ module }}.store; grow the fields with the domain.
+ */
+import { useForm } from '@inertiajs/vue3';
+import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import PageHeader from '@/Core/Components/PageHeader.vue';
+import Card from '@/Core/Components/Card.vue';
+import Button from '@/Core/Components/Button.vue';
+import TextInput from '@/Core/Components/TextInput.vue';
+
+const form = useForm({
+    name: '',
+});
+</script>
+
+<template>
+    <AdminLayout title="{{ name }} — ایجاد">
+        <PageHeader title="ایجاد مورد جدید">
+            <template #actions>
+                <Button variant="secondary" href="/admin/{{ slug }}">بازگشت به فهرست</Button>
+            </template>
+        </PageHeader>
+
+        <Card class="max-w-lg">
+            <form class="space-y-4" @submit.prevent="form.post('/admin/{{ slug }}')">
+                <TextInput v-model="form.name" label="نام" required :error="form.errors.name" />
+
+                <Button type="submit" :disabled="form.processing">ثبت</Button>
+            </form>
+        </Card>
+    </AdminLayout>
+</template>

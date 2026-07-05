@@ -1,0 +1,55 @@
+<script setup>
+/**
+ * Modules\{{ name }} — scaffolded list page, rendered by
+ * {{ name }}IndexController via Inertia::render('Modules/{{ name }}/Index').
+ * Replace the placeholder copy and grow the columns with the domain.
+ */
+import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import PageHeader from '@/Core/Components/PageHeader.vue';
+import Button from '@/Core/Components/Button.vue';
+import Pagination from '@/Core/Components/Pagination.vue';
+
+defineProps({
+    items: Object, // Laravel LengthAwarePaginator JSON
+});
+
+const formatDateTime = (iso) => (iso ?? '').slice(0, 16).replace('T', ' ');
+</script>
+
+<template>
+    <AdminLayout title="{{ name }}">
+        <PageHeader title="{{ name }}" subtitle="TODO: زیرعنوان فارسی">
+            <template #actions>
+                <Button href="/admin/{{ slug }}/create">ایجاد مورد جدید</Button>
+            </template>
+        </PageHeader>
+
+        <div class="space-y-4">
+            <div class="overflow-x-auto rounded-lg bg-white shadow">
+                <table class="min-w-full divide-y divide-slate-200 text-sm">
+                    <thead class="bg-slate-100 text-slate-700">
+                        <tr>
+                            <th class="px-4 py-3 text-start font-semibold">نام</th>
+                            <th class="px-4 py-3 text-start font-semibold">تاریخ ثبت</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-100 text-slate-900">
+                        <tr v-for="item in items.data" :key="item.id" class="hover:bg-slate-50">
+                            <td class="px-4 py-3">{{ item.name }}</td>
+                            <td class="px-4 py-3" dir="ltr">{{ formatDateTime(item.created_at) }}</td>
+                        </tr>
+
+                        <tr v-if="items.data.length === 0">
+                            <td colspan="2" class="px-4 py-8 text-center text-slate-400">
+                                هنوز موردی ثبت نشده است.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <Pagination :links="items.links" />
+        </div>
+    </AdminLayout>
+</template>

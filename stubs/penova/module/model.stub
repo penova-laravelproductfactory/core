@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Modules\{{ name }}\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Modules\{{ name }} — the {{ entity }} model (scaffolded starting
+ * point: a single "name" field; grow columns, casts, and relations as
+ * the domain takes shape).
+ */
+class {{ entity }} extends Model
+{
+    protected $table = '{{ table }}';
+
+    protected $fillable = [
+        'name',
+    ];
+}
