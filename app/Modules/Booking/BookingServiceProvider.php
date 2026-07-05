@@ -43,7 +43,9 @@ class BookingServiceProvider extends ServiceProvider implements PenovaModule
      * Data contract: BookingsTodayCard.vue (resources/js/Modules/Booking/
      * Widgets) fetches GET /admin/bookings/today-count (route
      * "booking.today-count") on mount; the response is always
-     * { count: number }. See BookingsTodayCountController.
+     * { count: number, yesterday_count: number } — yesterday_count
+     * drives the trend indicator and is optional on the consumer side.
+     * See BookingsTodayCountController.
      */
     public static function widgets(): array
     {
