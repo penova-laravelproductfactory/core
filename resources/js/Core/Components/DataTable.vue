@@ -17,6 +17,11 @@ import Pagination from '@/Core/Components/Pagination.vue';
 const props = defineProps({
     paginator: { type: Object, required: true }, // Laravel LengthAwarePaginator JSON
     columns: { type: Array, required: true },
+    // Extra query parameters the page wants to keep alongside the
+    // table's own contract — e.g. filter selects ({ type: 'physical' }).
+    // Changing a value triggers a reload; empty values are dropped from
+    // the URL. DataTableBuilder-side, apply them with ->when() clauses.
+    params: { type: Object, default: () => ({}) },
 });
 
 const search = ref(new URLSearchParams(window.location.search).get('search') ?? '');
@@ -24,9 +29,13 @@ const sort = ref(new URLSearchParams(window.location.search).get('sort') ?? '');
 const direction = ref(new URLSearchParams(window.location.search).get('direction') ?? 'desc');
 
 function reload() {
+    const extra = Object.fromEntries(
+        Object.entries(props.params).filter(([, value]) => value !== null && value !== undefined && value !== ''),
+    );
+
     router.get(
         window.location.pathname,
-        { search: search.value || undefined, sort: sort.value || undefined, direction: direction.value },
+        { search: search.value || undefined, sort: sort.value || undefined, direction: direction.value, ...extra },
         { preserveState: true, preserveScroll: true, replace: true },
     );
 }
@@ -36,6 +45,10 @@ watch(search, () => {
     clearTimeout(debounce);
     debounce = setTimeout(reload, 300);
 });
+
+// Value-compare (not identity): parents may recreate the object each
+// render; reload only when a filter actually changed.
+watch(() => JSON.stringify(props.params), () => reload());
 
 function toggleSort(column) {
     if (!column.sortable) return;

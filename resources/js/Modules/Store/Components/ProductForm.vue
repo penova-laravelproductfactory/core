@@ -1,31 +1,47 @@
 <script setup>
 /**
- * Modules\Store — the shared product form (fields + submit), used by
- * both Pages/Products/Create.vue and Edit.vue so the two stay in sync.
+ * Modules\Store — the shared product form (fields + submit/cancel),
+ * used by both Pages/Products/Create.vue and Edit.vue.
  *
  * Receives the parent's Inertia useForm object and emits `submit`;
- * where the data goes (post vs put) stays with the page.
+ * where the data goes (post vs put) stays with the page. `mode` picks
+ * the submit label.
  *
- * Type-dependent fields: stock only for physical products,
- * download_url only for downloadable ones (mirrors the backend
- * required_if rule).
+ * Smart fields (mirroring the backend rules): stock only for physical
+ * products, download_url only for downloadable ones (required_if), and
+ * a blank slug is generated server-side from the name.
  */
+import { computed } from 'vue';
 import TextInput from '@/Core/Components/TextInput.vue';
 import Button from '@/Core/Components/Button.vue';
 
-defineProps({
+const props = defineProps({
     form: { type: Object, required: true }, // Inertia useForm object
     types: { type: Array, default: () => ['physical', 'virtual', 'downloadable'] },
-    submitLabel: { type: String, required: true },
+    mode: { type: String, default: 'create' }, // 'create' | 'edit'
 });
 
 defineEmits(['submit']);
+
+const submitLabel = computed(() => (props.mode === 'edit' ? 'ذخیره تغییرات' : 'ثبت محصول'));
 
 const typeLabels = {
     physical: 'فیزیکی',
     virtual: 'مجازی',
     downloadable: 'دانلودی',
 };
+
+// Small helper line under the type select, per selected type.
+const typeHints = {
+    physical: 'محصولی که ارسال فیزیکی دارد — موجودی انبار برایش ثبت می‌شود.',
+    virtual: 'سرویس یا دسترسی، بدون ارسال و بدون فایل دانلودی.',
+    downloadable: 'محصول دیجیتال — لینک دانلود برایش الزامی است.',
+};
+
+// Pre-submit nudge (the backend still enforces required_if).
+const downloadUrlMissing = computed(
+    () => props.form.type === 'downloadable' && ! props.form.download_url,
+);
 </script>
 
 <template>
@@ -39,12 +55,12 @@ const typeLabels = {
             <input
                 v-model="form.slug"
                 type="text"
-                required
                 dir="ltr"
                 class="block w-full rounded-md border-0 px-3 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm"
                 :class="{ 'ring-red-500': form.errors.slug }"
             />
             <p v-if="form.errors.slug" class="mt-1 text-sm text-red-600">{{ form.errors.slug }}</p>
+            <p v-else class="mt-1 text-xs text-slate-400">اگر خالی بماند، به‌صورت خودکار از روی نام ساخته می‌شود.</p>
         </div>
 
         <div>
@@ -59,6 +75,7 @@ const typeLabels = {
                 </option>
             </select>
             <p v-if="form.errors.type" class="mt-1 text-sm text-red-600">{{ form.errors.type }}</p>
+            <p v-else class="mt-1 text-xs text-slate-400">{{ typeHints[form.type] }}</p>
         </div>
 
         <div>
@@ -98,13 +115,15 @@ const typeLabels = {
             <input
                 v-model="form.download_url"
                 type="url"
-                required
                 dir="ltr"
                 placeholder="https://…"
                 class="block w-full rounded-md border-0 px-3 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm"
                 :class="{ 'ring-red-500': form.errors.download_url }"
             />
             <p v-if="form.errors.download_url" class="mt-1 text-sm text-red-600">{{ form.errors.download_url }}</p>
+            <p v-else-if="downloadUrlMissing" class="mt-1 text-xs text-amber-600">
+                برای محصول دانلودی، لینک دانلود لازم است — بدون آن ذخیره نمی‌شود.
+            </p>
         </div>
 
         <div>
@@ -123,6 +142,9 @@ const typeLabels = {
             محصول فعال است (در فروشگاه نمایش داده شود)
         </label>
 
-        <Button type="submit" :disabled="form.processing">{{ submitLabel }}</Button>
+        <div class="flex items-center gap-2">
+            <Button type="submit" :disabled="form.processing">{{ submitLabel }}</Button>
+            <Button variant="secondary" href="/admin/store/products">انصراف</Button>
+        </div>
     </form>
 </template>

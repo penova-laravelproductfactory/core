@@ -4,11 +4,13 @@ namespace App\Modules\Store\Requests;
 
 use App\Modules\Store\Models\ProductType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 /**
  * Modules\Store — validation for creating a product.
- * download_url is only required for downloadable products.
+ * download_url is only required for downloadable products; a blank
+ * slug is generated from the name before validation runs.
  */
 class StoreProductRequest extends FormRequest
 {
@@ -16,6 +18,19 @@ class StoreProductRequest extends FormRequest
     {
         // Route middleware (permission:store.manage) is the gate.
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if (! $this->filled('slug') && $this->filled('name')) {
+            // Str::slug drops non-Latin characters entirely; for Persian
+            // names fall back to dash-joining the words (URL-safe).
+            $slug = Str::slug($this->name);
+
+            $this->merge([
+                'slug' => $slug !== '' ? $slug : preg_replace('/\s+/u', '-', trim($this->name)),
+            ]);
+        }
     }
 
     public function rules(): array

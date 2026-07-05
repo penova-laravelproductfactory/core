@@ -4,12 +4,13 @@ namespace App\Modules\Store\Requests;
 
 use App\Modules\Store\Models\ProductType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 /**
  * Modules\Store — validation for editing a product. Same shape as
  * StoreProductRequest; the slug uniqueness rule ignores the product
- * being edited.
+ * being edited, and a blank slug regenerates from the name.
  */
 class UpdateProductRequest extends FormRequest
 {
@@ -17,6 +18,18 @@ class UpdateProductRequest extends FormRequest
     {
         // Route middleware (permission:store.manage) is the gate.
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if (! $this->filled('slug') && $this->filled('name')) {
+            // See StoreProductRequest — same Persian-name fallback.
+            $slug = Str::slug($this->name);
+
+            $this->merge([
+                'slug' => $slug !== '' ? $slug : preg_replace('/\s+/u', '-', trim($this->name)),
+            ]);
+        }
     }
 
     public function rules(): array

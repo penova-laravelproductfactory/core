@@ -41,7 +41,7 @@ const form = useForm({
             <ProductForm
                 :form="form"
                 :types="props.types"
-                submit-label="ذخیره تغییرات"
+                mode="edit"
                 @submit="form.put(`/admin/store/products/${props.product.id}`)"
             />
         </Card>

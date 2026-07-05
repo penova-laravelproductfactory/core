@@ -40,7 +40,7 @@ const form = useForm({
             <ProductForm
                 :form="form"
                 :types="props.types"
-                submit-label="ثبت محصول"
+                mode="create"
                 @submit="form.post('/admin/store/products')"
             />
         </Card>
