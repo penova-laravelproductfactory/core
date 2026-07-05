@@ -7,7 +7,14 @@ it belongs in `app/Core`.
 
 Working reference modules ship in this repo: `Demo` (minimal contract
 showcase), `Booking` and `Crm` (real CRUD + widgets + permissions).
-Copy the closest one to start a new module.
+
+Start a new module with the scaffolder — it creates the whole anatomy
+below (provider implementing the contract, routes.php, backend and
+frontend folders) from `stubs/penova/module/`:
+
+```
+php artisan penova:module Reports
+```
 
 ## Anatomy of a module
 

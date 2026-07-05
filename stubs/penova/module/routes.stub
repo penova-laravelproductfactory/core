@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Modules\{{ name }} Routes
+|--------------------------------------------------------------------------
+| Plain route definitions only — {{ name }}ServiceProvider::boot() loads
+| this file inside the panel group (admin URI prefix + auth middleware
+| from config('penova.admin')). Route names carry the module's own
+| "{{ module }}." prefix explicitly; "penova.*" names are reserved for Core.
+|
+| One INVOKABLE controller per action (see app/Modules/README.md).
+| Register static paths (e.g. /x/today-count) BEFORE parameterised ones
+| (/x/{model}) so they are never captured by route-model binding.
+*/
+
+// Example (uncomment and adjust once the controller exists):
+//
+// use App\Modules\{{ name }}\Controllers\{{ name }}IndexController;
+//
+// Route::middleware('permission:{{ module }}.view')->group(function () {
+//     Route::get('/{{ module }}', {{ name }}IndexController::class)->name('{{ module }}.index');
+// });
+//
+// Route::middleware('permission:{{ module }}.manage')->group(function () {
+//     // create / store / edit / update routes
+// });

@@ -137,6 +137,7 @@ class PenovaCoreServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Support\Commands\PenovaInstallCommand::class,
+                Support\Commands\MakePenovaModuleCommand::class,
             ]);
         }
 
