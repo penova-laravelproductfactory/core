@@ -5,8 +5,8 @@ per module. **Core never imports from this namespace** — modules build on
 Core, not the other way around. If code is reusable across two modules,
 it belongs in `app/Core`.
 
-Working reference modules ship in this repo: `Demo` (minimal contract
-showcase), `Booking` and `Crm` (real CRUD + widgets + permissions).
+Working reference modules ship in this repo: `Booking` and `Crm`
+(real CRUD + widgets + permissions).
 
 Start a new module with the scaffolder — it creates the whole anatomy
 below (provider implementing the contract, routes.php, backend and

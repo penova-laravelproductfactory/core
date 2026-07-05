@@ -83,7 +83,6 @@ return [
     'widgets' => [
         'areas' => [
             'core' => 'عمومی',
-            'demo' => 'نمونه',
             'booking' => 'رزروها',
             'crm' => 'CRM',
         ],
@@ -105,11 +104,6 @@ return [
     | ],
     */
     'modules' => [
-        // Reference module demonstrating the contract (menu item, two
-        // dashboard widgets, an invokable-controller route). Products
-        // remove this line and register their own modules instead.
-        App\Modules\Demo\DemoServiceProvider::class,
-
         // Demo business module: bookings CRUD + "bookings today" widget.
         App\Modules\Booking\BookingServiceProvider::class,
 
