@@ -106,9 +106,19 @@ public static function widgets(): array
                         // → resources/js/Modules/Booking/Widgets/LatestBookings.vue
         'cols'      => 1,                 // 1 or 2 columns of the 2-column grid
         'order'     => 100,
+        'area'      => 'booking',         // optional dashboard group (see below)
     ]];
 }
 ```
+
+**Areas.** The dashboard renders one headed section per `area`, so a
+module's widgets stay visually grouped. Recommended: give your module its
+own area named after it (`'area' => 'booking'`) and reuse it on every
+widget the module ships. Omitting `area` drops the widget into the
+default `core` group. Section headings come from
+`config('penova.widgets.areas')` — add your key there for a proper label;
+unknown keys fall back to a label formatted from the key itself
+(`booking-extras` → "Booking Extras").
 
 The Vue widget receives the whole descriptor as the `widget` prop and
 reads its data from Inertia page/shared props (Lite convention — see

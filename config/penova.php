@@ -72,6 +72,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Dashboard Widgets
+    |--------------------------------------------------------------------------
+    | 'areas' maps a widget area key to the heading the dashboard shows
+    | above that group. Modules are free to introduce new area keys (the
+    | recommendation is one area per module, named after it); a key
+    | missing from this map falls back to a label formatted from the key
+    | itself ("booking-extras" → "Booking Extras") on the frontend.
+    */
+    'widgets' => [
+        'areas' => [
+            'core' => 'عمومی',
+            'demo' => 'نمونه',
+            'booking' => 'رزروها',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Product Modules
     |--------------------------------------------------------------------------
     | Business modules living in app/Modules. Each entry points to the

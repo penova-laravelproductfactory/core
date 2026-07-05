@@ -74,7 +74,13 @@ class PenovaCoreServiceProvider extends ServiceProvider
         // provider declares through its static menu()/widgets() hooks.
         // Lazy singletons — resolved once, on first use (Inertia share).
         $this->app->singleton('penova.menu', fn () => $this->collectFromModules('menu', self::CORE_MENU));
-        $this->app->singleton('penova.widgets', fn () => $this->collectFromModules('widgets', self::CORE_WIDGETS));
+
+        // Widgets are normalised so 'area' is always present ('core' when
+        // a descriptor omits it) — the dashboard groups by this field.
+        $this->app->singleton('penova.widgets', fn () => array_map(
+            fn (array $widget) => [...$widget, 'area' => $widget['area'] ?? 'core'],
+            $this->collectFromModules('widgets', self::CORE_WIDGETS),
+        ));
     }
 
     /**

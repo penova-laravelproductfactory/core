@@ -41,6 +41,10 @@ class HandleInertiaRequests extends Middleware
             // Core/Pages/Dashboard/Index.vue renders the grid from these.
             'dashboardWidgets' => app('penova.widgets'),
 
+            // Widget area → heading map for the dashboard sections; keys
+            // missing here get a label formatted from the key itself.
+            'widgetAreas' => config('penova.widgets.areas', []),
+
             'auth' => [
                 'user' => $user ? [
                     'id' => $user->id,

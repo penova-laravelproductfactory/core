@@ -33,8 +33,10 @@ class DemoServiceProvider extends ServiceProvider implements PenovaModule
     public static function widgets(): array
     {
         return [
-            ['key' => 'demo-card-one', 'type' => 'card', 'title' => 'ویجت نمونه ۱', 'component' => 'Modules/Demo/Widgets/DemoCardOne', 'cols' => 1, 'order' => 100],
-            ['key' => 'demo-card-two', 'type' => 'card', 'title' => 'ویجت نمونه ۲', 'component' => 'Modules/Demo/Widgets/DemoCardTwo', 'cols' => 1, 'order' => 110],
+            // Own 'demo' area — the recommended pattern: one area per
+            // module so its widgets group under a dedicated heading.
+            ['key' => 'demo-card-one', 'type' => 'card', 'title' => 'ویجت نمونه ۱', 'component' => 'Modules/Demo/Widgets/DemoCardOne', 'cols' => 1, 'order' => 100, 'area' => 'demo'],
+            ['key' => 'demo-card-two', 'type' => 'card', 'title' => 'ویجت نمونه ۲', 'component' => 'Modules/Demo/Widgets/DemoCardTwo', 'cols' => 1, 'order' => 110, 'area' => 'demo'],
         ];
     }
 }

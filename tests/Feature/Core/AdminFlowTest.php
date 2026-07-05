@@ -40,7 +40,10 @@ test('the full admin experience works end to end', function () {
             ->component('Core/Dashboard/Index')
             ->where('menu.0.key', 'dashboard')
             ->has('menu.0.href')
-            ->where('dashboardWidgets.0.key', 'core-stats'));
+            ->where('dashboardWidgets.0.key', 'core-stats')
+            // Core widgets omit 'area'; the provider must normalise it.
+            ->where('dashboardWidgets.0.area', 'core')
+            ->has('widgetAreas.core'));
 
     // 4) Users index is reachable (permission middleware + policy allow admin).
     $this->get(route('penova.users.index'))

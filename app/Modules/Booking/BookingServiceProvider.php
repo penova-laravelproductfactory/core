@@ -3,6 +3,7 @@
 namespace App\Modules\Booking;
 
 use App\Core\Support\PenovaModule;
+use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,7 +22,7 @@ class BookingServiceProvider extends ServiceProvider implements PenovaModule
         // Module routes live in routes.php as plain definitions; the
         // panel group (URI prefix + auth middleware) is applied here.
         // Cache guard mirrors loadRoutesFrom() so route:cache stays safe.
-        if (! $this->app->routesAreCached()) {
+        if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
             Route::middleware(config('penova.admin.middleware'))
                 ->prefix(config('penova.admin.prefix'))
                 ->group(__DIR__.'/routes.php');
@@ -50,7 +51,9 @@ class BookingServiceProvider extends ServiceProvider implements PenovaModule
     public static function widgets(): array
     {
         return [
-            ['key' => 'booking-today-count', 'type' => 'card', 'title' => 'رزروهای امروز', 'component' => 'Modules/Booking/Widgets/BookingsTodayCard', 'cols' => 1, 'order' => 200],
+            // area 'booking': every widget this module ships lands under
+            // the same dashboard heading (config penova.widgets.areas).
+            ['key' => 'booking-today-count', 'type' => 'card', 'title' => 'رزروهای امروز', 'component' => 'Modules/Booking/Widgets/BookingsTodayCard', 'cols' => 1, 'order' => 200, 'area' => 'booking'],
         ];
     }
 }
