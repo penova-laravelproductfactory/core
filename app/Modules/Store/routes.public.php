@@ -10,12 +10,17 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Modules\Store — PUBLIC routes (guest storefront + checkout)
+| Modules\Store — PUBLIC routes (storefront + checkout)
 |--------------------------------------------------------------------------
 | Loaded by StoreServiceProvider::boot() under the plain "web" group —
-| NO auth, NO admin prefix. URIs live at /store/... , names at
-| store.front / store.cart.* / store.checkout.* — distinct from the
-| admin surface (store.products.* / store.orders.* at /admin/store/...).
+| NO admin prefix. URIs live at /store/... , names at store.front /
+| store.cart.* / store.checkout.* — distinct from the admin surface
+| (store.products.* / store.orders.* at /admin/store/...).
+|
+| Browsing and the cart stay guest-friendly (zero friction); checkout
+| and order pages require an account. A guest hitting checkout is sent
+| to /login (redirectGuestsTo) and Laravel's intended-URL mechanism
+| brings them straight back after login/registration.
 */
 
 Route::get('/store', StorefrontController::class)->name('store.front');
@@ -23,7 +28,10 @@ Route::get('/store', StorefrontController::class)->name('store.front');
 Route::post('/store/cart/add', CartAddController::class)->name('store.cart.add');
 Route::post('/store/cart/remove', CartRemoveController::class)->name('store.cart.remove');
 
-Route::get('/store/checkout', CheckoutShowController::class)->name('store.checkout.show');
-Route::post('/store/checkout', CheckoutStoreController::class)->name('store.checkout.store');
+Route::middleware('auth')->group(function () {
+    Route::get('/store/checkout', CheckoutShowController::class)->name('store.checkout.show');
+    Route::post('/store/checkout', CheckoutStoreController::class)->name('store.checkout.store');
 
-Route::get('/store/orders/{number}/confirmation', OrderConfirmationController::class)->name('store.checkout.confirmation');
+    // Owner-only: the confirmation page checks order->user_id.
+    Route::get('/store/orders/{number}/confirmation', OrderConfirmationController::class)->name('store.checkout.confirmation');
+});

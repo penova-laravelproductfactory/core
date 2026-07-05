@@ -17,12 +17,18 @@ class OrderShowController extends Controller
 {
     public function __invoke(Order $order): Response
     {
-        $order->load('items');
+        $order->load(['items', 'user:id,name,email']);
 
         return Inertia::render('Modules/Store/Orders/Show', [
             'order' => [
                 'id' => $order->id,
                 'number' => $order->number,
+                // Owning account (live data + link target for Core users).
+                'user' => $order->user ? [
+                    'id' => $order->user->id,
+                    'name' => $order->user->name,
+                    'email' => $order->user->email,
+                ] : null,
                 'customer_name' => $order->customer_name,
                 'customer_email' => $order->customer_email,
                 'customer_phone' => $order->customer_phone,

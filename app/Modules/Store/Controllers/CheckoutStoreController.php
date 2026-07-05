@@ -10,11 +10,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Modules\Store — places the order (store.checkout.store).
+ * Modules\Store — places the order (store.checkout.store), auth
+ * required.
  *
- * Totals and line prices come from the LIVE cart resolution (current
- * DB prices), never from the request; order + items are written in one
- * transaction and the cart is cleared only after it commits.
+ * Identity comes from the ACCOUNT (user_id + name/email snapshot),
+ * never from the form. Totals and line prices come from the LIVE cart
+ * resolution (current DB prices), never from the request; order +
+ * items are written in one transaction and the cart is cleared only
+ * after it commits.
  */
 class CheckoutStoreController extends Controller
 {
@@ -29,6 +32,9 @@ class CheckoutStoreController extends Controller
         $order = DB::transaction(function () use ($request, $lines) {
             $order = Order::create([
                 ...$request->validated(),
+                'user_id' => $request->user()->id,
+                'customer_name' => $request->user()->name, // account snapshot
+                'customer_email' => $request->user()->email, // account snapshot
                 'total' => round($lines->sum('subtotal'), 2),
             ]);
 

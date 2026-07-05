@@ -5,7 +5,12 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Modules\Store — orders + order items (v0.1 guest checkout).
+ * Modules\Store — orders + order items (v0.1, account-based checkout).
+ *
+ * Every order belongs to a user (user_id NOT NULL — checkout requires
+ * an account in this version; a future guest checkout would relax this
+ * to nullable without further schema changes). customer_* columns are
+ * still stored as SNAPSHOTS of the account at order time.
  *
  * order_items denormalizes product_name/price on purpose: an order is a
  * historical document — renaming or repricing a product later must not
@@ -19,6 +24,9 @@ return new class extends Migration
         Schema::create('store_orders', function (Blueprint $table) {
             $table->id();
             $table->string('number')->unique(); // customer-facing reference
+            // Orders are business records: deleting a user with orders is
+            // blocked (restrict) instead of silently erasing history.
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
             $table->string('customer_name');
             $table->string('customer_email');
             $table->string('customer_phone')->nullable();

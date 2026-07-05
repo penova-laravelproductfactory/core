@@ -17,7 +17,8 @@ const props = defineProps({
 
 const columns = [
     { key: 'number', label: 'شمارهٔ سفارش', sortable: true },
-    { key: 'customer', label: 'مشتری' },
+    { key: 'user', label: 'کاربر' },
+    { key: 'customer', label: 'گیرنده (لحظهٔ سفارش)' },
     { key: 'status', label: 'وضعیت' },
     { key: 'payment_status', label: 'پرداخت' },
     { key: 'total', label: 'مبلغ', sortable: true },
@@ -80,6 +81,19 @@ const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
                 <Link :href="`/admin/store/orders/${row.id}`" class="font-mono font-medium text-brand hover:underline" dir="ltr">
                     {{ row.number }}
                 </Link>
+            </template>
+
+            <!-- Owning account: quick pivot to the Core user record — the
+                 fast path for "show me everything about this customer". -->
+            <template #cell-user="{ row }">
+                <Link
+                    v-if="row.user_id"
+                    :href="`/admin/users/${row.user_id}/edit`"
+                    class="text-brand hover:underline"
+                >
+                    {{ row.user_name }}
+                </Link>
+                <span v-else class="text-slate-400">—</span>
             </template>
 
             <template #cell-customer="{ row }">

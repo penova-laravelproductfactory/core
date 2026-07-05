@@ -55,13 +55,27 @@ function togglePayment() {
             <!-- Customer + lifecycle -->
             <div class="space-y-6">
                 <Card title="مشخصات مشتری">
+                    <!-- Two layers on purpose: the LIVE account (link to
+                         Core user admin) vs the SNAPSHOT identity stored
+                         on the order at placement. -->
+                    <div v-if="order.user" class="mb-4 rounded-md bg-slate-50 px-3 py-2.5">
+                        <div class="text-xs text-slate-400">حساب کاربری</div>
+                        <Link
+                            :href="`/admin/users/${order.user.id}/edit`"
+                            class="mt-0.5 block text-sm font-medium text-brand hover:underline"
+                        >
+                            {{ order.user.name }}
+                        </Link>
+                        <div class="text-xs text-slate-500" dir="ltr">{{ order.user.email }}</div>
+                    </div>
+
                     <dl class="space-y-2 text-sm">
                         <div>
-                            <dt class="text-slate-400">نام</dt>
+                            <dt class="text-slate-400">نام (لحظهٔ سفارش)</dt>
                             <dd class="text-slate-900">{{ order.customer_name }}</dd>
                         </div>
                         <div>
-                            <dt class="text-slate-400">ایمیل</dt>
+                            <dt class="text-slate-400">ایمیل (لحظهٔ سفارش)</dt>
                             <dd class="text-slate-900" dir="ltr">{{ order.customer_email }}</dd>
                         </div>
                         <div v-if="order.customer_phone">

@@ -1,8 +1,9 @@
 <script setup>
 /**
- * Modules\Store — the one-page guest checkout: cart summary + customer
- * form + total. Totals shown here are informational; the server
- * recomputes everything from the session cart on submit.
+ * Modules\Store — the one-page checkout (auth required): cart summary,
+ * read-only account block (the order snapshots the account identity
+ * server-side), and the shipping form. Totals shown here are
+ * informational; the server recomputes everything on submit.
  */
 import { router, useForm } from '@inertiajs/vue3';
 import StorefrontLayout from '@/Modules/Store/Components/StorefrontLayout.vue';
@@ -10,14 +11,13 @@ import TextInput from '@/Core/Components/TextInput.vue';
 import Button from '@/Core/Components/Button.vue';
 
 defineProps({
+    account: Object, // { name, email } — the authenticated user
     lines: Array, // [{ product_id, name, price, quantity, subtotal }]
     total: [Number, String],
     cartCount: Number,
 });
 
 const form = useForm({
-    customer_name: '',
-    customer_email: '',
     customer_phone: '',
     shipping_address: '',
     notes: '',
@@ -76,8 +76,14 @@ function removeLine(line) {
                 >
                     <h2 class="text-sm font-semibold text-slate-700">مشخصات شما</h2>
 
-                    <TextInput v-model="form.customer_name" label="نام و نام خانوادگی" required :error="form.errors.customer_name" />
-                    <TextInput v-model="form.customer_email" label="ایمیل" type="email" required :error="form.errors.customer_email" />
+                    <!-- Account identity: read-only — the order records
+                         exactly this account (single source of truth). -->
+                    <div class="rounded-md bg-slate-50 px-3 py-2.5">
+                        <div class="text-sm font-medium text-slate-900">{{ account.name }}</div>
+                        <div class="text-xs text-slate-500" dir="ltr">{{ account.email }}</div>
+                        <div class="mt-1 text-xs text-slate-400">سفارش با همین حساب کاربری ثبت می‌شود.</div>
+                    </div>
+
                     <TextInput v-model="form.customer_phone" label="شمارهٔ تماس (اختیاری)" :error="form.errors.customer_phone" />
 
                     <div>

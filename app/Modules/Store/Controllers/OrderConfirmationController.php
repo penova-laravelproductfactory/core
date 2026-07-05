@@ -5,19 +5,24 @@ namespace App\Modules\Store\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Store\Models\Order;
 use App\Modules\Store\Models\OrderItem;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * Modules\Store — guest order confirmation (store.checkout.confirmation).
- * Access by order number only — v0.1 accepts "knows the number" as the
- * access model (numbers are random); accounts tighten this later.
+ * Modules\Store — order confirmation (store.checkout.confirmation).
+ * Auth + owner-only: orders belong to accounts now, so the page is
+ * scoped to the user who placed it (404 for anyone else — no oracle
+ * for probing order numbers).
  */
 class OrderConfirmationController extends Controller
 {
-    public function __invoke(string $number): Response
+    public function __invoke(Request $request, string $number): Response
     {
-        $order = Order::where('number', $number)->with('items')->firstOrFail();
+        $order = Order::where('number', $number)
+            ->where('user_id', $request->user()->id)
+            ->with('items')
+            ->firstOrFail();
 
         return Inertia::render('Modules/Store/Checkout/Confirmation', [
             'order' => [

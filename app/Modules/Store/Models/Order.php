@@ -2,12 +2,18 @@
 
 namespace App\Modules\Store\Models;
 
+use App\Core\Users\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
- * Modules\Store — a placed order (guest checkout, v0.1).
+ * Modules\Store — a placed order (v0.1, account-based checkout).
+ *
+ * Every order belongs to a user; customer_name/customer_email are
+ * SNAPSHOTS of that account at placement — the account may be renamed
+ * later, the order keeps reading as it was placed.
  *
  * The order is a historical document: its items snapshot product name
  * and price at placement (see OrderItem). Admin edits are deliberately
@@ -20,6 +26,7 @@ class Order extends Model
 
     protected $fillable = [
         'number',
+        'user_id',
         'customer_name',
         'customer_email',
         'customer_phone',
@@ -55,6 +62,11 @@ class Order extends Model
         } while (static::where('number', $number)->exists());
 
         return $number;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function items(): HasMany
