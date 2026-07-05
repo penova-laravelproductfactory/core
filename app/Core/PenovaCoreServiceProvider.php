@@ -48,10 +48,13 @@ class PenovaCoreServiceProvider extends ServiceProvider
      * widgets use, so the pattern devs copy is the one Core runs.
      */
     private const CORE_WIDGETS = [
-        ['key' => 'core-stats', 'type' => 'card', 'title' => 'آمار کلی', 'component' => 'Core/Widgets/UsersStats', 'cols' => 2, 'order' => 10],
+        // The 'core' area renders as a 3-column grid (see Dashboard
+        // Index.vue): stats + the two feeds share one row, the Pro pitch
+        // spans the full row via cols 'full'.
+        ['key' => 'core-stats', 'type' => 'card', 'title' => 'آمار کلی', 'component' => 'Core/Widgets/UsersStats', 'cols' => 1, 'order' => 10],
         ['key' => 'core-recent-activity', 'type' => 'list', 'title' => 'فعالیت‌های اخیر', 'component' => 'Core/Widgets/RecentActivity', 'cols' => 1, 'order' => 20],
         ['key' => 'core-recent-notifications', 'type' => 'list', 'title' => 'اعلان‌های اخیر', 'component' => 'Core/Widgets/RecentNotifications', 'cols' => 1, 'order' => 30],
-        ['key' => 'core-pro-pitch', 'type' => 'card', 'title' => 'ماژول‌ها و نسخه Pro', 'component' => 'Core/Widgets/ProPitch', 'cols' => 2, 'order' => 900],
+        ['key' => 'core-pro-pitch', 'type' => 'card', 'title' => 'ماژول‌ها و نسخه Pro', 'component' => 'Core/Widgets/ProPitch', 'cols' => 'full', 'order' => 900],
     ];
 
     public function register(): void

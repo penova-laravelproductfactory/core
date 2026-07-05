@@ -36,7 +36,9 @@ namespace App\Core\Support;
  *                       // Vue file, resolved from resources/js/:
  *                       //   Core/Widgets/X    → resources/js/Core/Widgets/X.vue
  *                       //   Modules/N/Widgets/X → resources/js/Modules/N/Widgets/X.vue
- *       'cols'      => 1,                       // 1 or 2 columns of the dashboard grid
+ *       'cols'      => 1,                       // 1 | 2 | 'full' — grid cells the widget
+ *                                               // spans; 'full' takes the whole row
+ *                                               // regardless of the area's column count
  *       'order'     => 100,                     // dashboard sort position
  *       'area'      => 'booking',               // optional logical group; the dashboard
  *                                               // renders one headed section per area.
@@ -59,7 +61,7 @@ interface PenovaModule
     /**
      * Dashboard widget descriptors this module contributes.
      *
-     * @return array<int, array{key: string, type: string, title: string, component: string, cols: int, order: int, area?: string}>
+     * @return array<int, array{key: string, type: string, title: string, component: string, cols: int|string, order: int, area?: string}>
      */
     public static function widgets(): array;
 }

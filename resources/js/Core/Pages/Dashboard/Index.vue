@@ -66,6 +66,15 @@ function areaLabel(area) {
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
         .join(' ');
 }
+
+// Grid density per area: 'core' packs three columns, everything else
+// keeps the default two. Presentation-only, so it lives here.
+const gridClass = (area) => (area === 'core' ? 'lg:grid-cols-3' : 'lg:grid-cols-2');
+
+// Descriptor cols → span. 'full' spans the whole row whatever the
+// area's column count; 2 spans two cells; 1 (default) spans one.
+const spanClass = (widget) =>
+    widget.cols === 'full' ? 'lg:col-span-full' : widget.cols === 2 ? 'lg:col-span-2' : '';
 </script>
 
 <template>
@@ -76,12 +85,12 @@ function areaLabel(area) {
             <section v-for="(widgets, area) in widgetsByArea" :key="area">
                 <h2 class="mb-4 text-lg font-semibold text-slate-800">{{ areaLabel(area) }}</h2>
 
-                <div class="grid gap-6 lg:grid-cols-2">
+                <div class="grid gap-6" :class="gridClass(area)">
                     <DashboardWidget
                         v-for="widget in widgets"
                         :key="widget.key"
                         :widget="widget"
-                        :class="widget.cols === 2 ? 'lg:col-span-2' : ''"
+                        :class="spanClass(widget)"
                     />
                 </div>
             </section>

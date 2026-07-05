@@ -16,7 +16,9 @@ const stats = computed(() => usePage().props.stats ?? {});
 </script>
 
 <template>
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- Tiles sit side by side on tablets (full-width widget there) and
+         stack at lg+, where the widget occupies one 3-col-grid cell. -->
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
         <StatsCard title="کاربران" :value="stats.users_count ?? 0" subtitle="حساب‌های ثبت‌شده در پنل" />
         <StatsCard title="نقش‌ها" :value="stats.roles_count ?? 0" subtitle="نقش‌های تعریف‌شده" />
     </div>

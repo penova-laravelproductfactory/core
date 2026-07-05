@@ -104,7 +104,7 @@ public static function widgets(): array
         'title'     => 'آخرین رزروها',    // arrives as widget.title in Vue
         'component' => 'Modules/Booking/Widgets/LatestBookings',
                         // → resources/js/Modules/Booking/Widgets/LatestBookings.vue
-        'cols'      => 1,                 // 1 or 2 columns of the 2-column grid
+        'cols'      => 1,                 // 1 | 2 | 'full' (whole row, any grid width)
         'order'     => 100,
         'area'      => 'booking',         // optional dashboard group (see below)
     ]];
