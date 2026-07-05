@@ -14,6 +14,14 @@ defineProps({
 });
 
 const appName = computed(() => usePage().props.app.name);
+
+const user = computed(() => usePage().props.auth?.user);
+
+// Extensible account menu — future entries (پروفایل، آدرس‌ها) slot in
+// here without touching the template.
+const accountLinks = [
+    { label: 'سفارش‌های من', href: '/store/account/orders' },
+];
 </script>
 
 <template>
@@ -26,13 +34,34 @@ const appName = computed(() => usePage().props.app.name);
                     فروشگاه {{ appName }}
                 </Link>
 
-                <Link
-                    href="/store/checkout"
-                    class="rounded-md bg-brand px-3 py-2 text-sm font-semibold text-white hover:bg-brand-hover"
-                    :class="{ 'pointer-events-none opacity-40': cartCount === 0 }"
-                >
-                    تسویه حساب ({{ cartCount }})
-                </Link>
+                <nav class="flex items-center gap-4 text-sm">
+                    <template v-if="user">
+                        <Link
+                            v-for="link in accountLinks"
+                            :key="link.href"
+                            :href="link.href"
+                            class="font-medium text-slate-600 hover:text-slate-900"
+                        >
+                            {{ link.label }}
+                        </Link>
+                        <Link
+                            href="/logout"
+                            method="post"
+                            as="button"
+                            class="text-slate-400 hover:text-slate-700"
+                        >
+                            خروج
+                        </Link>
+                    </template>
+
+                    <Link
+                        href="/store/checkout"
+                        class="rounded-md bg-brand px-3 py-2 text-sm font-semibold text-white hover:bg-brand-hover"
+                        :class="{ 'pointer-events-none opacity-40': cartCount === 0 }"
+                    >
+                        تسویه حساب ({{ cartCount }})
+                    </Link>
+                </nav>
             </div>
         </header>
 
