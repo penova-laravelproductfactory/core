@@ -10,12 +10,16 @@
  * leaning on dashboard props, so Core stays module-agnostic. "Today" is
  * computed server-side in the app timezone.
  */
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import axios from 'axios';
 
-defineProps({
-    widget: Object, // the descriptor; title comes from it
+// The descriptor is optional: the dashboard passes it, but the widget
+// stays self-sufficient (per the widget contract) if rendered bare.
+const props = defineProps({
+    widget: Object,
 });
+
+const title = computed(() => props.widget?.title ?? 'رزروهای امروز');
 
 const count = ref(null);
 const loading = ref(true);
@@ -36,7 +40,7 @@ onMounted(async () => {
 <template>
     <!-- Same tile anatomy as Core's StatsCard, with loading/error states. -->
     <div class="rounded-lg border border-slate-200 bg-white p-6">
-        <div class="text-sm font-medium text-slate-500">{{ widget.title }}</div>
+        <div class="text-sm font-medium text-slate-500">{{ title }}</div>
 
         <div v-if="loading" class="mt-2 text-3xl font-semibold text-slate-300">…</div>
         <div v-else-if="error" class="mt-2 text-sm leading-relaxed text-slate-400">{{ error }}</div>

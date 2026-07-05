@@ -40,13 +40,10 @@ class BookingServiceProvider extends ServiceProvider implements PenovaModule
     /**
      * @see PenovaModule — dashboard contribution.
      *
-     * Frontend note (next phase): create
-     * resources/js/Modules/Booking/Widgets/BookingsTodayCard.vue —
-     * receive the descriptor as the `widget` prop, fetch
-     * GET /admin/bookings/today-count (route "booking.today-count",
-     * returns {count}) on mount, and render the number in a Card/
-     * StatsCard. Until that file exists the dashboard shows the
-     * graceful "widget not found" placeholder.
+     * Data contract: BookingsTodayCard.vue (resources/js/Modules/Booking/
+     * Widgets) fetches GET /admin/bookings/today-count (route
+     * "booking.today-count") on mount; the response is always
+     * { count: number }. See BookingsTodayCountController.
      */
     public static function widgets(): array
     {
