@@ -28,6 +28,7 @@ import {
     Cog6ToothIcon,
     HomeIcon,
     ShieldCheckIcon,
+    ShoppingBagIcon,
     SparklesIcon,
     Squares2X2Icon,
     UsersIcon,
@@ -60,6 +61,7 @@ const icons = {
     clock: ClockIcon,
     bell: BellIcon,
     calendar: CalendarIcon,
+    bag: ShoppingBagIcon,
     sparkles: SparklesIcon,
     squares: Squares2X2Icon,
 };

@@ -85,6 +85,7 @@ return [
             'core' => 'عمومی',
             'booking' => 'رزروها',
             'crm' => 'CRM',
+            'store' => 'فروشگاه',
         ],
     ],
 
@@ -110,6 +111,10 @@ return [
         // Light CRM module: leads + "leads today" widget (architecture
         // stress test — third module through the same contract).
         App\Modules\Crm\CrmServiceProvider::class,
+
+        // Store module: product management (physical/virtual/downloadable)
+        // + "active products" widget. Orders/cart come later.
+        App\Modules\Store\StoreServiceProvider::class,
     ],
 
 ];

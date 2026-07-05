@@ -20,6 +20,7 @@ import {
     CalendarDaysIcon,
     ChartBarIcon,
     ClockIcon,
+    ShoppingBagIcon,
     Squares2X2Icon,
     UsersIcon,
 } from '@heroicons/vue/24/outline';
@@ -36,6 +37,7 @@ const props = defineProps({
 });
 
 const icons = {
+    bag: ShoppingBagIcon,
     bell: BellIcon,
     calendar: CalendarDaysIcon,
     chart: ChartBarIcon,
