@@ -93,7 +93,12 @@ function confirmDelete() {
             </select>
         </div>
 
-        <DataTable :paginator="products" :columns="columns" :params="{ type: filterType, status: filterStatus }">
+        <DataTable
+            :paginator="products"
+            :columns="columns"
+            :params="{ type: filterType, status: filterStatus }"
+            search-placeholder="جستجو در نام، شناسه یا SKU…"
+        >
             <!-- Name links straight to the edit page (fast path for admins). -->
             <template #cell-name="{ row }">
                 <Link :href="`/admin/store/products/${row.id}/edit`" class="font-medium text-slate-900 hover:text-brand hover:underline">

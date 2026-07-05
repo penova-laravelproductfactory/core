@@ -29,6 +29,9 @@ class ProductIndexController extends Controller
             'products' => DataTableBuilder::for($query)
                 ->searchable(['name', 'slug', 'sku'])
                 ->sortable(['name', 'type', 'price', 'updated_at'])
+                // Daily product management is "what did we touch last?" —
+                // recently edited beats recently created as the default.
+                ->defaultSort('updated_at')
                 ->paginate($request)
                 ->through(fn (Product $product) => [
                     'id' => $product->id,

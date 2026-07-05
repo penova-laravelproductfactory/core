@@ -22,6 +22,9 @@ const props = defineProps({
     // Changing a value triggers a reload; empty values are dropped from
     // the URL. DataTableBuilder-side, apply them with ->when() clauses.
     params: { type: Object, default: () => ({}) },
+    // Tell users WHAT the search matches ("جستجو در نام یا SKU…") —
+    // a generic "جستجو…" hides the feature's real reach.
+    searchPlaceholder: { type: String, default: 'جستجو…' },
 });
 
 const search = ref(new URLSearchParams(window.location.search).get('search') ?? '');
@@ -63,7 +66,7 @@ function toggleSort(column) {
         <input
             v-model="search"
             type="search"
-            placeholder="جستجو…"
+            :placeholder="searchPlaceholder"
             class="block w-64 rounded-md border-0 px-3 py-2 text-sm shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-brand"
         />
 
