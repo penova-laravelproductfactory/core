@@ -33,7 +33,7 @@ class BookingServiceProvider extends ServiceProvider implements PenovaModule
     public static function menu(): array
     {
         return [
-            ['key' => 'booking', 'label' => 'رزروها', 'route' => 'booking.index', 'icon' => 'calendar', 'order' => 200],
+            ['key' => 'booking', 'label' => 'رزروها', 'route' => 'booking.index', 'icon' => 'calendar', 'order' => 200, 'permission' => 'booking.view'],
         ];
     }
 
@@ -52,7 +52,20 @@ class BookingServiceProvider extends ServiceProvider implements PenovaModule
         return [
             // area 'booking': every widget this module ships lands under
             // the same dashboard heading (config penova.widgets.areas).
-            ['key' => 'booking-today-count', 'type' => 'card', 'title' => 'رزروهای امروز', 'component' => 'Modules/Booking/Widgets/BookingsTodayCard', 'cols' => 1, 'order' => 200, 'area' => 'booking'],
+            ['key' => 'booking-today-count', 'type' => 'card', 'title' => 'رزروهای امروز', 'component' => 'Modules/Booking/Widgets/BookingsTodayCard', 'cols' => 1, 'order' => 200, 'area' => 'booking', 'permission' => 'booking.view'],
+        ];
+    }
+
+    /**
+     * @see PenovaModule — the module's permission manifest. The slugs
+     * are created by BookingPermissionsSeeder; keep the three in sync
+     * (manifest, seeder, route middleware).
+     */
+    public static function permissions(): array
+    {
+        return [
+            'booking.view',
+            'booking.manage',
         ];
     }
 }

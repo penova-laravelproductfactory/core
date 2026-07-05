@@ -17,14 +17,24 @@ use Illuminate\Support\Facades\Route;
 | from config('penova.admin')), so URIs land at /admin/bookings/... .
 | Route names carry the module's own "booking." prefix explicitly;
 | "penova.*" names are reserved for Core.
+|
+| Permissions (seeded by BookingPermissionsSeeder):
+|   booking.view   → index + the widget's today-count JSON
+|   booking.manage → create / store / edit / update
 */
 
-// Dashboard-widget data endpoint. Registered before the {booking}
-// parameterised routes so "today-count" is never captured as a model key.
-Route::get('/bookings/today-count', BookingsTodayCountController::class)->name('booking.today-count');
+Route::middleware('permission:booking.view')->group(function () {
+    // Dashboard-widget data endpoint. Registered before the {booking}
+    // parameterised routes so "today-count" is never captured as a
+    // model key.
+    Route::get('/bookings/today-count', BookingsTodayCountController::class)->name('booking.today-count');
 
-Route::get('/bookings', BookingIndexController::class)->name('booking.index');
-Route::get('/bookings/create', BookingCreateController::class)->name('booking.create');
-Route::post('/bookings', BookingStoreController::class)->name('booking.store');
-Route::get('/bookings/{booking}/edit', BookingEditController::class)->name('booking.edit');
-Route::match(['put', 'patch'], '/bookings/{booking}', BookingUpdateController::class)->name('booking.update');
+    Route::get('/bookings', BookingIndexController::class)->name('booking.index');
+});
+
+Route::middleware('permission:booking.manage')->group(function () {
+    Route::get('/bookings/create', BookingCreateController::class)->name('booking.create');
+    Route::post('/bookings', BookingStoreController::class)->name('booking.store');
+    Route::get('/bookings/{booking}/edit', BookingEditController::class)->name('booking.edit');
+    Route::match(['put', 'patch'], '/bookings/{booking}', BookingUpdateController::class)->name('booking.update');
+});

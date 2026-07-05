@@ -76,3 +76,37 @@ test('the full admin experience works end to end', function () {
     $this->assertGuest();
     $this->get(route('penova.dashboard'))->assertRedirect(route('login'));
 });
+
+test('module menu items and widgets are permission-filtered', function () {
+    // Core baseline only — the admin has Core permissions but none of
+    // the module ones (those come from the module seeders).
+    $this->seed(PenovaCoreSeeder::class);
+
+    $this->post('/login', [
+        'email' => config('penova.admin.email'),
+        'password' => config('penova.admin.password'),
+    ]);
+
+    // Without booking.view: no sidebar item, no dashboard widget, 403.
+    $this->get(route('penova.dashboard'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('menu', fn ($menu) => ! collect($menu)->contains('key', 'booking'))
+            ->where('dashboardWidgets', fn ($widgets) => ! collect($widgets)->contains('key', 'booking-today-count')));
+
+    $this->get('/admin/bookings')->assertForbidden();
+
+    // Grant the module permissions the product-composition way.
+    $this->seed(\App\Modules\Booking\Database\Seeders\BookingPermissionsSeeder::class);
+
+    // Feature tests reuse one app instance, so the session guard still
+    // holds the pre-seeding user model (with stale cached relations).
+    // Real requests are fresh processes — simulate that.
+    $this->app['auth']->forgetGuards();
+
+    $this->get(route('penova.dashboard'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('menu', fn ($menu) => collect($menu)->contains('key', 'booking'))
+            ->where('dashboardWidgets', fn ($widgets) => collect($widgets)->contains('key', 'booking-today-count')));
+
+    $this->get('/admin/bookings')->assertOk();
+});

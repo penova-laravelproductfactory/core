@@ -5,8 +5,9 @@ per module. **Core never imports from this namespace** — modules build on
 Core, not the other way around. If code is reusable across two modules,
 it belongs in `app/Core`.
 
-A working reference module ships in `app/Modules/Demo` — copy it to start
-a new module.
+Working reference modules ship in this repo: `Demo` (minimal contract
+showcase), `Booking` and `Crm` (real CRUD + widgets + permissions).
+Copy the closest one to start a new module.
 
 ## Anatomy of a module
 
@@ -20,18 +21,23 @@ app/Modules/Booking/
   Policies/
   Database/
     Migrations/                ← loadMigrationsFrom() in the provider
-    Seeders/                   ← seeds the module's permissions ("booking.manage")
+    Seeders/                   ← BookingPermissionsSeeder (see Permissions)
 ```
 
 Frontend lives in `resources/js/Modules/Booking/`:
 
 ```
 resources/js/Modules/Booking/
-  Pages/       ← Inertia pages: Inertia::render('Modules/Booking/Calendar')
+  Pages/       ← Inertia pages: Inertia::render('Modules/Booking/Index')
+                 resolves to Pages/Index.vue (the resolver adds "Pages/")
   Widgets/     ← dashboard widgets referenced by widget descriptors
+  Components/  ← module-private components (e.g. a shared form)
 ```
 
-Both resolve automatically — no frontend registration step.
+Both resolve automatically — no frontend registration step. The
+`component` field of a widget descriptor must match this layout:
+`Modules/Booking/Widgets/LatestBookings` →
+`resources/js/Modules/Booking/Widgets/LatestBookings.vue`.
 
 ## Wiring a module in
 
@@ -49,9 +55,11 @@ compile-time reference to the module.
 
 ## The module contract (`App\Core\Support\PenovaModule`)
 
-The provider implements `PenovaModule` (recommended — Core actually
-discovers the hooks with `method_exists()`, so the interface is
-documentation + type-safety, not a hard requirement):
+Every module's service provider extends Laravel's `ServiceProvider`
+**and implements `PenovaModule`**. Core collects the contract's static
+hooks only from providers implementing the interface — a provider
+without it still boots, but contributes nothing to the panel. Hooks a
+module does not need return `[]`.
 
 ```php
 use App\Core\Support\PenovaModule;
@@ -59,18 +67,15 @@ use Illuminate\Support\ServiceProvider;
 
 class BookingServiceProvider extends ServiceProvider implements PenovaModule
 {
-    public function boot(): void
-    {
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
-        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
-    }
+    public function boot(): void { /* load routes, migrations */ }
 
-    public static function menu(): array { /* see below */ }
-    public static function widgets(): array { /* see below */ }
+    public static function menu(): array { /* sidebar items */ }
+    public static function widgets(): array { /* dashboard widgets */ }
+    public static function permissions(): array { /* permission manifest */ }
 }
 ```
 
-### Sidebar menu — `menu()`
+### `menu()` — sidebar items
 
 Returns an array of items; Core merges them with its own (orders 10–60)
 and sorts by `order`. Use `order >= 100` for module items.
@@ -85,11 +90,14 @@ public static function menu(): array
         'icon'  => 'calendar',       // icon key; the map lives in AdminLayout.vue
                                      // (home|users|shield|cog|clock|bell|calendar|sparkles|squares)
         'order' => 100,
+        'permission' => 'booking.view', // optional; hides the item from users
+                                        // without the permission — keep it in
+                                        // sync with the route's middleware
     ]];
 }
 ```
 
-### Dashboard widgets — `widgets()`
+### `widgets()` — dashboard widgets
 
 Returns widget **descriptors**; the dashboard grid renders them sorted by
 `order`. Core's own widgets use orders 10–30 (and 900 for the Pro pitch),
@@ -103,10 +111,12 @@ public static function widgets(): array
         'type'      => 'card',            // 'card' | 'list'
         'title'     => 'آخرین رزروها',    // arrives as widget.title in Vue
         'component' => 'Modules/Booking/Widgets/LatestBookings',
-                        // → resources/js/Modules/Booking/Widgets/LatestBookings.vue
         'cols'      => 1,                 // 1 | 2 | 'full' (whole row, any grid width)
         'order'     => 100,
         'area'      => 'booking',         // optional dashboard group (see below)
+        'permission' => 'booking.view',   // optional; widget is dropped for users
+                                          // without it (match the data endpoint's
+                                          // middleware so it never 403s)
     ]];
 }
 ```
@@ -120,20 +130,46 @@ default `core` group. Section headings come from
 unknown keys fall back to a label formatted from the key itself
 (`booking-extras` → "Booking Extras").
 
-The Vue widget receives the whole descriptor as the `widget` prop and
-reads its data from Inertia page/shared props (Lite convention — see
-`resources/js/Core/Widgets/*` for the pattern):
+**Widget data.** Descriptors are layout-only. A widget component receives
+its descriptor as the `widget` prop and owns its data: read the shared /
+page Inertia props, or fetch a small module JSON endpoint on mount (see
+`BookingsTodayCard.vue` + `BookingsTodayCountController`).
 
-```vue
-<script setup>
-import Card from '@/Core/Components/Card.vue';
-defineProps({ widget: Object });
-</script>
+### `permissions()` — the module's permission manifest
 
-<template>
-    <Card :title="widget.title">…</Card>
-</template>
+Returns the flat list of permission slugs the module defines:
+
+```php
+public static function permissions(): array
+{
+    return ['booking.view', 'booking.manage'];
+}
 ```
+
+Declarative for now: the slugs are **created** by the module's seeder
+(below); this manifest is collected into the `penova.permissions`
+container binding for documentation, sanity checks, and future admin UI.
+Keep three places in sync: this manifest, the seeder, and the route
+middleware.
+
+## Permissions
+
+Guard module routes with the permission middleware, split by intent —
+`*.view` for read-only pages (index, widget data endpoints), `*.manage`
+for create/edit actions:
+
+```php
+Route::middleware('permission:booking.view')->group(...);
+Route::middleware('permission:booking.manage')->group(...);
+```
+
+Seed the permissions from the module's own seeder
+(`app/Modules/<Name>/Database/Seeders/<Name>PermissionsSeeder.php`,
+`firstOrCreate` + `syncWithoutDetaching` onto the admin role) and
+register it in `database/seeders/DatabaseSeeder.php` after
+`PenovaCoreSeeder`. Put the same slug in the `permission` field of the
+module's menu items and widget descriptors so the sidebar and dashboard
+never show what the routes would 403.
 
 ## Routes: invokable controllers only
 
@@ -151,17 +187,41 @@ from this set:
 | Update  | apply edits                  | `UpdateBookingController`  |
 | Delete  | destroy                      | `DeleteBookingController`  |
 
+(`{Subject}{Verb}Controller` — `BookingIndexController`,
+`LeadStoreController` — is an accepted equivalent; pick one style per
+module and stay consistent.) Widget data endpoints follow the same rule:
+`BookingsTodayCountController`, `LeadsTodayCountController`.
+
 Module routes reuse the panel middleware + URI prefix from config, but own
-their route-name prefix (never `penova.*`):
+their route-name prefix (never `penova.*`). Keep `routes.php` plain and
+apply the group in the provider:
 
 ```php
-Route::middleware(config('penova.admin.middleware'))
-    ->prefix(config('penova.admin.prefix'))
-    ->as('booking.')
-    ->group(function () {
-        Route::get('bookings', ListBookingsController::class)->name('index');
-    });
+public function boot(): void
+{
+    if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
+        Route::middleware(config('penova.admin.middleware'))
+            ->prefix(config('penova.admin.prefix'))
+            ->group(__DIR__.'/routes.php');
+    }
+}
 ```
 
-Guard module pages with the permission middleware and seed the permission
-from the module's own seeder: `->middleware('permission:booking.manage')`.
+Register static paths (e.g. `/bookings/today-count`) **before**
+parameterised ones (`/bookings/{booking}`) so they are never captured by
+route-model binding.
+
+## Future hooks (not implemented yet)
+
+The contract will grow along the same pattern — static, declarative,
+collected by Core:
+
+- `policies()` — modules announcing their model → policy map so Core
+  registers Gates for them.
+- `settings()` — modules registering their runtime settings (key,
+  default, label) into the Core Settings page.
+- `logs()` — declaring module activity-log actions for nicer rendering
+  in the Core audit trail.
+
+Do not pre-implement these in modules; they will be added to
+`PenovaModule` (with `[]` defaults documented) when Core supports them.

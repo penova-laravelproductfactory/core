@@ -22,6 +22,12 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
+        // Menu items / widgets carrying a 'permission' key are only
+        // shared with users holding it (per-request — the collected
+        // descriptors themselves are app-wide singletons).
+        $allowed = fn (array $item) => ! isset($item['permission'])
+            || ($user?->hasPermission($item['permission']) ?? false);
+
         return [
             ...parent::share($request),
 
@@ -29,17 +35,25 @@ class HandleInertiaRequests extends Middleware
                 'name' => config('penova.name'),
             ],
 
-            // Sidebar items (Core + Modules, order-sorted). Route names
-            // are resolved to URLs here — at request time, when all module
-            // routes are guaranteed to be registered.
-            'menu' => collect(app('penova.menu'))->map(fn (array $item) => [
-                ...$item,
-                'href' => Route::has($item['route']) ? route($item['route'], absolute: false) : '#',
-            ])->all(),
+            // Sidebar items (Core + Modules, order-sorted, permission-
+            // filtered). Route names are resolved to URLs here — at
+            // request time, when all module routes are registered.
+            'menu' => collect(app('penova.menu'))
+                ->filter($allowed)
+                ->map(fn (array $item) => [
+                    ...$item,
+                    'href' => Route::has($item['route']) ? route($item['route'], absolute: false) : '#',
+                ])
+                ->values()
+                ->all(),
 
-            // Dashboard widget descriptors (Core + Modules, order-sorted);
-            // Core/Pages/Dashboard/Index.vue renders the grid from these.
-            'dashboardWidgets' => app('penova.widgets'),
+            // Dashboard widget descriptors (Core + Modules, order-sorted,
+            // permission-filtered); Core/Pages/Dashboard/Index.vue renders
+            // the grid from these.
+            'dashboardWidgets' => collect(app('penova.widgets'))
+                ->filter($allowed)
+                ->values()
+                ->all(),
 
             // Widget area → heading map for the dashboard sections; keys
             // missing here get a label formatted from the key itself.

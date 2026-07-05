@@ -39,4 +39,14 @@ class DemoServiceProvider extends ServiceProvider implements PenovaModule
             ['key' => 'demo-card-two', 'type' => 'card', 'title' => 'ویجت نمونه ۲', 'component' => 'Modules/Demo/Widgets/DemoCardTwo', 'cols' => 1, 'order' => 110, 'area' => 'demo'],
         ];
     }
+
+    /**
+     * @see PenovaModule — Demo defines no permissions (its page and
+     * widgets are open to every authenticated panel user), so the
+     * manifest is empty. Hooks a module doesn't need return [].
+     */
+    public static function permissions(): array
+    {
+        return [];
+    }
 }

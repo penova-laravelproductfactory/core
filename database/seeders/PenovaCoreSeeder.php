@@ -38,7 +38,10 @@ class PenovaCoreSeeder extends Seeder
             ['name' => 'Administrator', 'description' => 'Full access to the panel.'],
         );
 
-        $admin->permissions()->sync($permissions->pluck('id'));
+        // syncWithoutDetaching: re-running the Core seeder alone must
+        // never strip module permissions (booking.view, …) that module
+        // seeders granted to the admin role.
+        $admin->permissions()->syncWithoutDetaching($permissions->pluck('id'));
 
         // Plain member role with no Core permissions — products attach
         // their own module permissions (booking.view, ...) to it.

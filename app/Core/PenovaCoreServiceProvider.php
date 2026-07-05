@@ -34,11 +34,15 @@ class PenovaCoreServiceProvider extends ServiceProvider
      * and order-sorted in the 'penova.menu' binding below.
      */
     private const CORE_MENU = [
+        // 'permission' mirrors each route's middleware guard: items the
+        // user could only 403 on are filtered out of the sidebar
+        // (per-request, in HandleInertiaRequests). Dashboard and
+        // notifications are open to every authenticated panel user.
         ['key' => 'dashboard', 'label' => 'داشبورد', 'route' => 'penova.dashboard', 'icon' => 'home', 'order' => 10],
-        ['key' => 'users', 'label' => 'کاربران', 'route' => 'penova.users.index', 'icon' => 'users', 'order' => 20],
-        ['key' => 'roles', 'label' => 'نقش‌ها و دسترسی‌ها', 'route' => 'penova.roles.index', 'icon' => 'shield', 'order' => 30],
-        ['key' => 'settings', 'label' => 'تنظیمات', 'route' => 'penova.settings.index', 'icon' => 'cog', 'order' => 40],
-        ['key' => 'logs', 'label' => 'گزارش فعالیت‌ها', 'route' => 'penova.logs.index', 'icon' => 'clock', 'order' => 50],
+        ['key' => 'users', 'label' => 'کاربران', 'route' => 'penova.users.index', 'icon' => 'users', 'order' => 20, 'permission' => 'users.manage'],
+        ['key' => 'roles', 'label' => 'نقش‌ها و دسترسی‌ها', 'route' => 'penova.roles.index', 'icon' => 'shield', 'order' => 30, 'permission' => 'roles.manage'],
+        ['key' => 'settings', 'label' => 'تنظیمات', 'route' => 'penova.settings.index', 'icon' => 'cog', 'order' => 40, 'permission' => 'settings.manage'],
+        ['key' => 'logs', 'label' => 'گزارش فعالیت‌ها', 'route' => 'penova.logs.index', 'icon' => 'clock', 'order' => 50, 'permission' => 'logs.view'],
         ['key' => 'notifications', 'label' => 'اعلان‌ها', 'route' => 'penova.notifications.index', 'icon' => 'bell', 'order' => 60],
     ];
 
@@ -74,7 +78,7 @@ class PenovaCoreServiceProvider extends ServiceProvider
         }
 
         // Panel composition: Core contributions + whatever each module's
-        // provider declares through its static menu()/widgets() hooks.
+        // provider declares through the Support\PenovaModule contract.
         // Lazy singletons — resolved once, on first use (Inertia share).
         $this->app->singleton('penova.menu', fn () => $this->collectFromModules('menu', self::CORE_MENU));
 
@@ -84,26 +88,44 @@ class PenovaCoreServiceProvider extends ServiceProvider
             fn (array $widget) => [...$widget, 'area' => $widget['area'] ?? 'core'],
             $this->collectFromModules('widgets', self::CORE_WIDGETS),
         ));
+
+        // Flat list of every permission slug the modules declare
+        // (their manifests). Not shared with the frontend — available
+        // for sanity checks, artisan tooling, and future admin UI.
+        $this->app->singleton('penova.permissions', fn () => collect($this->modulesImplementingContract())
+            ->flatMap(fn (string $provider) => $provider::permissions())
+            ->unique()
+            ->values()
+            ->all());
     }
 
     /**
      * Merge Core's own descriptors with those of every registered module
-     * provider exposing the given static hook, sorted by 'order'.
-     *
-     * method_exists() keeps the contract duck-typed: implementing
-     * Support\PenovaModule is encouraged, not required.
+     * provider implementing the PenovaModule contract, sorted by 'order'.
      */
     private function collectFromModules(string $hook, array $core): array
     {
-        $items = collect($core);
+        return collect($core)
+            ->concat(collect($this->modulesImplementingContract())
+                ->flatMap(fn (string $provider) => $provider::$hook()))
+            ->sortBy('order')
+            ->values()
+            ->all();
+    }
 
-        foreach (config('penova.modules', []) as $provider) {
-            if (method_exists($provider, $hook)) {
-                $items = $items->concat($provider::$hook());
-            }
-        }
-
-        return $items->sortBy('order')->values()->all();
+    /**
+     * Registered module providers that implement the formal contract.
+     * Providers without it still boot (register() above) but contribute
+     * nothing to the panel composition.
+     *
+     * @return list<class-string<Support\PenovaModule>>
+     */
+    private function modulesImplementingContract(): array
+    {
+        return array_values(array_filter(
+            config('penova.modules', []),
+            fn (string $provider) => is_subclass_of($provider, Support\PenovaModule::class),
+        ));
     }
 
     public function boot(): void

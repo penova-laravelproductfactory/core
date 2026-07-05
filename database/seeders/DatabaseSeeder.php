@@ -14,7 +14,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PenovaCoreSeeder::class,
-            // App\Modules\Booking → BookingSeeder::class goes here later.
+
+            // Module permission seeders (product-level composition — the
+            // same place modules get wired in as config/penova.php).
+            \App\Modules\Booking\Database\Seeders\BookingPermissionsSeeder::class,
+            \App\Modules\Crm\Database\Seeders\CrmPermissionsSeeder::class,
         ]);
     }
 }

@@ -85,6 +85,7 @@ return [
             'core' => 'عمومی',
             'demo' => 'نمونه',
             'booking' => 'رزروها',
+            'crm' => 'CRM',
         ],
     ],
 
@@ -111,6 +112,10 @@ return [
 
         // Demo business module: bookings CRUD + "bookings today" widget.
         App\Modules\Booking\BookingServiceProvider::class,
+
+        // Light CRM module: leads + "leads today" widget (architecture
+        // stress test — third module through the same contract).
+        App\Modules\Crm\CrmServiceProvider::class,
     ],
 
 ];
