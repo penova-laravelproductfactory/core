@@ -49,6 +49,7 @@ const statusClasses = {
                 <table class="min-w-full divide-y divide-slate-200 text-sm">
                     <thead class="bg-slate-100 text-slate-700">
                         <tr>
+                            <th class="px-4 py-3 text-start font-semibold">شناسه</th>
                             <th class="px-4 py-3 text-start font-semibold">نام مشتری</th>
                             <th class="px-4 py-3 text-start font-semibold">زمان شروع</th>
                             <th class="px-4 py-3 text-start font-semibold">وضعیت</th>
@@ -58,6 +59,7 @@ const statusClasses = {
 
                     <tbody class="divide-y divide-slate-100 text-slate-900">
                         <tr v-for="booking in bookings.data" :key="booking.id" class="hover:bg-slate-50">
+                            <td class="px-4 py-3 text-slate-500">{{ booking.id }}</td>
                             <td class="px-4 py-3">{{ booking.customer_name }}</td>
                             <td class="px-4 py-3" dir="ltr">{{ formatDateTime(booking.starts_at) }}</td>
                             <td class="px-4 py-3">
@@ -76,7 +78,7 @@ const statusClasses = {
                         </tr>
 
                         <tr v-if="bookings.data.length === 0">
-                            <td colspan="4" class="px-4 py-8 text-center text-slate-400">
+                            <td colspan="5" class="px-4 py-8 text-center text-slate-400">
                                 هنوز رزروی ثبت نشده است.
                             </td>
                         </tr>
