@@ -26,9 +26,14 @@ class StoreServiceProvider extends ServiceProvider implements PenovaModule
         // panel group (URI prefix + auth middleware) is applied here.
         // Cache guard mirrors loadRoutesFrom() so route:cache stays safe.
         if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
+            // Admin surface: /admin/store/... (web + auth + permissions).
             Route::middleware(config('penova.admin.middleware'))
                 ->prefix(config('penova.admin.prefix'))
                 ->group(__DIR__.'/routes.php');
+
+            // Public surface: /store/... — guest storefront + checkout,
+            // session only ("web"), no auth.
+            Route::middleware('web')->group(__DIR__.'/routes.public.php');
         }
 
         $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
@@ -39,6 +44,7 @@ class StoreServiceProvider extends ServiceProvider implements PenovaModule
     {
         return [
             ['key' => 'store', 'label' => 'فروشگاه', 'route' => 'store.products.index', 'icon' => 'bag', 'order' => 400, 'permission' => 'store.view'],
+            ['key' => 'store-orders', 'label' => 'سفارش‌ها', 'route' => 'store.orders.index', 'icon' => 'clipboard', 'order' => 410, 'permission' => 'store.view'],
         ];
     }
 

@@ -24,6 +24,7 @@ import { Head, Link, usePage } from '@inertiajs/vue3';
 import {
     BellIcon,
     CalendarIcon,
+    ClipboardDocumentListIcon,
     ClockIcon,
     Cog6ToothIcon,
     HomeIcon,
@@ -62,6 +63,7 @@ const icons = {
     bell: BellIcon,
     calendar: CalendarIcon,
     bag: ShoppingBagIcon,
+    clipboard: ClipboardDocumentListIcon,
     sparkles: SparklesIcon,
     squares: Squares2X2Icon,
 };

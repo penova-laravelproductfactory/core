@@ -1,6 +1,9 @@
 <?php
 
 use App\Modules\Store\Controllers\ActiveProductsCountController;
+use App\Modules\Store\Controllers\OrderIndexController;
+use App\Modules\Store\Controllers\OrderShowController;
+use App\Modules\Store\Controllers\OrderUpdateController;
 use App\Modules\Store\Controllers\ProductCreateController;
 use App\Modules\Store\Controllers\ProductDeleteController;
 use App\Modules\Store\Controllers\ProductEditController;
@@ -30,6 +33,9 @@ Route::middleware('permission:store.view')->group(function () {
     Route::get('/store/products/active-count', ActiveProductsCountController::class)->name('store.products.active-count');
 
     Route::get('/store/products', ProductIndexController::class)->name('store.products.index');
+
+    Route::get('/store/orders', OrderIndexController::class)->name('store.orders.index');
+    Route::get('/store/orders/{order}', OrderShowController::class)->name('store.orders.show');
 });
 
 Route::middleware('permission:store.manage')->group(function () {
@@ -38,4 +44,7 @@ Route::middleware('permission:store.manage')->group(function () {
     Route::get('/store/products/{product}/edit', ProductEditController::class)->name('store.products.edit');
     Route::match(['put', 'patch'], '/store/products/{product}', ProductUpdateController::class)->name('store.products.update');
     Route::delete('/store/products/{product}', ProductDeleteController::class)->name('store.products.destroy');
+
+    // Lifecycle-only order edits (status / payment_status).
+    Route::match(['put', 'patch'], '/store/orders/{order}', OrderUpdateController::class)->name('store.orders.update');
 });
