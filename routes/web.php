@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -11,4 +12,4 @@ use Illuminate\Support\Facades\Route;
 | loaded by PenovaCoreServiceProvider.
 */
 
-Route::get('/', fn () => redirect()->route('penova.dashboard'));
+Route::get('/', WelcomeController::class)->name('welcome');
