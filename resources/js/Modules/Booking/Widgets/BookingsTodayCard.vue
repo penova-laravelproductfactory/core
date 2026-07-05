@@ -4,23 +4,25 @@
  * indicator vs yesterday. Registered by BookingServiceProvider::widgets()
  * (key "booking-today-count", area "booking").
  *
- * Data: fetches GET /admin/bookings/today-count on mount; the endpoint
- * returns { count, yesterday_count }. yesterday_count is treated as
- * optional — without it the widget simply hides the trend line and
- * renders neutral, so older/simpler backends keep working.
+ * Built on Core's DashboardCard; the base card carries no trend logic,
+ * so this widget injects its trend visuals through the #icon and #value
+ * slots (the documented extension path).
+ *
+ * Data: GET /admin/bookings/today-count → { count, yesterday_count }.
+ * yesterday_count is optional — without it the trend line hides and the
+ * widget renders neutral.
  */
 import { computed, onMounted, ref } from 'vue';
 import axios from 'axios';
+import DashboardCard from '@/Core/Components/DashboardCard.vue';
 import {
     ArrowTrendingDownIcon,
     ArrowTrendingUpIcon,
     CalendarDaysIcon,
 } from '@heroicons/vue/24/outline';
 
-// The descriptor is optional: the dashboard passes it, but the widget
-// stays self-sufficient (per the widget contract) if rendered bare.
 const props = defineProps({
-    widget: Object,
+    widget: Object, // the descriptor; optional so the widget renders bare
 });
 
 const title = computed(() => props.widget?.title ?? 'رزروهای امروز');
@@ -33,7 +35,7 @@ const error = ref(null);
 onMounted(async () => {
     try {
         const { data } = await axios.get('/admin/bookings/today-count');
-        count.value = data.count;
+        count.value = data.count ?? 0;
         previous.value = data.yesterday_count ?? null;
     } catch {
         error.value = 'دریافت آمار رزروها ممکن نشد.';
@@ -55,12 +57,6 @@ const trendDirection = computed(() => {
 
 // Per-trend styling. Palette: green = growth, orange = drop (soft, not
 // alarming — fewer bookings is a signal, not an error), slate = neutral.
-const cardClasses = computed(() => ({
-    up: 'border-green-200',
-    down: 'border-orange-200',
-    neutral: 'border-slate-200',
-})[trendDirection.value]);
-
 const countClasses = computed(() => ({
     up: 'text-green-700',
     down: 'text-orange-700',
@@ -81,19 +77,15 @@ const badgeIcon = computed(() => ({
 </script>
 
 <template>
-    <div class="rounded-lg border bg-white p-6" :class="cardClasses">
-        <div class="flex items-center justify-between">
-            <div class="text-sm font-medium text-slate-500">{{ title }}</div>
-
+    <DashboardCard :title="title" :loading="loading" :error="error">
+        <template #icon>
             <span class="inline-flex size-8 items-center justify-center rounded-full" :class="badgeClasses">
                 <component :is="badgeIcon" class="size-5" />
             </span>
-        </div>
+        </template>
 
-        <div v-if="loading" class="mt-2 text-3xl font-semibold text-slate-300">…</div>
-        <div v-else-if="error" class="mt-2 text-sm leading-relaxed text-slate-400">{{ error }}</div>
-        <template v-else>
-            <div class="mt-2 text-3xl font-semibold" :class="countClasses">{{ count }}</div>
+        <template #value>
+            <div class="text-3xl font-semibold" :class="countClasses">{{ count }}</div>
 
             <div v-if="delta !== null" class="mt-1 text-xs" :class="delta === 0 ? 'text-slate-400' : countClasses">
                 <span v-if="delta > 0">{{ delta }}+ نسبت به دیروز</span>
@@ -102,6 +94,6 @@ const badgeIcon = computed(() => ({
             </div>
         </template>
 
-        <div class="mt-1 text-xs text-slate-400">رزروهایی که امروز شروع می‌شوند</div>
-    </div>
+        رزروهایی که امروز شروع می‌شوند
+    </DashboardCard>
 </template>

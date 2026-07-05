@@ -4,12 +4,12 @@
  * Registered by CrmServiceProvider::widgets() (key
  * "crm-leads-today-count", area "crm").
  *
- * Fetches GET /admin/leads/today-count on mount; the response is
- * always { count: number }. No trend in this first version — see
- * BookingsTodayCard for the trend-enabled pattern.
+ * The props-only DashboardCard case: fetch GET /admin/leads/today-count
+ * ({ count }) on mount, hand title/value/loading/error to the base card.
  */
 import { computed, onMounted, ref } from 'vue';
 import axios from 'axios';
+import DashboardCard from '@/Core/Components/DashboardCard.vue';
 
 const props = defineProps({
     widget: Object, // the descriptor; optional so the widget renders bare
@@ -24,7 +24,7 @@ const error = ref(null);
 onMounted(async () => {
     try {
         const { data } = await axios.get('/admin/leads/today-count');
-        count.value = data.count;
+        count.value = data.count ?? 0;
     } catch {
         error.value = 'دریافت آمار سرنخ‌ها ممکن نشد.';
     } finally {
@@ -34,13 +34,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="rounded-lg border border-slate-200 bg-white p-6">
-        <div class="text-sm font-medium text-slate-500">{{ title }}</div>
-
-        <div v-if="loading" class="mt-2 text-3xl font-semibold text-slate-300">…</div>
-        <div v-else-if="error" class="mt-2 text-sm leading-relaxed text-slate-400">{{ error }}</div>
-        <div v-else class="mt-2 text-3xl font-semibold text-slate-900">{{ count }}</div>
-
-        <div class="mt-1 text-xs text-slate-400">سرنخ‌های ثبت‌شده در امروز</div>
-    </div>
+    <DashboardCard :title="title" icon="users" :value="count" :loading="loading" :error="error">
+        سرنخ‌های ثبت‌شده در امروز
+    </DashboardCard>
 </template>
