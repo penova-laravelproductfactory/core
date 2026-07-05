@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
+
+/*
+|--------------------------------------------------------------------------
+| Yekan Bakh (FaNum) — the Penova panel typeface
+|--------------------------------------------------------------------------
+| Served from public/fonts/Yekan-Bakh. The FaNum cut renders Persian
+| numerals, which is what the panel wants everywhere.
+*/
+@font-face {
+    font-family: 'Yekan Bakh';
+    src: url('/fonts/Yekan-Bakh/Yekan-Bakh-FaNum-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Yekan Bakh';
+    src: url('/fonts/Yekan-Bakh/Yekan-Bakh-FaNum-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Yekan Bakh';
+    src: url('/fonts/Yekan-Bakh/Yekan-Bakh-FaNum-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Design tokens (Tailwind 4 @theme)
+|--------------------------------------------------------------------------
+| --font-sans: Yekan Bakh becomes the global default (font-sans).
+| --font-yekan: explicit alias, usable as `font-yekan`.
+| --color-brand: the Penova red — generates bg-brand, text-brand,
+|   ring-brand, … `brand-hover` is the pressed/hover shade.
+*/
+@theme {
+    --font-sans: 'Yekan Bakh', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-yekan: 'Yekan Bakh', ui-sans-serif, system-ui, sans-serif;
+
+    --color-brand: #ff4431;
+    --color-brand-hover: #e63b2a;
+}
+
+/*
+| RTL baseline — the <html> element carries dir="rtl" (see
+| resources/views/app.blade.php). Flex/grid and logical utilities
+| (ms-*, me-*, start-*, end-*, text-start) follow it automatically, so
+| adding an LTR locale later only means switching that attribute.
+*/
+@layer base {
+    body {
+        text-align: start;
+    }
+}

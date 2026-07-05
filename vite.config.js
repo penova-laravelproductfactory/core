@@ -1,0 +1,30 @@
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
+import vue from '@vitejs/plugin-vue';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true,
+        }),
+        tailwindcss(),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
+    ],
+    resolve: {
+        alias: {
+            // "@" resolves to resources/js so Core and Modules import the same way:
+            //   import AdminLayout from '@/Core/Layouts/AdminLayout.vue'
+            //   import BookingPage from '@/Modules/Booking/Pages/Index.vue'
+            '@': '/resources/js',
+        },
+    },
+});
