@@ -1,0 +1,89 @@
+<script setup>
+/**
+ * Core\UI — Workspace quick actions. Five forward-facing shortcuts to the
+ * moves that actually get a product shipped (scaffold, brand, ship users,
+ * read docs). Not a nav duplicate: AdminLayout's sidebar covers the panel,
+ * this covers "what to do next" for someone who just installed Core.
+ */
+import { computed } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import {
+    PuzzlePieceIcon,
+    SwatchIcon,
+    RectangleStackIcon,
+    UserGroupIcon,
+    BookOpenIcon,
+    ArrowTopRightOnSquareIcon,
+    ChevronLeftIcon,
+} from '@heroicons/vue/24/outline';
+
+const props = defineProps({ links: { type: Object, required: true } });
+
+const cards = computed(() => [
+    {
+        key: 'first-module',
+        icon: PuzzlePieceIcon,
+        title: 'Create your first Module',
+        description: 'Scaffold a new business module with the generator.',
+        href: props.links.documentation,
+    },
+    {
+        key: 'branding',
+        icon: SwatchIcon,
+        title: 'Configure Branding',
+        description: 'Make the panel yours before shipping.',
+        href: '/admin/settings',
+    },
+    {
+        key: 'first-resource',
+        icon: RectangleStackIcon,
+        title: 'Create your first Resource',
+        description: 'Generate a CRUD resource in minutes.',
+        href: props.links.documentation,
+    },
+    {
+        key: 'users-roles',
+        icon: UserGroupIcon,
+        title: 'Manage Users & Roles',
+        description: 'Control who can access what.',
+        href: '/admin/users',
+    },
+    {
+        key: 'documentation',
+        icon: BookOpenIcon,
+        title: 'Read Documentation',
+        description: 'Everything you need to ship faster.',
+        href: props.links.documentation,
+    },
+].map((card) => ({ ...card, internal: card.href.startsWith('/') })));
+</script>
+
+<template>
+    <section>
+        <h2 class="text-lg font-bold text-slate-900">اقدامات سریع</h2>
+
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <component
+                :is="card.internal ? Link : 'a'"
+                v-for="card in cards"
+                :key="card.key"
+                :href="card.href"
+                v-bind="card.internal ? {} : { target: '_blank', rel: 'noopener' }"
+                class="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-lg hover:shadow-slate-200/60"
+            >
+                <div class="flex items-start justify-between">
+                    <span class="flex size-10 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                        <component :is="card.icon" class="size-5" />
+                    </span>
+                    <component
+                        :is="card.internal ? ChevronLeftIcon : ArrowTopRightOnSquareIcon"
+                        class="size-4 text-slate-300 transition-colors group-hover:text-brand"
+                    />
+                </div>
+
+                <h3 class="mt-4 text-sm font-bold text-slate-900">{{ card.title }}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-slate-500">{{ card.description }}</p>
+            </component>
+        </div>
+    </section>
+</template>
