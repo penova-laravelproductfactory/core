@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 |
 | Central configuration for the Penova product factory core. Products
-| built on top of Penova (Booking, CRM, CMS, ...) override these values
+| built on top of Penova (Store, CMS, ...) override these values
 | in their own .env / config, never by editing Core code.
 |
 */
@@ -54,8 +54,8 @@ return [
     |--------------------------------------------------------------------------
     | Authentication
     |--------------------------------------------------------------------------
-    | Registration is optional per product: a CRM for internal staff turns
-    | it off, a booking product turns it on.
+    | Registration is optional per product: an internal admin tool turns
+    | it off, a public storefront turns it on.
     */
     'auth' => [
         // Core Lite default: self-registration OFF. Products that need
@@ -94,13 +94,11 @@ return [
     | above that group. Modules are free to introduce new area keys (the
     | recommendation is one area per module, named after it); a key
     | missing from this map falls back to a label formatted from the key
-    | itself ("booking-extras" → "Booking Extras") on the frontend.
+    | itself ("store-extras" → "Store Extras") on the frontend.
     */
     'widgets' => [
         'areas' => [
             'core' => 'عمومی',
-            'booking' => 'رزروها',
-            'crm' => 'CRM',
             'store' => 'فروشگاه',
         ],
     ],
@@ -116,18 +114,10 @@ return [
     | dashboard widgets — this list is the ONLY place modules get wired in.
     |
     | 'modules' => [
-    |     App\Modules\Booking\BookingServiceProvider::class,
-    |     App\Modules\Crm\CrmServiceProvider::class,
+    |     App\Modules\Store\StoreServiceProvider::class,
     | ],
     */
     'modules' => [
-        // Demo business module: bookings CRUD + "bookings today" widget.
-        App\Modules\Booking\BookingServiceProvider::class,
-
-        // Light CRM module: leads + "leads today" widget (architecture
-        // stress test — third module through the same contract).
-        App\Modules\Crm\CrmServiceProvider::class,
-
         // Store module: product management (physical/virtual/downloadable)
         // + "active products" widget. Orders/cart come later.
         App\Modules\Store\StoreServiceProvider::class,

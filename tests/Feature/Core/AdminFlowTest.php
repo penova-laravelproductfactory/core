@@ -87,16 +87,16 @@ test('module menu items and widgets are permission-filtered', function () {
         'password' => config('penova.admin.password'),
     ]);
 
-    // Without booking.view: no sidebar item, no dashboard widget, 403.
+    // Without store.view: no sidebar item, no dashboard widget, 403.
     $this->get(route('penova.dashboard'))
         ->assertInertia(fn (Assert $page) => $page
-            ->where('menu', fn ($menu) => ! collect($menu)->contains('key', 'booking'))
-            ->where('dashboardWidgets', fn ($widgets) => ! collect($widgets)->contains('key', 'booking-today-count')));
+            ->where('menu', fn ($menu) => ! collect($menu)->contains('key', 'store'))
+            ->where('dashboardWidgets', fn ($widgets) => ! collect($widgets)->contains('key', 'store-active-products')));
 
-    $this->get('/admin/bookings')->assertForbidden();
+    $this->get('/admin/store/products')->assertForbidden();
 
     // Grant the module permissions the product-composition way.
-    $this->seed(\App\Modules\Booking\Database\Seeders\BookingPermissionsSeeder::class);
+    $this->seed(\App\Modules\Store\Database\Seeders\StorePermissionsSeeder::class);
 
     // Feature tests reuse one app instance, so the session guard still
     // holds the pre-seeding user model (with stale cached relations).
@@ -105,8 +105,8 @@ test('module menu items and widgets are permission-filtered', function () {
 
     $this->get(route('penova.dashboard'))
         ->assertInertia(fn (Assert $page) => $page
-            ->where('menu', fn ($menu) => collect($menu)->contains('key', 'booking'))
-            ->where('dashboardWidgets', fn ($widgets) => collect($widgets)->contains('key', 'booking-today-count')));
+            ->where('menu', fn ($menu) => collect($menu)->contains('key', 'store'))
+            ->where('dashboardWidgets', fn ($widgets) => collect($widgets)->contains('key', 'store-active-products')));
 
-    $this->get('/admin/bookings')->assertOk();
+    $this->get('/admin/store/products')->assertOk();
 });

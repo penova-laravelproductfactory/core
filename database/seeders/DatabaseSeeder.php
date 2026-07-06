@@ -17,8 +17,6 @@ class DatabaseSeeder extends Seeder
 
             // Module permission seeders (product-level composition — the
             // same place modules get wired in as config/penova.php).
-            \App\Modules\Booking\Database\Seeders\BookingPermissionsSeeder::class,
-            \App\Modules\Crm\Database\Seeders\CrmPermissionsSeeder::class,
             \App\Modules\Store\Database\Seeders\StorePermissionsSeeder::class,
         ]);
     }
