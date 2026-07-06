@@ -88,3 +88,27 @@ test('an invalid logo url is rejected and nothing is saved', function () {
 
     $this->assertDatabaseMissing('settings', ['key' => 'branding']);
 });
+
+test('saving branding alongside generic settings persists all of them', function () {
+    // Guards the update loop against a `validated()` regression: nested
+    // settings.branding.* rules would make validated() return only branding,
+    // silently dropping sibling keys. Iterating input('settings') keeps them.
+    $this->seed(\Database\Seeders\PenovaCoreSeeder::class);
+
+    $this->post('/login', [
+        'email' => config('penova.admin.email'),
+        'password' => config('penova.admin.password'),
+    ]);
+
+    $this->put(route('penova.settings.update'), [
+        'settings' => [
+            'site_name' => 'Acme Panel',
+            'contact_email' => 'hi@acme.test',
+            'branding' => ['name' => 'Acme Store'],
+        ],
+    ])->assertRedirect();
+
+    $this->assertDatabaseHas('settings', ['key' => 'site_name']);
+    $this->assertDatabaseHas('settings', ['key' => 'contact_email']);
+    $this->assertDatabaseHas('settings', ['key' => 'branding']);
+});
