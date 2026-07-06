@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * type is stored as a string; use typeEnum() for the type-safe view.
  * Kept as a manual mapping (not an enum cast) so unexpected legacy
  * values fail at the call site, not during model hydration — same
- * pattern as Booking::statusEnum().
+ * pattern as Order::statusEnum().
  */
 class Product extends Model
 {

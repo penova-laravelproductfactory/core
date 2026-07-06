@@ -55,7 +55,7 @@ const widgetsByArea = computed(() => {
 });
 
 // Heading for an area: the configured label, or a readable fallback
-// built from the key itself ("booking-extras" → "Booking Extras").
+// built from the key itself ("store-extras" → "Store Extras").
 function areaLabel(area) {
     if (props.widgetAreas?.[area]) {
         return props.widgetAreas[area];

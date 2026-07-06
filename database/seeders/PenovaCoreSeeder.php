@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Hash;
  * dev/test convenience only — override or rotate them anywhere real.
  *
  * Product Modules seed their OWN permissions in their own seeders
- * (e.g. BookingSeeder adds "booking.manage") — they never edit this file.
+ * (e.g. StorePermissionsSeeder adds "store.manage") — they never edit
+ * this file.
  */
 class PenovaCoreSeeder extends Seeder
 {

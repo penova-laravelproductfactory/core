@@ -1,7 +1,7 @@
 # Penova Core — Architecture
 
 Penova Core is a **Laravel product factory core**: the shared foundation
-that products (Booking, CRM, CMS, …) are built on, so the 90%-repeated
+that products (Store, CMS, …) are built on, so the 90%-repeated
 parts — auth, users, RBAC, settings, notifications, audit logs, UI
 components, data tables — are solved exactly once.
 
@@ -83,8 +83,8 @@ resources/js/
 ```
 
 Page resolution is convention-only: `Inertia::render('Core/Users/Index')`
-→ `Core/Pages/Users/Index.vue`; `Inertia::render('Modules/Booking/Calendar')`
-→ `Modules/Booking/Pages/Calendar.vue`. New modules need zero frontend
+→ `Core/Pages/Users/Index.vue`; `Inertia::render('Modules/Store/Products')`
+→ `Modules/Store/Pages/Products.vue`. New modules need zero frontend
 registration.
 
 Shared Inertia props (`HandleInertiaRequests`): `app.name`, `auth.user`
@@ -104,10 +104,12 @@ Module migrations live inside the module
 
 ## Adding a product module (the point of all this)
 
-1. `app/Modules/Booking/` — provider, `routes.php`, controllers, models,
+1. `app/Modules/<Name>/` — provider, `routes.php`, controllers, models,
    migrations, seeder for its permissions.
-2. `resources/js/Modules/Booking/Pages/…` — Vue pages using Core layouts
+2. `resources/js/Modules/<Name>/Pages/…` — Vue pages using Core layouts
    and components.
 3. Register the provider in `config/penova.php` → `modules`.
 
-Nothing in `app/Core` changes.
+`app/Modules/Store` is the reference implementation of this pattern —
+see `app/Modules/README.md` for its anatomy. Nothing in `app/Core`
+changes when a module is added.

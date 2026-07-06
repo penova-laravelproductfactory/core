@@ -4,7 +4,7 @@ namespace App\Modules\Store\Models;
 
 /**
  * Modules\Store — order lifecycle states (string-backed, same pattern
- * as ProductType/BookingStatus).
+ * as ProductType/PaymentStatus).
  *
  *   Pending   → placed by the customer, awaiting review
  *   Confirmed → accepted by the admin
