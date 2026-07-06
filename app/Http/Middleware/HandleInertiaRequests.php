@@ -63,8 +63,8 @@ class HandleInertiaRequests extends Middleware
                 ->all(),
 
             // Dashboard widget descriptors (Core + Modules, order-sorted,
-            // permission-filtered); Core/Pages/Dashboard/Index.vue renders
-            // the grid from these.
+            // permission-filtered). Kept dormant for Pro/future use — the
+            // Workspace panel root does not render these.
             'dashboardWidgets' => collect(app('penova.widgets'))
                 ->filter($allowed)
                 ->values()

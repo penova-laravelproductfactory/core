@@ -5,18 +5,13 @@
  * accidentally ships a client product looking like the vendor's demo.
  * Dismissal is a client-only preference (localStorage), not server state.
  */
-import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { SwatchIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { useDismiss } from '@/Core/composables/useDismiss';
 
 defineProps({ brandingConfigured: { type: Boolean, required: true } });
 
-const KEY = 'penova.dismiss.branding';
-const dismissed = ref(localStorage.getItem(KEY) === '1');
-const dismiss = () => {
-    localStorage.setItem(KEY, '1');
-    dismissed.value = true;
-};
+const { dismissed, dismiss } = useDismiss('penova.dismiss.branding');
 </script>
 
 <template>

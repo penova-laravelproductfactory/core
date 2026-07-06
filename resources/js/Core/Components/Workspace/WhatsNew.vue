@@ -4,19 +4,17 @@
  * (Task 4) — null-safe, since a fresh install may ship no changelog yet.
  * Dismissal is per-version so the next release re-surfaces automatically.
  */
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { SparklesIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { useDismiss } from '@/Core/composables/useDismiss';
 
 const props = defineProps({ whatsNew: { type: Object, default: null } });
 
-const key = computed(() => (props.whatsNew ? `penova.dismiss.whatsnew.${props.whatsNew.version}` : null));
-const dismissed = ref(key.value ? localStorage.getItem(key.value) === '1' : false);
-
-const dismiss = () => {
-    if (!key.value) return;
-    localStorage.setItem(key.value, '1');
-    dismissed.value = true;
-};
+// Only build the key / touch localStorage when there is a changelog entry to
+// dismiss — preserves the null-safe behaviour for fresh installs.
+const { dismissed, dismiss } = props.whatsNew
+    ? useDismiss(`penova.dismiss.whatsnew.${props.whatsNew.version}`)
+    : { dismissed: ref(false), dismiss: () => {} };
 </script>
 
 <template>
