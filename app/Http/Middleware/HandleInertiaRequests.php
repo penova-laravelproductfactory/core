@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Core\Settings\Services\SettingsManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
@@ -34,6 +35,20 @@ class HandleInertiaRequests extends Middleware
             'app' => [
                 'name' => config('penova.name'),
             ],
+
+            // Resolved White Label branding: runtime settings (admin-owned)
+            // layered over config/penova.php defaults, so every page — the
+            // admin shell and the public welcome page — always gets complete
+            // values, even before anything is saved. Empty DB values are
+            // dropped so a blank field falls back to the config default
+            // rather than overriding it with "".
+            'branding' => array_merge(
+                config('penova.branding'),
+                array_filter(
+                    app(SettingsManager::class)->get('branding', []),
+                    fn ($value) => $value !== null && $value !== '',
+                ),
+            ),
 
             // Sidebar items (Core + Modules, order-sorted, permission-
             // filtered). Route names are resolved to URLs here — at

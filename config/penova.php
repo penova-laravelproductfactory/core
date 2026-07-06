@@ -18,6 +18,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Branding / White Label
+    |--------------------------------------------------------------------------
+    | Deploy-time defaults for the White Label surface. Admins override these
+    | at runtime from Settings (stored under the single "branding" setting
+    | key); the resolved values are shared with every Inertia page. Empty
+    | runtime values fall back to these defaults.
+    */
+    'branding' => [
+        'name' => env('PENOVA_BRAND_NAME', 'Penova Core Lite'),
+        'logo_url' => env('PENOVA_BRAND_LOGO'),
+        'primary_color' => env('PENOVA_BRAND_PRIMARY_COLOR', '#01696f'),
+        'footer_text' => env('PENOVA_BRAND_FOOTER', 'Powered by Penova'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Admin Panel
     |--------------------------------------------------------------------------
     | All Core panel routes (users, roles, settings, logs, ...) are grouped
