@@ -16,6 +16,34 @@ return [
     // Human-readable product name, used in layouts and page titles.
     'name' => env('PENOVA_NAME', 'Penova'),
 
+    // Platform version, shown in the Workspace hero and What's New.
+    'version' => env('PENOVA_VERSION', '0.1.0'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Platform Links & Changelog
+    |--------------------------------------------------------------------------
+    | External links surfaced in the Workspace, and a latest-first changelog
+    | the "What's New" card reads (entries[0]). Future changelog automation
+    | reuses this shape.
+    */
+    'links' => [
+        'documentation' => env('PENOVA_DOCS_URL', 'https://github.com/penova-laravelproductfactory/core'),
+        'github' => env('PENOVA_GITHUB_URL', 'https://github.com/penova-laravelproductfactory/core'),
+        'release_notes' => env('PENOVA_RELEASES_URL', 'https://github.com/penova-laravelproductfactory/core/releases'),
+    ],
+
+    'changelog' => [
+        [
+            'version' => '0.1.0',
+            'date' => '2026-07-06',
+            'highlights' => [
+                'White Label / Branding in Settings',
+                'Onboarding Workspace (Control Center)',
+            ],
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Branding / White Label
