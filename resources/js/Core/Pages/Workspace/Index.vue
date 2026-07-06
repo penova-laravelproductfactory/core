@@ -14,6 +14,11 @@ import PageHeader from '@/Core/Components/PageHeader.vue';
 import WorkspaceHero from '@/Core/Components/Workspace/WorkspaceHero.vue';
 import SetupProgress from '@/Core/Components/Workspace/SetupProgress.vue';
 import QuickActions from '@/Core/Components/Workspace/QuickActions.vue';
+import InstalledModules from '@/Core/Components/Workspace/InstalledModules.vue';
+import PlatformSnapshot from '@/Core/Components/Workspace/PlatformSnapshot.vue';
+import PlatformHealth from '@/Core/Components/Workspace/PlatformHealth.vue';
+import BrandingReminder from '@/Core/Components/Workspace/BrandingReminder.vue';
+import WhatsNew from '@/Core/Components/Workspace/WhatsNew.vue';
 
 const platform = computed(() => usePage().props.platform);
 </script>
@@ -24,8 +29,17 @@ const platform = computed(() => usePage().props.platform);
 
         <div class="space-y-8">
             <WorkspaceHero :platform="platform" />
+            <BrandingReminder :branding-configured="platform.brandingConfigured" />
             <SetupProgress :onboarding="platform.onboarding" />
             <QuickActions :links="platform.links" />
+            <InstalledModules :modules="platform.modules" />
+
+            <div class="grid items-start gap-6 lg:grid-cols-2">
+                <PlatformSnapshot :snapshot="platform.snapshot" />
+                <PlatformHealth :health="platform.health" />
+            </div>
+
+            <WhatsNew :whats-new="platform.whatsNew" />
         </div>
     </AdminLayout>
 </template>
