@@ -72,11 +72,11 @@ const icons = {
 const iconFor = (item) => icons[item.icon] ?? Squares2X2Icon;
 
 // Active when the current URL is the item itself or nested under it.
-// The dashboard href is the panel root, so it needs an exact match.
+// The workspace href is the panel root, so it needs an exact match.
 const isActive = (item) => {
     const path = page.url.split('?')[0];
 
-    return item.key === 'dashboard' ? path === item.href : path.startsWith(item.href);
+    return item.key === 'workspace' ? path === item.href : path.startsWith(item.href);
 };
 </script>
 

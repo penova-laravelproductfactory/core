@@ -21,9 +21,9 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        // The panel dashboard (penova.dashboard) is the canonical landing
+        // The panel workspace (penova.workspace) is the canonical landing
         // zone; intended() still honours a deep link the guest originally
         // requested (e.g. /admin/users → login → back to /admin/users).
-        return redirect()->intended(route('penova.dashboard'));
+        return redirect()->intended(route('penova.workspace'));
     }
 }

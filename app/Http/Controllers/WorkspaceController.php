@@ -10,7 +10,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * Panel dashboard — application-level glue, not a Core module.
+ * Panel workspace — application-level glue, not a Core module.
  *
  * Core Lite ships live counters and two small feeds built ONLY from
  * existing Core data (users, roles, activity log, notifications).
@@ -18,11 +18,11 @@ use Inertia\Response;
  * grid; this controller then simply grows extra props (or gets replaced
  * per product).
  */
-class DashboardController extends Controller
+class WorkspaceController extends Controller
 {
     public function __invoke(Request $request): Response
     {
-        return Inertia::render('Core/Dashboard/Index', [
+        return Inertia::render('Core/Workspace/Index', [
             'stats' => [
                 'users_count' => User::count(),
                 'roles_count' => Role::count(),

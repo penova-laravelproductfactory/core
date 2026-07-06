@@ -26,7 +26,7 @@ test('the full admin experience works end to end', function () {
     $this->post('/login', [
         'email' => config('penova.admin.email'),
         'password' => config('penova.admin.password'),
-    ])->assertRedirect(route('penova.dashboard'));
+    ])->assertRedirect(route('penova.workspace'));
 
     $this->assertAuthenticated();
 
@@ -34,11 +34,11 @@ test('the full admin experience works end to end', function () {
     //    composition props shared by HandleInertiaRequests: the sidebar
     //    menu (Core items first — lowest order — plus module items) and
     //    the dashboard widget descriptors (Core + modules, order-sorted).
-    $this->get(route('penova.dashboard'))
+    $this->get(route('penova.workspace'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Core/Dashboard/Index')
-            ->where('menu.0.key', 'dashboard')
+            ->component('Core/Workspace/Index')
+            ->where('menu.0.key', 'workspace')
             ->has('menu.0.href')
             ->where('dashboardWidgets.0.key', 'core-stats')
             // Core widgets omit 'area'; the provider must normalise it.
@@ -74,7 +74,7 @@ test('the full admin experience works end to end', function () {
     // 7) Logout ends the session and the panel is guarded again.
     $this->post('/logout')->assertRedirect(route('login'));
     $this->assertGuest();
-    $this->get(route('penova.dashboard'))->assertRedirect(route('login'));
+    $this->get(route('penova.workspace'))->assertRedirect(route('login'));
 });
 
 test('module menu items and widgets are permission-filtered', function () {
@@ -88,7 +88,7 @@ test('module menu items and widgets are permission-filtered', function () {
     ]);
 
     // Without store.view: no sidebar item, no dashboard widget, 403.
-    $this->get(route('penova.dashboard'))
+    $this->get(route('penova.workspace'))
         ->assertInertia(fn (Assert $page) => $page
             ->where('menu', fn ($menu) => ! collect($menu)->contains('key', 'store'))
             ->where('dashboardWidgets', fn ($widgets) => ! collect($widgets)->contains('key', 'store-active-products')));
@@ -103,7 +103,7 @@ test('module menu items and widgets are permission-filtered', function () {
     // Real requests are fresh processes — simulate that.
     $this->app['auth']->forgetGuards();
 
-    $this->get(route('penova.dashboard'))
+    $this->get(route('penova.workspace'))
         ->assertInertia(fn (Assert $page) => $page
             ->where('menu', fn ($menu) => collect($menu)->contains('key', 'store'))
             ->where('dashboardWidgets', fn ($widgets) => collect($widgets)->contains('key', 'store-active-products')));

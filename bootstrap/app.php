@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // go straight to the panel. Without this, Laravel's default
         // looks for a route literally named "dashboard", misses, and
         // bounces through "/" instead.
-        $middleware->redirectUsersTo(fn () => route('penova.dashboard'));
+        $middleware->redirectUsersTo(fn () => route('penova.workspace'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

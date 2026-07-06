@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +23,7 @@ Route::middleware(config('penova.admin.middleware'))
     ->prefix(config('penova.admin.prefix'))
     ->as('penova.')
     ->group(function () {
-        Route::get('/', DashboardController::class)->name('dashboard');
+        Route::get('/', WorkspaceController::class)->name('workspace');
 
         require app_path('Core/Users/routes.php');
         require app_path('Core/Roles/routes.php');

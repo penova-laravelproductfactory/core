@@ -16,7 +16,7 @@ use Inertia\Response;
  * The full session flow:
  *   guest hits any /admin URL → redirected to /login
  *     (redirectGuestsTo in bootstrap/app.php)
- *   successful login → redirect()->intended(penova.dashboard),
+ *   successful login → redirect()->intended(penova.workspace),
  *     so a deep link like /admin/users survives the login round-trip
  *   logout → session invalidated + token regenerated → /login
  */
