@@ -84,10 +84,12 @@
         text-align: start;
     }
 
-    /* Form controls already show a single brand-colored focus ring
-       (focus:ring-brand, a box-shadow). Suppress the browser's native
-       outline so it doesn't double up with a second, slate-ish border. */
-    input:focus,
+    /* Text-entry controls already show a single brand-colored focus ring
+       (focus:ring-brand, a box-shadow); suppress the browser's native
+       outline so it doesn't double up with a second, slate-ish border.
+       Checkboxes/radios are excluded — they carry no ring, so the native
+       outline is their only focus indicator (keyboard a11y, WCAG 2.4.7). */
+    input:not([type='checkbox']):not([type='radio']):focus,
     textarea:focus,
     select:focus {
         outline: none;
