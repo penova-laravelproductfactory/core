@@ -49,12 +49,16 @@ final class PlatformHealth
 
     private function storage(): array
     {
+        $probe = 'penova-health-'.uniqid();
+
         try {
-            $probe = 'penova-health-'.uniqid();
-            Storage::disk('local')->put($probe, 'ok');
-            $ok = Storage::disk('local')->get($probe) === 'ok';
-            Storage::disk('local')->delete($probe);
-            $detail = $ok ? 'writable' : 'not writable';
+            try {
+                Storage::disk('local')->put($probe, 'ok');
+                $ok = Storage::disk('local')->get($probe) === 'ok';
+                $detail = $ok ? 'writable' : 'not writable';
+            } finally {
+                Storage::disk('local')->delete($probe);
+            }
         } catch (Throwable $e) {
             $ok = false;
             $detail = 'not writable';
@@ -65,12 +69,16 @@ final class PlatformHealth
 
     private function cache(): array
     {
+        $probe = 'penova-health-'.uniqid();
+
         try {
-            $probe = 'penova-health-'.uniqid();
-            Cache::put($probe, 'ok', 5);
-            $ok = Cache::get($probe) === 'ok';
-            Cache::forget($probe);
-            $detail = $ok ? config('cache.default') : 'unreachable';
+            try {
+                Cache::put($probe, 'ok', 5);
+                $ok = Cache::get($probe) === 'ok';
+                $detail = $ok ? (string) config('cache.default') : 'unreachable';
+            } finally {
+                Cache::forget($probe);
+            }
         } catch (Throwable $e) {
             $ok = false;
             $detail = 'unreachable';
