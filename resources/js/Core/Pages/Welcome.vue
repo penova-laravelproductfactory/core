@@ -11,6 +11,13 @@ import { Head, Link, usePage } from '@inertiajs/vue3';
 
 const user = computed(() => usePage().props.auth?.user);
 
+const branding = computed(() => usePage().props.branding ?? {});
+const logoUrl = computed(() => branding.value.logo_url || '/penova-logo.png');
+const brandName = computed(() => branding.value.name || 'Penova Core Lite');
+const footerText = computed(
+    () => branding.value.footer_text || 'Penova Core Lite · Laravel Product Factory Starter',
+);
+
 // Guest → login; signed-in → straight to the panel (no login round-trip).
 // Literal paths: the app has no Ziggy in JS.
 const panelHref = computed(() => (user.value ? '/admin' : '/login'));
@@ -68,15 +75,15 @@ const modules = [
             <!-- Hero -->
             <section class="text-center">
                 <img
-                    src="/penova-logo.png"
-                    alt="Penova"
+                    :src="logoUrl"
+                    :alt="brandName"
                     width="80"
                     height="80"
                     class="mx-auto h-20 w-20"
                 />
 
                 <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-sand-900 sm:text-5xl">
-                    Penova Core Lite
+                    {{ brandName }}
                 </h1>
                 <p class="mt-2 text-lg font-medium text-sand-600">Laravel Product Factory Starter</p>
 
@@ -164,7 +171,7 @@ const modules = [
 
             <!-- Footer -->
             <footer class="mt-20 border-t border-sand-200 pt-6 text-center">
-                <p class="text-xs text-sand-600">Penova Core Lite · Laravel Product Factory Starter</p>
+                <p class="text-xs text-sand-600">{{ footerText }}</p>
                 <div class="mt-2 flex items-center justify-center gap-4 text-sm">
                     <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent-hover hover:text-accent">GitHub ↗</a>
                     <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent-hover hover:text-accent">Documentation ↗</a>
