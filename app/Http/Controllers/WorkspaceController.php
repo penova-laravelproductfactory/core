@@ -2,57 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Core\Logs\Models\ActivityLog;
 use App\Core\Roles\Models\Role;
+use App\Core\Settings\Services\SettingsManager;
+use App\Core\Support\ManifestRegistry;
+use App\Core\Support\PlatformHealth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * Panel workspace — application-level glue, not a Core module.
+ * Panel workspace — the post-install Control Center at /admin.
  *
- * Core Lite ships live counters and two small feeds built ONLY from
- * existing Core data (users, roles, activity log, notifications).
- * Product modules / the Pro edition add their own widgets to the same
- * grid; this controller then simply grows extra props (or gets replaced
- * per product).
+ * Assembles one first-class `platform` view-model (status only; navigation
+ * stays the separate shared `menu` prop). Onboarding, installed modules,
+ * health and What's New drive time-to-first-product — not statistics.
  */
 class WorkspaceController extends Controller
 {
-    public function __invoke(Request $request): Response
-    {
+    public function __invoke(
+        Request $request,
+        SettingsManager $settings,
+        ManifestRegistry $registry,
+        PlatformHealth $health,
+    ): Response {
+        $links = config('penova.links');
+        $brandingConfigured = ! empty($settings->get('branding'));
+        $hasModule = ! $registry->isEmpty();
+
         return Inertia::render('Core/Workspace/Index', [
-            'stats' => [
-                'users_count' => User::count(),
-                'roles_count' => Role::count(),
+            'platform' => [
+                'version' => config('penova.version'),
+                'links' => $links,
+
+                'onboarding' => [
+                    'steps' => [
+                        ['key' => 'core-installed', 'label' => 'Penova Core installed', 'done' => true],
+                        ['key' => 'authentication', 'label' => 'Authentication ready', 'done' => true],
+                        ['key' => 'admin-panel', 'label' => 'Admin panel ready', 'done' => true],
+                        ['key' => 'branding', 'label' => 'Configure branding', 'done' => $brandingConfigured,
+                            'cta' => ['label' => 'Configure', 'href' => '/admin/settings']],
+                        ['key' => 'first-module', 'label' => 'Install your first module', 'done' => $hasModule,
+                            'cta' => ['label' => 'Browse docs', 'href' => $links['documentation']]],
+                    ],
+                    'guidance' => [
+                        ['key' => 'first-resource', 'label' => 'Create your first Resource',
+                            'description' => 'Scaffold a CRUD resource with the module generator.',
+                            'cta' => ['label' => 'Guide', 'href' => $links['documentation']]],
+                        ['key' => 'first-product', 'label' => 'Build your first Product',
+                            'description' => 'Compose modules into a shippable Laravel product.',
+                            'cta' => ['label' => 'Guide', 'href' => $links['documentation']]],
+                    ],
+                ],
+
+                'modules' => $registry->all(),
+
+                'snapshot' => [
+                    'users' => User::count(),
+                    'roles' => Role::count(),
+                    'unread' => $request->user()->unreadNotifications()->count(),
+                ],
+
+                'health' => $health->check(),
+
+                'brandingConfigured' => $brandingConfigured,
+
+                'whatsNew' => config('penova.changelog')[0] ?? null,
             ],
-
-            // Latest 3 audit entries (Core\Logs). Kept deliberately simple
-            // for Lite — the full filterable trail lives at /admin/logs.
-            'recentActivity' => ActivityLog::latest('created_at')
-                ->take(3)
-                ->get()
-                ->map(fn (ActivityLog $log) => [
-                    'id' => $log->id,
-                    'label' => $log->action,
-                    'time' => $log->created_at->format('Y-m-d H:i'),
-                ]),
-
-            // Latest 3 database notifications of the signed-in user.
-            // Convention: notification classes put a human line in
-            // data.message (fallbacks keep odd payloads presentable).
-            'recentNotifications' => $request->user()
-                ->notifications()
-                ->take(3)
-                ->get()
-                ->map(fn ($notification) => [
-                    'id' => $notification->id,
-                    'label' => $notification->data['message']
-                        ?? $notification->data['title']
-                        ?? class_basename($notification->type),
-                    'time' => $notification->created_at->format('Y-m-d H:i'),
-                ]),
         ]);
     }
 }
