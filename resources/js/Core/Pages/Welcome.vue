@@ -81,7 +81,7 @@ const modules = [
                     تنظیمات، نوتیفیکیشن‌ها و یک پنل ادمین تمیز که آمادهٔ نصب ماژول فروشگاه، پیامک و
                     پرداخت است.
                 </p>
-                <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-sand-500" dir="ltr">
+                <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-sand-600" dir="ltr">
                     A production-ready core for your Laravel products — auth, users, roles, settings,
                     notifications and a clean admin panel, ready to host your Store, SMS and Payment modules.
                 </p>
@@ -113,7 +113,7 @@ const modules = [
             <!-- What you get -->
             <section class="mt-20">
                 <h2 class="text-center text-2xl font-bold text-sand-900" dir="ltr">What you get with Penova Core Lite</h2>
-                <p class="mt-1 text-center text-sm text-sand-500">Core Lite چه چیزهایی برایت آماده کرده است؟</p>
+                <p class="mt-1 text-center text-sm text-sand-600">Core Lite چه چیزهایی برایت آماده کرده است؟</p>
 
                 <div class="mt-8 grid gap-4 sm:grid-cols-2">
                     <article
@@ -126,7 +126,7 @@ const modules = [
                             {{ feature.title }}
                         </h3>
                         <p class="mt-2 text-sm leading-relaxed text-sand-600">{{ feature.fa }}</p>
-                        <p class="mt-1 text-xs leading-relaxed text-sand-500" dir="ltr">{{ feature.en }}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-sand-600" dir="ltr">{{ feature.en }}</p>
                     </article>
                 </div>
             </section>
@@ -134,7 +134,7 @@ const modules = [
             <!-- Modules -->
             <section class="mt-20">
                 <h2 class="text-center text-2xl font-bold text-sand-900" dir="ltr">Plug-in modules when you're ready</h2>
-                <p class="mt-1 text-center text-sm text-sand-500">وقتی آمادهٔ محصول شدی، ماژول‌ها را اضافه کن</p>
+                <p class="mt-1 text-center text-sm text-sand-600">وقتی آمادهٔ محصول شدی، ماژول‌ها را اضافه کن</p>
 
                 <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-sand-600">
                     Penova Core Lite به‌صورت یک هستهٔ رایگان می‌آید. هر زمان به محصول واقعی نیاز داشتی،
@@ -153,17 +153,17 @@ const modules = [
                             <span class="rounded bg-sand-100 px-2 py-0.5 text-xs font-medium text-sand-600">به‌زودی</span>
                         </div>
                         <p class="mt-2 text-sm leading-relaxed text-sand-600">{{ mod.fa }}</p>
-                        <p class="mt-1 text-xs leading-relaxed text-sand-500" dir="ltr">{{ mod.en }}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-sand-600" dir="ltr">{{ mod.en }}</p>
                     </article>
                 </div>
             </section>
 
             <!-- Footer -->
             <footer class="mt-20 border-t border-sand-200 pt-6 text-center">
-                <p class="text-xs text-sand-500">Penova Core Lite · Laravel Product Factory Starter</p>
+                <p class="text-xs text-sand-600">Penova Core Lite · Laravel Product Factory Starter</p>
                 <div class="mt-2 flex items-center justify-center gap-4 text-sm">
-                    <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent hover:text-accent-hover">GitHub ↗</a>
-                    <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent hover:text-accent-hover">Documentation ↗</a>
+                    <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent-hover hover:text-accent">GitHub ↗</a>
+                    <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent-hover hover:text-accent">Documentation ↗</a>
                 </div>
             </footer>
 
