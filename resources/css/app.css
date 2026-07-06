@@ -83,4 +83,13 @@
     body {
         text-align: start;
     }
+
+    /* Form controls already show a single brand-colored focus ring
+       (focus:ring-brand, a box-shadow). Suppress the browser's native
+       outline so it doesn't double up with a second, slate-ish border. */
+    input:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+    }
 }
