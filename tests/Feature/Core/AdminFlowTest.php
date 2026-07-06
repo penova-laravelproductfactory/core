@@ -30,7 +30,7 @@ test('the full admin experience works end to end', function () {
 
     $this->assertAuthenticated();
 
-    // 3) The dashboard renders its Inertia page, with the panel
+    // 3) The workspace renders its Inertia page, with the panel
     //    composition props shared by HandleInertiaRequests: the sidebar
     //    menu (Core items first — lowest order — plus module items) and
     //    the dashboard widget descriptors (Core + modules, order-sorted).

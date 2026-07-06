@@ -36,7 +36,7 @@ class PenovaCoreServiceProvider extends ServiceProvider
     private const CORE_MENU = [
         // 'permission' mirrors each route's middleware guard: items the
         // user could only 403 on are filtered out of the sidebar
-        // (per-request, in HandleInertiaRequests). Dashboard and
+        // (per-request, in HandleInertiaRequests). Workspace and
         // notifications are open to every authenticated panel user.
         ['key' => 'workspace', 'label' => 'میزکار', 'route' => 'penova.workspace', 'icon' => 'home', 'order' => 10],
         ['key' => 'users', 'label' => 'کاربران', 'route' => 'penova.users.index', 'icon' => 'users', 'order' => 20, 'permission' => 'users.manage'],
