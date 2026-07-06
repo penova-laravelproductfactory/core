@@ -45,6 +45,7 @@ const page = usePage();
 
 const user = computed(() => page.props.auth.user);
 const unread = computed(() => page.props.unreadNotifications);
+const branding = computed(() => page.props.branding ?? {});
 
 const userMenuOpen = ref(false);
 
@@ -85,9 +86,19 @@ const isActive = (item) => {
     <div class="flex min-h-screen bg-slate-50">
         <!-- Sidebar (renders on the right in RTL) -->
         <aside class="flex w-64 flex-col bg-slate-900 text-slate-100">
-            <div class="flex h-16 flex-col justify-center px-6">
-                <div class="text-lg font-bold tracking-wide">Penova Core</div>
-                <div class="text-xs text-slate-400">هستهٔ پنل محصولات شما</div>
+            <div class="flex h-16 items-center gap-2 px-6">
+                <img
+                    v-if="branding.logo_url"
+                    :src="branding.logo_url"
+                    alt=""
+                    class="h-8 w-8 shrink-0 rounded"
+                />
+                <div class="min-w-0">
+                    <div class="truncate text-lg font-bold tracking-wide">
+                        {{ branding.name || 'Penova Core' }}
+                    </div>
+                    <div class="text-xs text-slate-400">هستهٔ پنل محصولات شما</div>
+                </div>
             </div>
 
             <nav class="flex-1 space-y-2 px-3 py-5">
@@ -157,6 +168,13 @@ const isActive = (item) => {
             <main class="flex-1 p-6">
                 <slot />
             </main>
+
+            <footer
+                v-if="branding.footer_text"
+                class="border-t border-slate-200 bg-white px-6 py-3 text-center text-xs text-slate-400"
+            >
+                {{ branding.footer_text }}
+            </footer>
         </div>
 
         <Toast />
