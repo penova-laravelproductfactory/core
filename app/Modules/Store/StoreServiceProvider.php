@@ -68,4 +68,15 @@ class StoreServiceProvider extends ServiceProvider implements PenovaModule
             'store.manage',
         ];
     }
+
+    /** @see PenovaModule — the module's public manifest. */
+    public static function manifest(): array
+    {
+        return [
+            'key' => 'store',
+            'name' => 'Store',
+            'description' => 'Products, orders and checkout — turn Core into a real store.',
+            'version' => '0.1.0',
+        ];
+    }
 }

@@ -86,4 +86,13 @@ interface PenovaModule
      * @return list<string>
      */
     public static function permissions(): array;
+
+    /**
+     * The module's public manifest — its canonical identity. Consumed by the
+     * Workspace "Installed Modules" list today and by the future Marketplace,
+     * CLI, and Module Manager. Stable, JSON-serialisable shape.
+     *
+     * @return array{key: string, name: string, description: string, version: string}
+     */
+    public static function manifest(): array;
 }

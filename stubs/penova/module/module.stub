@@ -93,4 +93,15 @@ class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
             '{{ module }}.manage',
         ];
     }
+
+    /** @see PenovaModule — the module's public manifest. */
+    public static function manifest(): array
+    {
+        return [
+            'key' => '{{ module }}',
+            'name' => '{{ name }}',
+            'description' => 'TODO: describe the {{ name }} module.',
+            'version' => '0.1.0',
+        ];
+    }
 }

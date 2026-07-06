@@ -71,6 +71,9 @@ class PenovaCoreServiceProvider extends ServiceProvider
         // Core singletons — the abstractions Modules program against.
         $this->app->singleton(SettingsManager::class);
 
+        // Installed-module manifest registry (Workspace + future tooling).
+        $this->app->singleton(Support\ManifestRegistry::class);
+
         // Boot product modules. Core iterates class-strings only; it has
         // no compile-time dependency on anything in app/Modules.
         foreach (config('penova.modules', []) as $provider) {
