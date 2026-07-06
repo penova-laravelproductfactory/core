@@ -18,9 +18,9 @@ const branding = props.settings.branding ?? {};
 
 const form = useForm({
     settings: {
+        ...props.settings,
         site_name: props.settings.site_name ?? '',
         contact_email: props.settings.contact_email ?? '',
-        ...props.settings,
         branding: {
             name: branding.name ?? '',
             logo_url: branding.logo_url ?? '',
