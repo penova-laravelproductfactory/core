@@ -8,6 +8,10 @@
 
         <title inertia>{{ config('penova.name') }}</title>
 
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" href="/penova-logo.png" />
+        <link rel="apple-touch-icon" href="/penova-logo.png" />
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @inertiaHead
     </head>

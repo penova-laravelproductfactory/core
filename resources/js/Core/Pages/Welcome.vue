@@ -67,9 +67,13 @@ const modules = [
 
             <!-- Hero -->
             <section class="text-center">
-                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-xl font-extrabold text-white">
-                    P
-                </div>
+                <img
+                    src="/penova-logo.png"
+                    alt="Penova"
+                    width="80"
+                    height="80"
+                    class="mx-auto h-20 w-20"
+                />
 
                 <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-sand-900 sm:text-5xl">
                     Penova Core Lite
