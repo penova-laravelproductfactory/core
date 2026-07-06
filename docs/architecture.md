@@ -83,8 +83,8 @@ resources/js/
 ```
 
 Page resolution is convention-only: `Inertia::render('Core/Users/Index')`
-→ `Core/Pages/Users/Index.vue`; `Inertia::render('Modules/Store/Products')`
-→ `Modules/Store/Pages/Products.vue`. New modules need zero frontend
+→ `Core/Pages/Users/Index.vue`; `Inertia::render('Modules/Store/Products/Index')`
+→ `Modules/Store/Pages/Products/Index.vue`. New modules need zero frontend
 registration.
 
 Shared Inertia props (`HandleInertiaRequests`): `app.name`, `auth.user`

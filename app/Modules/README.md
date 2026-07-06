@@ -35,8 +35,8 @@ Frontend lives in `resources/js/Modules/Store/`:
 
 ```
 resources/js/Modules/Store/
-  Pages/       ← Inertia pages: Inertia::render('Modules/Store/Products')
-                 resolves to Pages/Products.vue (the resolver adds "Pages/")
+  Pages/       ← Inertia pages: Inertia::render('Modules/Store/Products/Index')
+                 resolves to Pages/Products/Index.vue (the resolver adds "Pages/")
   Widgets/     ← dashboard widgets referenced by widget descriptors
   Components/  ← module-private components (e.g. a shared form)
 ```

@@ -11,7 +11,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
  *   Core/...            → resources/js/Core/Pages/...   (shared panel)
  *   Modules/<Name>/...  → resources/js/Modules/<Name>/Pages/... (products)
  *
- * A controller rendering Inertia::render('Modules/Store/Products')
+ * A controller rendering Inertia::render('Modules/Store/Products/Index')
  * therefore needs no frontend registration — drop the .vue file in the
  * module's Pages folder and it resolves.
  */
