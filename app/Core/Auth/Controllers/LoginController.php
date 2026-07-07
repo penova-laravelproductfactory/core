@@ -9,8 +9,8 @@ use Illuminate\Http\RedirectResponse;
 /**
  * Core\Auth — handles a login attempt (POST /login).
  *
- * Pro version hooks: two-factor challenge after authenticate(),
- * email-verification gate, and single-session enforcement all slot in
+ * Extension seams (D-017): a two-factor challenge after authenticate(),
+ * an email-verification gate, and single-session enforcement all slot in
  * here without touching callers.
  */
 class LoginController extends Controller

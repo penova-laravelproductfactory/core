@@ -12,8 +12,10 @@ use App\Core\Users\Models\User;
  * only admins manage users — but products can grant it to other roles
  * without code changes.
  *
- * Pro version hooks: per-tenant scoping, "manager can edit own team",
- * read-only auditor role (split users.view from users.manage).
+ * Advanced authorization stays out of Core (a Module or a replacement
+ * contract, per D-015): per-tenant scoping, "manager can edit own team".
+ * A read-only auditor role (split users.view from users.manage) is plain
+ * RBAC and could live in Core.
  */
 class UserPolicy
 {

@@ -26,8 +26,8 @@ use Inertia\Response;
  * Product Modules never manage users themselves; they reference users
  * via relations and rely on this module for administration.
  *
- * Pro version hooks: user impersonation, bulk actions, CSV export,
- * per-column DataTable filters, soft-deletes with a trash view.
+ * Future additions slot in here: user impersonation, bulk actions, CSV
+ * export, per-column DataTable filters, soft-deletes with a trash view.
  */
 class ListUsersController extends Controller
 {

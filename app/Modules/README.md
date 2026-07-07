@@ -107,7 +107,7 @@ public static function menu(): array
 ### `widgets()` — dashboard widgets
 
 Returns widget **descriptors**; the dashboard grid renders them sorted by
-`order`. Core's own widgets use orders 10–30 (and 900 for the Pro pitch),
+`order`. Core's own widgets use orders 10–30 (and 900 for the Modules card),
 so modules land in the middle with `order >= 100`.
 
 ```php
