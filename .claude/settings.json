@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"=== CLAUDE.md — repository constitution (authoritative, current version — re-read before acting) ===\"; echo; cat CLAUDE.md; echo; echo \"=== Enforcement: before changing code, docs, tests, config, naming, or public behavior, read the governing strategy documents referenced above (shared strategy/ directory) and state which govern your decision. The hook enforces freshness; CLAUDE.md remains the constitution. ===\"",
+            "statusMessage": "Loading CLAUDE.md governance"
+          }
+        ]
+      }
+    ]
+  }
+}
