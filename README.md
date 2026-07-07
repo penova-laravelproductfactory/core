@@ -87,7 +87,7 @@ php artisan serve
 
 بعد از ورود، پنل مدیریت را می‌بینید با:
 
-- Dashboard  
+- Workspace  
 - Users  
 - Roles  
 - Settings (شامل White Label / Branding)  
@@ -120,7 +120,7 @@ Core از ابتدا برای نصب ماژول‌های بیزنسی آماده
 - یک ServiceProvider دارد که در config/penova.php (آرایه modules) ثبت می‌شود.  
 - می‌تواند روت‌های admin و public خود را ثبت کند.  
 - می‌تواند منوهای Admin را توسعه دهد.  
-- می‌تواند ویجت‌های Dashboard اضافه کند.  
+- می‌تواند ویجت‌های Workspace اضافه کند.  
 - می‌تواند به Settings و Notifications متصل شود.
 
 نمونه نصب ServiceProvider یک ماژول:
@@ -159,7 +159,7 @@ Core از ابتدا برای نصب ماژول‌های بیزنسی آماده
 - resources/js/Core  
   - Layouts: AdminLayout.vue، GuestLayout.vue  
   - Components: Button، TextInput، Modal، Toast، Pagination، DataTable  
-  - Pages: Auth (Login، Register، Reset)، Dashboard، Users، Roles، Settings، Logs، Notifications  
+  - Pages: Auth (Login، Register، Reset)، Workspace، Users، Roles، Settings، Logs، Notifications  
   - Welcome.vue: صفحهٔ خوش‌آمد Core در روت `/`
 
 Pages مربوط به Store / SMS / Payment در resources/js/Modules/* قرار خواهند گرفت، نه در Core.
