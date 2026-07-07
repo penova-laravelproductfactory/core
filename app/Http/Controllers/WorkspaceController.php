@@ -12,7 +12,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * Panel workspace — the post-install Control Center at /admin.
+ * The Workspace — the post-install onboarding screen at /admin.
  *
  * Assembles one first-class `platform` view-model (status only; navigation
  * stays the separate shared `menu` prop). Onboarding, installed modules,

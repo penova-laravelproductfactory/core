@@ -39,7 +39,7 @@ return [
             'date' => '2026-07-06',
             'highlights' => [
                 'White Label / Branding in Settings',
-                'Onboarding Workspace (Control Center)',
+                'Onboarding Workspace',
             ],
         ],
     ],

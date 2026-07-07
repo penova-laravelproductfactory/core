@@ -1,6 +1,6 @@
 <script setup>
 /**
- * Core Workspace — the post-install Control Center at /admin. Composed of
+ * Core Workspace — the post-install onboarding screen at /admin. Composed of
  * focused section components driven by the single `platform` prop. Navigation
  * stays in AdminLayout's shared `menu` prop, not here.
  *
