@@ -31,7 +31,7 @@ test('workspace renders the platform view-model', function () {
             ->has('platform.onboarding.steps')
             ->has('platform.onboarding.guidance')
             ->has('platform.health', 5)
-            ->has('platform.snapshot')
+            ->has('platform.overview')
             ->has('platform.whatsNew'));
 });
 
@@ -81,11 +81,11 @@ test('the branding onboarding step flips to done after branding is saved', funct
             ->where('platform.onboarding.steps', fn ($steps) => $brandingStep($steps) === true));
 });
 
-test('platform snapshot reflects seeded counts', function () {
+test('platform overview reflects seeded counts', function () {
     loginWorkspaceAdmin();
 
     $this->get(route('penova.workspace'))
         ->assertInertia(fn (Assert $page) => $page
-            ->where('platform.snapshot.users', User::count())
-            ->where('platform.snapshot.roles', Role::count()));
+            ->where('platform.overview.users', User::count())
+            ->where('platform.overview.roles', Role::count()));
 });

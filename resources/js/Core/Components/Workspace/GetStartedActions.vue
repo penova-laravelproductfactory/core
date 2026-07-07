@@ -1,6 +1,6 @@
 <script setup>
 /**
- * Core\UI — Workspace quick actions. Five forward-facing shortcuts to the
+ * Core\UI — Workspace get-started actions. Five forward-facing shortcuts to the
  * moves that actually get a product shipped (scaffold, brand, ship users,
  * read docs). Not a nav duplicate: AdminLayout's sidebar covers the panel,
  * this covers "what to do next" for someone who just installed Core.
@@ -60,7 +60,7 @@ const cards = computed(() => [
 
 <template>
     <section>
-        <h2 class="text-lg font-bold text-slate-900">اقدامات سریع</h2>
+        <h2 class="text-lg font-bold text-slate-900">برای شروع</h2>
 
         <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <component

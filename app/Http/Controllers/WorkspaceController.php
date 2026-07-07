@@ -57,7 +57,7 @@ class WorkspaceController extends Controller
 
                 'modules' => $registry->all(),
 
-                'snapshot' => [
+                'overview' => [
                     'users' => User::count(),
                     'roles' => Role::count(),
                     'unread' => $request->user()->unreadNotifications()->count(),
