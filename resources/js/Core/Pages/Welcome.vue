@@ -1,7 +1,7 @@
 <script setup>
 /**
  * Core — public landing page at "/". Introduces Penova Core as a
- * "Laravel Product Factory Starter". Shown to everyone; the primary CTA
+ * "Laravel Product Factory". Shown to everyone; the primary CTA
  * adapts to auth state (panel when signed in, login otherwise). Uses the
  * Penova brand palette (@theme: brand / accent / sand). Self-contained
  * (own full-screen shell, not GuestLayout).
@@ -85,7 +85,7 @@ const modules = [
                 <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-sand-900 sm:text-5xl">
                     {{ brandName }}
                 </h1>
-                <p class="mt-2 text-lg font-medium text-sand-600">Laravel Product Factory Starter</p>
+                <p class="mt-2 text-lg font-medium text-sand-600">Laravel Product Factory</p>
 
                 <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-sand-700">
                     یک هستهٔ آماده برای محصولات لاراولی شما؛ با احراز هویت، مدیریت کاربران و نقش‌ها،
