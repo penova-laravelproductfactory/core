@@ -127,7 +127,9 @@ return [
     'widgets' => [
         'areas' => [
             'core' => 'عمومی',
-            'store' => 'فروشگاه',
+            // Module area headings are NOT declared here — Core carries no
+            // Module-specific vocabulary. A key missing from this map falls
+            // back to a label formatted from the key on the frontend.
         ],
     ],
 
