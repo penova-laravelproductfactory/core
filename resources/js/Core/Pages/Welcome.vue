@@ -1,6 +1,6 @@
 <script setup>
 /**
- * Core — public landing page at "/". Introduces Penova Core Lite as a
+ * Core — public landing page at "/". Introduces Penova Core as a
  * "Laravel Product Factory Starter". Shown to everyone; the primary CTA
  * adapts to auth state (panel when signed in, login otherwise). Uses the
  * Penova brand palette (@theme: brand / accent / sand). Self-contained
@@ -13,9 +13,9 @@ const user = computed(() => usePage().props.auth?.user);
 
 const branding = computed(() => usePage().props.branding ?? {});
 const logoUrl = computed(() => branding.value.logo_url || '/penova-logo.png');
-const brandName = computed(() => branding.value.name || 'Penova Core Lite');
+const brandName = computed(() => branding.value.name || 'Penova Core');
 const footerText = computed(
-    () => branding.value.footer_text || 'Penova Core Lite · Laravel Product Factory Starter',
+    () => branding.value.footer_text || 'Penova Core · Laravel Product Factory',
 );
 
 // Guest → login; signed-in → straight to the panel (no login round-trip).
@@ -50,8 +50,8 @@ const features = [
 const modules = [
     {
         title: 'Store Module',
-        fa: 'Core Lite را به یک فروشگاه واقعی تبدیل می‌کند: محصولات، سبد خرید، checkout و سفارش‌ها.',
-        en: 'Turn Core Lite into a real store: products, cart, checkout and orders.',
+        fa: 'Core را به یک فروشگاه واقعی تبدیل می‌کند: محصولات، سبد خرید، checkout و سفارش‌ها.',
+        en: 'Turn Core into a real store: products, cart, checkout and orders.',
     },
     {
         title: 'SMS Module',
@@ -67,7 +67,7 @@ const modules = [
 </script>
 
 <template>
-    <Head title="Penova Core Lite" />
+    <Head title="Penova Core" />
 
     <div class="min-h-screen bg-sand-50 text-sand-700">
         <div class="mx-auto max-w-5xl px-6 py-16 sm:py-24">
@@ -123,8 +123,8 @@ const modules = [
 
             <!-- What you get -->
             <section class="mt-20">
-                <h2 class="text-center text-2xl font-bold text-sand-900" dir="ltr">What you get with Penova Core Lite</h2>
-                <p class="mt-1 text-center text-sm text-sand-600">Core Lite چه چیزهایی برایت آماده کرده است؟</p>
+                <h2 class="text-center text-2xl font-bold text-sand-900" dir="ltr">What you get with Penova Core</h2>
+                <p class="mt-1 text-center text-sm text-sand-600">Core چه چیزهایی برایت آماده کرده است؟</p>
 
                 <div class="mt-8 grid gap-4 sm:grid-cols-2">
                     <article
@@ -148,7 +148,7 @@ const modules = [
                 <p class="mt-1 text-center text-sm text-sand-600">وقتی آمادهٔ محصول شدی، ماژول‌ها را اضافه کن</p>
 
                 <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-sand-600">
-                    Penova Core Lite به‌صورت یک هستهٔ رایگان می‌آید. هر زمان به محصول واقعی نیاز داشتی،
+                    Penova Core به‌صورت یک هستهٔ رایگان می‌آید. هر زمان به محصول واقعی نیاز داشتی،
                     ماژول‌هایی مثل فروشگاه، پیامک و پرداخت را روی همین هسته اضافه می‌کنی، بدون این‌که
                     دوباره همه‌چیز را بنویسی.
                 </p>

@@ -9,7 +9,7 @@
  *   Modules/<Name>/Widgets/X → resources/js/Modules/<Name>/Widgets/X.vue
  *
  * Every widget component receives the full descriptor as the `widget`
- * prop; Lite widgets pull their data from the shared/page Inertia props.
+ * prop; widgets pull their data from the shared/page Inertia props.
  */
 import { computed, defineAsyncComponent } from 'vue';
 

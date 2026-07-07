@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 
 /**
  * Modules\Store — seeds the module's permissions and grants them to
- * the Core admin role (Lite keeps it simple: every admin gets full
+ * the Core admin role (kept simple for now: every admin gets full
  * Store access). Called by DatabaseSeeder after PenovaCoreSeeder.
  * Idempotent.
  */

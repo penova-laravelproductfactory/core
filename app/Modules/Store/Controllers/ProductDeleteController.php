@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 
 /**
  * Modules\Store — deletes a product (store.products.destroy).
- * Hard delete for Lite; switch the model to SoftDeletes when order
+ * Hard delete for now; switch the model to SoftDeletes when order
  * history needs to reference removed products.
  */
 class ProductDeleteController extends Controller

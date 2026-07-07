@@ -11,7 +11,7 @@ class ExampleTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * The root URL renders the Penova Core Lite welcome page (shown to
+     * The root URL renders the Penova Core welcome page (shown to
      * everyone; the page itself adapts its CTA to auth state).
      *
      * Needs a migrated DB: the shared `branding` prop (HandleInertiaRequests)

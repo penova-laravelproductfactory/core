@@ -54,7 +54,7 @@ return [
     | runtime values fall back to these defaults.
     */
     'branding' => [
-        'name' => env('PENOVA_BRAND_NAME', 'Penova Core Lite'),
+        'name' => env('PENOVA_BRAND_NAME', 'Penova Core'),
         'logo_url' => env('PENOVA_BRAND_LOGO'),
         'primary_color' => env('PENOVA_BRAND_PRIMARY_COLOR', '#01696f'),
         'footer_text' => env('PENOVA_BRAND_FOOTER', 'Powered by Penova'),
@@ -86,7 +86,7 @@ return [
     | it off, a public storefront turns it on.
     */
     'auth' => [
-        // Core Lite default: self-registration OFF. Products that need
+        // Core default: self-registration OFF. Products that need
         // public signup set PENOVA_REGISTRATION=true in their .env.
         'registration' => (bool) env('PENOVA_REGISTRATION', false),
     ],

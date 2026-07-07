@@ -2,13 +2,13 @@
 
 /*
 |--------------------------------------------------------------------------
-| Core Lite — the "admin experience" system test
+| Core — the "admin experience" system test
 |--------------------------------------------------------------------------
-| This is the end-to-end contract of Penova Core Lite and must ALWAYS be
+| This is the end-to-end contract of Penova Core and must ALWAYS be
 | green: a fresh database is migrated and seeded, the seeded admin logs
 | in, sees the dashboard, opens Users, creates a user, sees them in the
 | list (with the audit log written), then logs out and is locked back
-| out of the panel. If a change breaks any step of this flow, Core Lite
+| out of the panel. If a change breaks any step of this flow, Core
 | is not releasable.
 */
 

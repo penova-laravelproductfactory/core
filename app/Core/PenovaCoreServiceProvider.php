@@ -47,7 +47,7 @@ class PenovaCoreServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Dashboard widgets Core itself ships — the Lite dashboard is built
+     * Dashboard widgets Core itself ships — the dashboard is built
      * entirely from these descriptors, through the exact pipeline module
      * widgets use, so the pattern devs copy is the one Core runs.
      */

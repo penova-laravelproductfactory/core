@@ -2,7 +2,7 @@
 /**
  * Core\UI — Workspace installed modules. Renders whatever ManifestRegistry
  * found in config('penova.modules') (Task 1/4) — no module names are
- * hardcoded here. Empty install (Core Lite with no business module yet)
+ * hardcoded here. Empty install (Core with no business module yet)
  * gets an inviting empty state instead of a blank grid.
  */
 import { PuzzlePieceIcon } from '@heroicons/vue/24/outline';
