@@ -25,7 +25,7 @@ const platform = computed(() => usePage().props.platform);
 
 <template>
     <AdminLayout title="میزکار">
-        <PageHeader title="میزکار" subtitle="مرکز کنترل پلتفرم Penova" />
+        <PageHeader title="میزکار" subtitle="مدیریت پلتفرم Penova" />
 
         <div class="space-y-8">
             <WorkspaceHero :platform="platform" />

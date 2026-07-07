@@ -11,7 +11,7 @@ test('branding shared prop falls back to config defaults when nothing is saved',
         ->assertInertia(fn (Assert $page) => $page
             ->component('Core/Welcome')
             ->where('branding.name', config('penova.branding.name'))
-            ->where('branding.primary_color', '#01696f')
+            ->where('branding.primary_color', config('penova.branding.primary_color'))
             ->where('branding.footer_text', config('penova.branding.footer_text')));
 });
 

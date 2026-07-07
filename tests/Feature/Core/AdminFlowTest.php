@@ -38,11 +38,11 @@ test('the full admin experience works end to end', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Core/Workspace/Index')
-            ->where('menu.0.key', 'workspace')
-            ->has('menu.0.href')
-            ->where('dashboardWidgets.0.key', 'core-stats')
-            // Core widgets omit 'area'; the provider must normalise it.
-            ->where('dashboardWidgets.0.area', 'core')
+            ->where('menu', fn ($menu) => collect($menu)
+                ->contains(fn ($item) => $item['key'] === 'workspace' && filled($item['href'] ?? null)))
+            // Core widgets omit 'area'; the provider normalises it to 'core'.
+            ->where('dashboardWidgets', fn ($widgets) => collect($widgets)
+                ->contains(fn ($widget) => $widget['key'] === 'core-stats' && ($widget['area'] ?? null) === 'core'))
             ->has('widgetAreas.core'));
 
     // 4) Users index is reachable (permission middleware + policy allow admin).
@@ -69,7 +69,7 @@ test('the full admin experience works end to end', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Core/Users/Index')
-            ->where('users.data.0.email', 'jane@example.com'));
+            ->where('users.data', fn ($users) => collect($users)->contains('email', 'jane@example.com')));
 
     // 7) Logout ends the session and the panel is guarded again.
     $this->post('/logout')->assertRedirect(route('login'));

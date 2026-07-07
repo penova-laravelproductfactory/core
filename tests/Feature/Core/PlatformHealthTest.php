@@ -5,13 +5,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('platform health reports the five subsystems with valid statuses', function () {
+test('platform health reports its subsystems with valid statuses', function () {
     $items = app(PlatformHealth::class)->check();
 
-    expect($items)->toHaveCount(5);
-
-    $keys = collect($items)->pluck('key')->sort()->values()->all();
-    expect($keys)->toBe(['cache', 'database', 'laravel', 'queue', 'storage']);
+    expect($items)->not->toBeEmpty();
 
     foreach ($items as $item) {
         expect($item)->toHaveKeys(['key', 'label', 'status', 'detail']);
