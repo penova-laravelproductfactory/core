@@ -2,6 +2,7 @@
 
 namespace App\Modules\{{ name }};
 
+use App\Core\Support\Manifest;
 use App\Core\Support\PenovaModule;
 use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Support\Facades\Route;
@@ -11,13 +12,14 @@ use Illuminate\Support\ServiceProvider;
  * {{ name }} — <one line: what this module does>.
  *
  * Scaffolded by `php artisan penova:module {{ name }}` with a working
- * Index/Create/Store CRUD for the {{ entity }} model. Start from
- * app/Modules/README.md: it documents every hook below, the invokable-
- * controller convention, and the permissions workflow.
+ * Index/Create/Store CRUD for the {{ entity }} model. A module declares
+ * everything it contributes through ONE Manifest (see manifest() below);
+ * routes and migrations are ordinary provider mechanics in boot(), NOT
+ * Manifest contributions. Start from app/Modules/README.md.
  *
  * Frontend lives in resources/js/Modules/{{ name }}/:
- *   Pages/    → Inertia::render('Modules/{{ name }}/Index') → Pages/Index.vue
- *   Widgets/  → referenced by widget descriptors below
+ *   Pages/   → Inertia::render('Modules/{{ name }}/Index') → Pages/Index.vue
+ *   Widgets/ → referenced by widget descriptors in the Manifest
  */
 class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
 {
@@ -28,9 +30,9 @@ class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
 
     public function boot(): void
     {
-        // Module routes live in routes.php as plain definitions; the
-        // panel group (URI prefix + auth middleware) is applied here.
-        // Cache guard mirrors loadRoutesFrom() so route:cache stays safe.
+        // Module routes live in routes.php as plain definitions; the panel
+        // group (URI prefix + auth middleware) is applied here. Cache guard
+        // mirrors loadRoutesFrom() so route:cache stays safe.
         if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
             Route::middleware(config('penova.admin.middleware'))
                 ->prefix(config('penova.admin.prefix'))
@@ -41,67 +43,45 @@ class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
     }
 
     /**
-     * @see PenovaModule — sidebar contribution.
+     * The module's single Manifest — its complete declaration of what it
+     * contributes to the Platform: identity, menu, widgets, permissions.
      *
-     * NOTE: the item stays HIDDEN until the '{{ module }}.view'
-     * permission is seeded and granted — register
-     * {{ name }}PermissionsSeeder (Database/Seeders) in
-     * database/seeders/DatabaseSeeder.php and run `php artisan db:seed`.
-     * Icon keys map in resources/js/Core/Layouts/AdminLayout.vue
+     * NOTE: the menu item stays HIDDEN until the '{{ module }}.view'
+     * permission is seeded and granted — register {{ name }}PermissionsSeeder
+     * (Database/Seeders) in database/seeders/DatabaseSeeder.php and run
+     * `php artisan db:seed`. Icon keys map in
+     * resources/js/Core/Layouts/AdminLayout.vue
      * (home|users|shield|cog|clock|bell|calendar|sparkles|squares).
      */
-    public static function menu(): array
+    public static function manifest(): Manifest
     {
-        return [
-            [
-                'key' => '{{ module }}',
-                'label' => '{{ name }}', // TODO: replace with the Persian label
-                'route' => '{{ module }}.index',
-                'icon' => 'squares',
-                'order' => 500,
-                'permission' => '{{ module }}.view',
-            ],
-        ];
-    }
-
-    /**
-     * @see PenovaModule — dashboard contribution. Empty to start; add
-     * descriptors when the module ships widgets, e.g.:
-     *
-     *   ['key' => '{{ module }}-stats', 'type' => 'card', 'title' => '…',
-     *    'component' => 'Modules/{{ name }}/Widgets/StatsCard',
-     *    'cols' => 1, 'order' => 500, 'area' => '{{ module }}',
-     *    'permission' => '{{ module }}.view'],
-     *
-     * Remember to label the '{{ module }}' area in
-     * config/penova.php → widgets.areas.
-     */
-    public static function widgets(): array
-    {
-        return [];
-    }
-
-    /**
-     * @see PenovaModule — the module's permission manifest. The slugs
-     * are CREATED by {{ name }}PermissionsSeeder; keep manifest, seeder,
-     * and route middleware in sync.
-     */
-    public static function permissions(): array
-    {
-        return [
-            '{{ module }}.view',
-            '{{ module }}.manage',
-        ];
-    }
-
-    /** @see PenovaModule — the module's public manifest. */
-    public static function manifest(): array
-    {
-        return [
-            'key' => '{{ module }}',
-            'name' => '{{ name }}',
-            'description' => 'TODO: describe the {{ name }} module.',
-            'version' => '0.1.0',
-        ];
+        return Manifest::for(
+            key: '{{ module }}',
+            name: '{{ name }}',
+            description: 'TODO: describe the {{ name }} module.',
+            version: '0.1.0',
+        )
+            ->menu([
+                [
+                    'key' => '{{ module }}',
+                    'label' => '{{ name }}', // TODO: replace with the Persian label
+                    'route' => '{{ module }}.index',
+                    'icon' => 'squares',
+                    'order' => 500,
+                    'permission' => '{{ module }}.view',
+                ],
+            ])
+            // Add widget descriptors when the module ships them, e.g.:
+            //   ->widgets([[
+            //       'key' => '{{ module }}-stats', 'type' => 'card', 'title' => '…',
+            //       'component' => 'Modules/{{ name }}/Widgets/StatsCard',
+            //       'cols' => 1, 'order' => 500, 'area' => '{{ module }}',
+            //       'permission' => '{{ module }}.view',
+            //   ]])
+            // (label the '{{ module }}' area in config/penova.php → widgets.areas)
+            ->permissions([
+                '{{ module }}.view',
+                '{{ module }}.manage',
+            ]);
     }
 }

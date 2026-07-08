@@ -29,9 +29,9 @@ use Illuminate\Support\ServiceProvider;
 class PenovaCoreServiceProvider extends ServiceProvider
 {
     /**
-     * Sidebar items Core itself ships. Modules append theirs via the
-     * static menu() hook (see Support\PenovaModule); everything is merged
-     * and order-sorted in the 'penova.menu' binding below.
+     * Sidebar items Core itself ships. Modules append theirs through their
+     * Manifest (see Support\PenovaModule); everything is merged and
+     * order-sorted in the 'penova.menu' binding below.
      */
     private const CORE_MENU = [
         // 'permission' mirrors each route's middleware guard: items the
@@ -71,7 +71,11 @@ class PenovaCoreServiceProvider extends ServiceProvider
         // Core singletons — the abstractions Modules program against.
         $this->app->singleton(SettingsManager::class);
 
-        // Installed-module manifest registry (Workspace + future tooling).
+        // The installed Modules' Manifest registry — the single source of
+        // truth for everything Modules contribute (identities, menu items,
+        // widget descriptors, permission slugs). The three panel-composition
+        // bindings below all derive from it, so the module list is resolved
+        // exactly once (D-023).
         $this->app->singleton(Support\ManifestRegistry::class);
 
         // Boot product modules. Core iterates class-strings only; it has
@@ -80,55 +84,28 @@ class PenovaCoreServiceProvider extends ServiceProvider
             $this->app->register($provider);
         }
 
-        // Panel composition: Core contributions + whatever each module's
-        // provider declares through the Support\PenovaModule contract.
-        // Lazy singletons — resolved once, on first use (Inertia share).
-        $this->app->singleton('penova.menu', fn () => $this->collectFromModules('menu', self::CORE_MENU));
-
-        // Widgets are normalised so 'area' is always present ('core' when
-        // a descriptor omits it) — the dashboard groups by this field.
-        $this->app->singleton('penova.widgets', fn () => array_map(
-            fn (array $widget) => [...$widget, 'area' => $widget['area'] ?? 'core'],
-            $this->collectFromModules('widgets', self::CORE_WIDGETS),
-        ));
-
-        // Flat list of every permission slug the modules declare
-        // (their manifests). Not shared with the frontend — available
-        // for sanity checks, artisan tooling, and future admin UI.
-        $this->app->singleton('penova.permissions', fn () => collect($this->modulesImplementingContract())
-            ->flatMap(fn (string $provider) => $provider::permissions())
-            ->unique()
-            ->values()
-            ->all());
-    }
-
-    /**
-     * Merge Core's own descriptors with those of every registered module
-     * provider implementing the PenovaModule contract, sorted by 'order'.
-     */
-    private function collectFromModules(string $hook, array $core): array
-    {
-        return collect($core)
-            ->concat(collect($this->modulesImplementingContract())
-                ->flatMap(fn (string $provider) => $provider::$hook()))
+        // Panel composition: Core's own contributions + whatever each Module
+        // declares through its Manifest, order-sorted. Lazy singletons —
+        // resolved once, on first use (Inertia share).
+        $this->app->singleton('penova.menu', fn () => collect(self::CORE_MENU)
+            ->concat(app(Support\ManifestRegistry::class)->menuItems())
             ->sortBy('order')
             ->values()
-            ->all();
-    }
+            ->all());
 
-    /**
-     * Registered module providers that implement the formal contract.
-     * Providers without it still boot (register() above) but contribute
-     * nothing to the panel composition.
-     *
-     * @return list<class-string<Support\PenovaModule>>
-     */
-    private function modulesImplementingContract(): array
-    {
-        return array_values(array_filter(
-            config('penova.modules', []),
-            fn (string $provider) => is_subclass_of($provider, Support\PenovaModule::class),
-        ));
+        // Widgets are normalised so 'area' is always present ('core' when a
+        // descriptor omits it) — the dashboard groups by this field.
+        $this->app->singleton('penova.widgets', fn () => collect(self::CORE_WIDGETS)
+            ->concat(app(Support\ManifestRegistry::class)->widgetDescriptors())
+            ->map(fn (array $widget) => [...$widget, 'area' => $widget['area'] ?? 'core'])
+            ->sortBy('order')
+            ->values()
+            ->all());
+
+        // Flat list of every permission slug the Modules declare (from their
+        // Manifests). Not shared with the frontend — available for sanity
+        // checks, artisan tooling, and future admin UI.
+        $this->app->singleton('penova.permissions', fn () => app(Support\ManifestRegistry::class)->permissionSlugs());
     }
 
     public function boot(): void

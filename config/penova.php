@@ -139,9 +139,10 @@ return [
     |--------------------------------------------------------------------------
     | Business modules living in app/Modules. Each entry points to the
     | module's service provider; Core boots them but never depends on them.
-    | A provider may also expose static menu() / widgets() hooks (see
-    | app/Core/Support/PenovaModule.php) to contribute sidebar items and
-    | dashboard widgets — this list is the ONLY place modules get wired in.
+    | A provider implementing the PenovaModule contract (see
+    | app/Core/Support/PenovaModule.php) declares what it contributes —
+    | menu, widgets, permissions — through one Manifest. This list is the
+    | ONLY place modules get wired in.
     |
     | 'modules' => [
     |     App\Modules\Store\StoreServiceProvider::class,

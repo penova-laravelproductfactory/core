@@ -63,12 +63,18 @@ compile-time reference to the module.
 ## The module contract (`App\Core\Support\PenovaModule`)
 
 Every module's service provider extends Laravel's `ServiceProvider`
-**and implements `PenovaModule`**. Core collects the contract's static
-hooks only from providers implementing the interface — a provider
-without it still boots, but contributes nothing to the panel. Hooks a
-module does not need return `[]`.
+**and implements `PenovaModule`**. A module declares everything it
+contributes — identity, menu, widgets, permissions — through **one
+Manifest**, its single coherent declaration (D-005; *Manifest* in the
+Glossary). Core reads the Manifest only from providers implementing the
+interface — a provider without it still boots, but contributes nothing to
+the panel. Sections a module does not use are simply omitted.
+
+Routes and migrations are **not** Manifest contributions — they are
+ordinary provider mechanics, wired in `boot()` (see *Routes* below).
 
 ```php
+use App\Core\Support\Manifest;
 use App\Core\Support\PenovaModule;
 use Illuminate\Support\ServiceProvider;
 
@@ -76,56 +82,62 @@ class StoreServiceProvider extends ServiceProvider implements PenovaModule
 {
     public function boot(): void { /* load routes, migrations */ }
 
-    public static function menu(): array { /* sidebar items */ }
-    public static function widgets(): array { /* dashboard widgets */ }
-    public static function permissions(): array { /* permission manifest */ }
+    public static function manifest(): Manifest
+    {
+        return Manifest::for(
+            key: 'store',
+            name: 'Store',
+            description: 'Products, orders and checkout.',
+            version: '0.1.0',
+        )
+            ->menu([ /* sidebar items — see below */ ])
+            ->widgets([ /* dashboard widgets — see below */ ])
+            ->permissions([ /* permission slugs — see below */ ]);
+    }
 }
 ```
 
-### `menu()` — sidebar items
+The Manifest is built once, fluently, then read — a declaration, not a
+mutable object. Each section's item shape is documented below.
 
-Returns an array of items; Core merges them with its own (orders 10–60)
-and sorts by `order`. Use `order >= 100` for module items.
+### The `menu` section — sidebar items
+
+An array of items; Core merges them with its own (orders 10–60) and sorts
+by `order`. Use `order >= 100` for module items.
 
 ```php
-public static function menu(): array
-{
-    return [[
-        'key'   => 'store',          // unique across the panel
-        'label' => 'فروشگاه',
-        'route' => 'store.products.index', // route NAME — Core resolves the URL
-        'icon'  => 'bag',            // icon key; the map lives in AdminLayout.vue
-                                     // (home|users|shield|cog|clock|bell|calendar|bag|clipboard|sparkles|squares)
-        'order' => 100,
-        'permission' => 'store.view', // optional; hides the item from users
-                                        // without the permission — keep it in
-                                        // sync with the route's middleware
-    ]];
-}
+->menu([[
+    'key'   => 'store',          // unique across the panel
+    'label' => 'فروشگاه',
+    'route' => 'store.products.index', // route NAME — Core resolves the URL
+    'icon'  => 'bag',            // icon key; the map lives in AdminLayout.vue
+                                 // (home|users|shield|cog|clock|bell|calendar|bag|clipboard|sparkles|squares)
+    'order' => 100,
+    'permission' => 'store.view', // optional; hides the item from users
+                                    // without the permission — keep it in
+                                    // sync with the route's middleware
+]])
 ```
 
-### `widgets()` — dashboard widgets
+### The `widgets` section — dashboard widgets
 
-Returns widget **descriptors**; the dashboard grid renders them sorted by
-`order`. Core's own widgets use orders 10–30 (and 900 for the Modules card),
-so modules land in the middle with `order >= 100`.
+Widget **descriptors**; the dashboard grid renders them sorted by `order`.
+Core's own widgets use orders 10–30 (and 900 for the Modules card), so
+modules land in the middle with `order >= 100`.
 
 ```php
-public static function widgets(): array
-{
-    return [[
-        'key'       => 'store-active-products',
-        'type'      => 'card',            // 'card' | 'list'
-        'title'     => 'محصولات فعال',    // arrives as widget.title in Vue
-        'component' => 'Modules/Store/Widgets/ActiveProductsCard',
-        'cols'      => 1,                 // 1 | 2 | 'full' (whole row, any grid width)
-        'order'     => 100,
-        'area'      => 'store',           // optional dashboard group (see below)
-        'permission' => 'store.view',     // optional; widget is dropped for users
-                                          // without it (match the data endpoint's
-                                          // middleware so it never 403s)
-    ]];
-}
+->widgets([[
+    'key'       => 'store-active-products',
+    'type'      => 'card',            // 'card' | 'list'
+    'title'     => 'محصولات فعال',    // arrives as widget.title in Vue
+    'component' => 'Modules/Store/Widgets/ActiveProductsCard',
+    'cols'      => 1,                 // 1 | 2 | 'full' (whole row, any grid width)
+    'order'     => 100,
+    'area'      => 'store',           // optional dashboard group (see below)
+    'permission' => 'store.view',     // optional; widget is dropped for users
+                                      // without it (match the data endpoint's
+                                      // middleware so it never 403s)
+]])
 ```
 
 **Areas.** The dashboard renders one headed section per `area`, so a
@@ -142,22 +154,19 @@ its descriptor as the `widget` prop and owns its data: read the shared /
 page Inertia props, or fetch a small module JSON endpoint on mount (see
 `ActiveProductsCard.vue` + `ActiveProductsCountController`).
 
-### `permissions()` — the module's permission manifest
+### The `permissions` section — declared permission slugs
 
-Returns the flat list of permission slugs the module defines:
+The flat list of permission slugs the module introduces:
 
 ```php
-public static function permissions(): array
-{
-    return ['store.view', 'store.manage'];
-}
+->permissions(['store.view', 'store.manage'])
 ```
 
-Declarative for now: the slugs are **created** by the module's seeder
-(below); this manifest is collected into the `penova.permissions`
-container binding for documentation, sanity checks, and future admin UI.
-Keep three places in sync: this manifest, the seeder, and the route
-middleware.
+This section is the module's **single declaration** of the permissions it
+introduces (D-023): Core collects it into the `penova.permissions` binding,
+and the module's seeder *reads* it to create the permissions — so the slug
+set lives in one place, not several. Keep the route middleware's
+`permission:` guards in sync with what you declare here.
 
 ## Permissions
 
@@ -218,17 +227,17 @@ Register static paths (e.g. `/store/products/active-count`) **before**
 parameterised ones (`/store/products/{product}`) so they are never
 captured by route-model binding.
 
-## Future hooks (not implemented yet)
+## Future sections (not implemented yet)
 
-The contract will grow along the same pattern — static, declarative,
-collected by Core:
+The Manifest grows by adding a **section**, never another top-level hook
+(D-023). Planned:
 
-- `policies()` — modules announcing their model → policy map so Core
+- `policies` — modules announcing their model → policy map so Core
   registers Gates for them.
-- `settings()` — modules registering their runtime settings (key,
-  default, label) into the Core Settings page.
-- `logs()` — declaring module activity-log actions for nicer rendering
-  in the Core audit trail.
+- `settings` — modules registering their runtime settings (key, default,
+  label) into the Core Settings page.
+- `logs` — declaring module activity-log actions for nicer rendering in
+  the Core audit trail.
 
-Do not pre-implement these in modules; they will be added to
-`PenovaModule` (with `[]` defaults documented) when Core supports them.
+Do not pre-declare these; they will be added to the Manifest as optional
+sections when Core supports them.

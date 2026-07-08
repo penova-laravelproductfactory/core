@@ -2,6 +2,7 @@
 
 namespace App\Modules\Store;
 
+use App\Core\Support\Manifest;
 use App\Core\Support\PenovaModule;
 use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,10 @@ use Illuminate\Support\ServiceProvider;
  * Widgets) fetches GET /admin/store/products/active-count (route
  * "store.products.active-count"); the response is always
  * { count: number }.
+ *
+ * The module declares everything it contributes through one Manifest
+ * (see manifest()); routes and migrations are provider mechanics, wired
+ * in boot() — they are not Manifest contributions (D-023).
  */
 class StoreServiceProvider extends ServiceProvider implements PenovaModule
 {
@@ -39,44 +44,25 @@ class StoreServiceProvider extends ServiceProvider implements PenovaModule
         $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
     }
 
-    /** @see PenovaModule — sidebar contribution. */
-    public static function menu(): array
-    {
-        return [
-            ['key' => 'store', 'label' => 'فروشگاه', 'route' => 'store.products.index', 'icon' => 'bag', 'order' => 400, 'permission' => 'store.view'],
-            ['key' => 'store-orders', 'label' => 'سفارش‌ها', 'route' => 'store.orders.index', 'icon' => 'clipboard', 'order' => 410, 'permission' => 'store.view'],
-        ];
-    }
-
-    /** @see PenovaModule — dashboard contribution (own 'store' area). */
-    public static function widgets(): array
-    {
-        return [
-            ['key' => 'store-active-products', 'type' => 'card', 'title' => 'محصولات فعال', 'component' => 'Modules/Store/Widgets/ActiveProductsCard', 'cols' => 1, 'order' => 400, 'area' => 'store', 'permission' => 'store.view'],
-        ];
-    }
-
     /**
-     * @see PenovaModule — the module's permission manifest. The slugs
-     * are created by StorePermissionsSeeder; keep the three in sync
-     * (manifest, seeder, route middleware).
+     * The Store module's single Manifest — its complete declaration of
+     * what it contributes to the Platform.
      */
-    public static function permissions(): array
+    public static function manifest(): Manifest
     {
-        return [
-            'store.view',
-            'store.manage',
-        ];
-    }
-
-    /** @see PenovaModule — the module's public manifest. */
-    public static function manifest(): array
-    {
-        return [
-            'key' => 'store',
-            'name' => 'Store',
-            'description' => 'Products, orders and checkout — turn Core into a real store.',
-            'version' => '0.1.0',
-        ];
+        return Manifest::for(
+            key: 'store',
+            name: 'Store',
+            description: 'Products, orders and checkout — turn Core into a real store.',
+            version: '0.1.0',
+        )
+            ->menu([
+                ['key' => 'store', 'label' => 'فروشگاه', 'route' => 'store.products.index', 'icon' => 'bag', 'order' => 400, 'permission' => 'store.view'],
+                ['key' => 'store-orders', 'label' => 'سفارش‌ها', 'route' => 'store.orders.index', 'icon' => 'clipboard', 'order' => 410, 'permission' => 'store.view'],
+            ])
+            ->widgets([
+                ['key' => 'store-active-products', 'type' => 'card', 'title' => 'محصولات فعال', 'component' => 'Modules/Store/Widgets/ActiveProductsCard', 'cols' => 1, 'order' => 400, 'area' => 'store', 'permission' => 'store.view'],
+            ])
+            ->permissions(['store.view', 'store.manage']);
     }
 }
