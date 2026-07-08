@@ -27,13 +27,13 @@ const repoUrl = 'https://github.com/penova-laravelproductfactory/core';
 const features = [
     {
         title: 'Authentication & Accounts',
-        fa: 'جریان کامل ورود، ثبت‌نام و بازیابی رمز عبور، آمادهٔ استفاده در هر پنل محصول.',
-        en: 'Full login, registration and password reset flow, ready to drop into any product panel.',
+        fa: 'جریان کامل ورود، ثبت‌نام و بازیابی رمز عبور، آمادهٔ استفاده در هر میزکار محصول.',
+        en: 'Full login, registration and password reset flow, ready to drop into any product Workspace.',
     },
     {
         title: 'Users & Roles',
         fa: 'مدیریت کاربران، نقش‌ها و permissionها بدون نیاز به پکیج خارجی.',
-        en: 'Admin screens to manage users, roles and permissions without any extra packages.',
+        en: 'Workspace screens to manage users, roles and permissions without any extra packages.',
     },
     {
         title: 'Settings & Notifications',
@@ -41,9 +41,9 @@ const features = [
         en: 'Runtime settings and a shared notification feed, so every module can reuse the same surface.',
     },
     {
-        title: 'Admin UI & DataTable',
-        fa: 'یک AdminLayout تمیز، کامپوننت‌های تکرارپذیر و الگوی DataTable سمت سرور برای هر صفحهٔ CRUD.',
-        en: 'A clean admin layout, reusable components and a server-side DataTable pattern for any CRUD page.',
+        title: 'Workspace UI & DataTable',
+        fa: 'یک میزکار تمیز، کامپوننت‌های تکرارپذیر و الگوی DataTable سمت سرور برای هر صفحهٔ CRUD.',
+        en: 'A clean Workspace layout, reusable components and a server-side DataTable pattern for any CRUD page.',
     },
 ];
 
@@ -89,12 +89,12 @@ const modules = [
 
                 <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-sand-700">
                     یک هستهٔ آماده برای محصولات لاراولی شما؛ با احراز هویت، مدیریت کاربران و نقش‌ها،
-                    تنظیمات، نوتیفیکیشن‌ها و یک پنل ادمین تمیز که آمادهٔ نصب ماژول فروشگاه، پیامک و
+                    تنظیمات، نوتیفیکیشن‌ها و یک میزکار تمیز که آمادهٔ نصب ماژول فروشگاه، پیامک و
                     پرداخت است.
                 </p>
                 <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-sand-600" dir="ltr">
                     A production-ready core for your Laravel products — auth, users, roles, settings,
-                    notifications and a clean admin panel, ready to host your Store, SMS and Payment modules.
+                    notifications and a clean Workspace, ready to host your Store, SMS and Payment modules.
                 </p>
 
                 <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -102,7 +102,7 @@ const modules = [
                         :href="panelHref"
                         class="rounded-lg bg-brand px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-hover"
                     >
-                        ورود به پنل مدیریت
+                        ورود به میزکار
                     </Link>
                     <a
                         :href="repoUrl"

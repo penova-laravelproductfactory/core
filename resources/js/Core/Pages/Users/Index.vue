@@ -27,7 +27,7 @@ function destroy(user) {
 
 <template>
     <AdminLayout title="کاربران">
-        <PageHeader title="کاربران" subtitle="مدیریت حساب‌های کاربری پنل">
+        <PageHeader title="کاربران" subtitle="مدیریت حساب‌های کاربری میزکار">
             <template #actions>
                 <Button href="/admin/users/create">کاربر جدید</Button>
             </template>

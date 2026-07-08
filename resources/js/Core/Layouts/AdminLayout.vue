@@ -1,6 +1,6 @@
 <script setup>
 /**
- * Core\UI — the shared admin panel shell.
+ * Core\UI — the shared Workspace shell.
  *
  * Structure (RTL: <html dir="rtl"> flips flex automatically, so the
  * sidebar — first in the DOM — sits on the RIGHT):
@@ -97,7 +97,7 @@ const isActive = (item) => {
                     <div class="truncate text-lg font-bold tracking-wide">
                         {{ branding.name || 'Penova Core' }}
                     </div>
-                    <div class="text-xs text-slate-400">هستهٔ پنل محصولات شما</div>
+                    <div class="text-xs text-slate-400">میزکار محصولات شما</div>
                 </div>
             </div>
 

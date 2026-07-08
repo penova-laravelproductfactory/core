@@ -45,7 +45,7 @@ const form = useForm({
 
             <Card title="White Label / Branding">
                 <p class="mb-4 text-sm text-slate-500">
-                    نام برند و برندینگ Core را برای پنل مدیریت و صفحهٔ خوش‌آمد تنظیم کنید.
+                    نام برند و برندینگ Core را برای میزکار و صفحهٔ خوش‌آمد تنظیم کنید.
                 </p>
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">

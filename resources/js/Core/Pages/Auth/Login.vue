@@ -22,7 +22,7 @@ const submit = () => form.post('/login', { onFinish: () => form.reset('password'
 </script>
 
 <template>
-    <GuestLayout title="ورود به پنل مدیریت">
+    <GuestLayout title="ورود به میزکار">
         <h1 class="mb-4 text-center text-lg font-semibold text-slate-800">ورود</h1>
 
         <p v-if="checkoutIntent" class="mb-4 rounded-md bg-sky-50 px-3 py-2 text-sm leading-relaxed text-sky-800">

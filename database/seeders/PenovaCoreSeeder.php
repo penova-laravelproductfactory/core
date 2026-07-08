@@ -36,7 +36,7 @@ class PenovaCoreSeeder extends Seeder
 
         $admin = Role::firstOrCreate(
             ['slug' => 'admin'],
-            ['name' => 'Administrator', 'description' => 'Full access to the panel.'],
+            ['name' => 'Operator', 'description' => 'Full access to the Workspace.'],
         );
 
         // syncWithoutDetaching: re-running the Core seeder alone must

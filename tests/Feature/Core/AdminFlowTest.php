@@ -2,13 +2,13 @@
 
 /*
 |--------------------------------------------------------------------------
-| Core — the "admin experience" system test
+| Core — the "Workspace experience" system test
 |--------------------------------------------------------------------------
 | This is the end-to-end contract of Penova Core and must ALWAYS be
-| green: a fresh database is migrated and seeded, the seeded admin logs
-| in, sees the dashboard, opens Users, creates a user, sees them in the
+| green: a fresh database is migrated and seeded, the seeded Operator logs
+| in, sees the Workspace, opens Users, creates a user, sees them in the
 | list (with the audit log written), then logs out and is locked back
-| out of the panel. If a change breaks any step of this flow, Core
+| out of the Workspace. If a change breaks any step of this flow, Core
 | is not releasable.
 */
 
@@ -18,7 +18,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
-test('the full admin experience works end to end', function () {
+test('the full Workspace experience works end to end', function () {
     // 1) Fresh database: RefreshDatabase migrated it; seed the Core baseline.
     $this->seed(PenovaCoreSeeder::class);
 

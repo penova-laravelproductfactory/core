@@ -39,7 +39,7 @@ class WorkspaceController extends Controller
                     'steps' => [
                         ['key' => 'core-installed', 'label' => 'Penova Core installed', 'done' => true],
                         ['key' => 'authentication', 'label' => 'Authentication ready', 'done' => true],
-                        ['key' => 'admin-panel', 'label' => 'Admin panel ready', 'done' => true],
+                        ['key' => 'admin-panel', 'label' => 'Workspace ready', 'done' => true],
                         ['key' => 'branding', 'label' => 'Configure branding', 'done' => $brandingConfigured,
                             'cta' => ['label' => 'Configure', 'href' => '/admin/settings']],
                         ['key' => 'first-module', 'label' => 'Install your first module', 'done' => $hasModule,

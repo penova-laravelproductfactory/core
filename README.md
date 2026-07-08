@@ -2,7 +2,7 @@
 
 Penova Core یک هستهٔ رایگان برای ساخت محصولات Laravel است؛ یک Laravel Product Factory که چیزهای تکراری اغلب پروژه‌ها (احراز هویت، کاربران، نقش‌ها، تنظیمات، نوتیفیکیشن‌ها، لاگ فعالیت، UI و DataTable) را یک‌بار برای همیشه حل می‌کند و آماده است تا ماژول‌های محصولی مانند Store، SMS و Payment روی آن نصب شوند.
 
-Penova Core is a free foundation for building Laravel products. It ships a production-ready admin core (auth, users, roles, settings, notifications, activity log, UI components and a reusable DataTable) so you can focus on your product modules.
+Penova Core is a free foundation for building Laravel products. It ships a production-ready Workspace (auth, users, roles, settings, notifications, activity log, UI components and a reusable DataTable) so you can focus on your product modules.
 
 این مخزن فقط Core است؛ هیچ ماژول بیزنسی (فروشگاه، CRM، Booking و غیره) در آن وجود ندارد.  
 Store Module و ماژول‌های دیگر به صورت جداگانه نصب می‌شوند.
@@ -15,7 +15,7 @@ Authentication
 
 Users and Roles  
 - مدیریت کاربران، نقش‌ها و permissionها بدون نیاز به پکیج اضافی.  
-- Admin screens for users, roles and permissions with a simple permission middleware.
+- Workspace screens for users, roles and permissions with a simple permission middleware.
 
 Settings and White Label  
 - سیستم تنظیمات runtime با SettingsManager.  
@@ -27,9 +27,9 @@ Notifications
 
 Activity Logs  
 - ثبت خودکار created / updated / deleted برای مدل‌ها با trait RecordsActivity.  
-- صفحهٔ Logs در پنل ادمین برای مشاهدهٔ فعالیت‌ها.
+- صفحهٔ Logs در میزکار برای مشاهدهٔ فعالیت‌ها.
 
-Admin UI and Components  
+Workspace UI and Components  
 - AdminLayout و GuestLayout آماده، مبتنی بر Vue 3، Inertia 2 و Tailwind 4.  
 - کامپوننت‌های مشترک: Button، TextInput، Modal، Toast، Pagination، DataTable.
 
@@ -73,7 +73,7 @@ npm run build   # یا npm run dev برای توسعه
 php artisan serve
 ```
 
-ورود به پنل
+ورود به میزکار
 
 بعد از اجرای سرور:
 
@@ -85,7 +85,7 @@ php artisan serve
 - ایمیل: `admin@example.com`  
 - رمز: `password`
 
-بعد از ورود، پنل مدیریت را می‌بینید با:
+بعد از ورود، میزکار را می‌بینید با:
 
 - Workspace  
 - Users  
@@ -96,12 +96,12 @@ php artisan serve
 
 ## White Label / Branding
 
-در پنل ادمین به Settings بروید و بخش White Label / Branding را باز کنید. می‌توانید این موارد را تنظیم کنید:
+در میزکار به Settings بروید و بخش White Label / Branding را باز کنید. می‌توانید این موارد را تنظیم کنید:
 
 - Brand name: نامی که در AdminLayout و صفحهٔ Welcome نمایش داده می‌شود.  
 - Logo URL: لینک لوگوی برند (اختیاری).  
 - Primary color: رنگ اصلی (برای استفادهٔ آینده در theme).  
-- Footer text: متن پایین پنل و صفحهٔ Welcome.
+- Footer text: متن پایین میزکار و صفحهٔ Welcome.
 
 اگر چیزی تنظیم نکنید، Core از مقادیر پیش‌فرض در config/penova.php استفاده می‌کند.
 
@@ -119,7 +119,7 @@ Core از ابتدا برای نصب ماژول‌های بیزنسی آماده
 
 - یک ServiceProvider دارد که در config/penova.php (آرایه modules) ثبت می‌شود.  
 - می‌تواند روت‌های admin و public خود را ثبت کند.  
-- می‌تواند منوهای Admin را توسعه دهد.  
+- می‌تواند منوهای میزکار را توسعه دهد.  
 - می‌تواند ویجت‌های Workspace اضافه کند.  
 - می‌تواند به Settings و Notifications متصل شود.
 
@@ -188,6 +188,6 @@ Pages مربوط به Store / SMS / Payment در resources/js/Modules/* قرار
 
 پیشنهادها، باگ‌ریپورت‌ها و Pull Requestها برای بهبود Core (نه ماژول‌های محصولی) استقبال می‌شوند، به‌خصوص در این بخش‌ها:
 
-- بهبود UX / UI پنل ادمین.  
+- بهبود UX / UI میزکار.  
 - افزایش سطح تست‌های یکپارچه برای Core.  
 - پیشنهاد برای بهبود قرارداد ماژول‌ها (Store، Sms، Payment).
