@@ -50,7 +50,7 @@ class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
      * permission is seeded and granted — register {{ name }}PermissionsSeeder
      * (Database/Seeders) in database/seeders/DatabaseSeeder.php and run
      * `php artisan db:seed`. Icon keys map in
-     * resources/js/Core/Layouts/AdminLayout.vue
+     * resources/js/Core/Layouts/WorkspaceLayout.vue
      * (home|users|shield|cog|clock|bell|calendar|sparkles|squares).
      */
     public static function manifest(): Manifest

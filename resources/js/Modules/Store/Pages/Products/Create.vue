@@ -5,7 +5,7 @@
  * Posts to store.products.store; validation errors land on form.errors.
  */
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import Button from '@/Core/Components/Button.vue';
@@ -32,7 +32,7 @@ const form = useForm({
 </script>
 
 <template>
-    <AdminLayout title="محصول جدید">
+    <WorkspaceLayout title="محصول جدید">
         <PageHeader title="محصول جدید">
             <template #actions>
                 <Button variant="secondary" :href="ws('/store/products')">بازگشت به فهرست</Button>
@@ -47,5 +47,5 @@ const form = useForm({
                 @submit="form.post(ws('/store/products'))"
             />
         </Card>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

@@ -2,7 +2,7 @@
 /**
  * Core\UI — renders flash messages shared by HandleInertiaRequests
  * ("flash.success" / "flash.error") as auto-dismissing toasts.
- * Rendered once by AdminLayout; pages just redirect back()->with(...).
+ * Rendered once by WorkspaceLayout; pages just redirect back()->with(...).
  */
 import { computed, ref, watch } from 'vue';
 import { usePage } from '@inertiajs/vue3';

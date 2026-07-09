@@ -57,6 +57,11 @@ class HandleInertiaRequests extends Middleware
                 ),
             ),
 
+            // Frontend seam (menu / dashboardWidgets / widgetAreas): these
+            // prop shapes are Core internals, not a declared public contract —
+            // the Manifest is the contract (D-023). See app/Modules/README.md,
+            // "Frontend seam stability".
+            //
             // Sidebar items (Core + Modules, order-sorted, permission-
             // filtered). Route names are resolved to URLs here — at
             // request time, when all module routes are registered.

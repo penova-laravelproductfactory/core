@@ -4,7 +4,7 @@
  * cards; recognition set only (number, date, status, payment, total,
  * item count) + a details CTA. Badge positions are fixed (status start,
  * payment end) so colour + position scan at a glance. Composes the
- * storefront chrome — customers never see AdminLayout.
+ * storefront chrome — customers never see WorkspaceLayout.
  */
 import StorefrontLayout from '@/Modules/Store/Components/StorefrontLayout.vue';
 import Pagination from '@/Core/Components/Pagination.vue';

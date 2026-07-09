@@ -2,7 +2,7 @@
 /**
  * Core\Logs — read-only audit trail.
  */
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
 
@@ -17,7 +17,7 @@ const columns = [
 </script>
 
 <template>
-    <AdminLayout title="گزارش فعالیت‌ها">
+    <WorkspaceLayout title="گزارش فعالیت‌ها">
         <PageHeader title="گزارش فعالیت‌ها" subtitle="چه کسی، چه کاری، چه زمانی" />
 
         <DataTable :paginator="logs" :columns="columns">
@@ -28,5 +28,5 @@ const columns = [
                 <span v-if="row.subject_type" dir="ltr">{{ row.subject_type }} #{{ row.subject_id }}</span>
             </template>
         </DataTable>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

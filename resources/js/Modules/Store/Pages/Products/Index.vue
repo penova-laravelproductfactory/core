@@ -11,7 +11,7 @@
  */
 import { ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
 import Button from '@/Core/Components/Button.vue';
@@ -67,7 +67,7 @@ function confirmDelete() {
 </script>
 
 <template>
-    <AdminLayout title="فروشگاه — محصولات">
+    <WorkspaceLayout title="فروشگاه — محصولات">
         <PageHeader title="محصولات" subtitle="مدیریت محصولات فروشگاه">
             <template #actions>
                 <Button :href="ws('/store/products/create')">محصول جدید</Button>
@@ -152,5 +152,5 @@ function confirmDelete() {
                 <Button variant="danger" @click="confirmDelete">حذف محصول</Button>
             </div>
         </Modal>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

@@ -5,7 +5,7 @@
  * only surface at the display layer via the shared `branding` prop.
  */
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import TextInput from '@/Core/Components/TextInput.vue';
@@ -35,7 +35,7 @@ const form = useForm({
 </script>
 
 <template>
-    <AdminLayout title="تنظیمات">
+    <WorkspaceLayout title="تنظیمات">
         <PageHeader title="تنظیمات" subtitle="پیکربندی سایت، قابل ویرایش توسط مدیران" />
 
         <form class="max-w-3xl space-y-6" @submit.prevent="form.put(ws('/settings'))">
@@ -80,5 +80,5 @@ const form = useForm({
 
             <Button type="submit" :disabled="form.processing">ذخیره تنظیمات</Button>
         </form>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

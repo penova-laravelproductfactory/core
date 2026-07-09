@@ -5,7 +5,7 @@
  * convention every notification class should follow.
  */
 import { router } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Pagination from '@/Core/Components/Pagination.vue';
 import Button from '@/Core/Components/Button.vue';
@@ -18,7 +18,7 @@ const markRead = (id) => router.put(ws(`/notifications/${id}/read`), {}, { prese
 </script>
 
 <template>
-    <AdminLayout title="اعلان‌ها">
+    <WorkspaceLayout title="اعلان‌ها">
         <PageHeader title="اعلان‌ها" subtitle="اعلان‌های حساب کاربری شما">
             <template #actions>
                 <Button variant="secondary" @click="markRead('all')">علامت‌گذاری همه به‌عنوان خوانده‌شده</Button>
@@ -56,5 +56,5 @@ const markRead = (id) => router.put(ws(`/notifications/${id}/read`), {}, { prese
         <div class="mt-4">
             <Pagination :links="notifications.links" />
         </div>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

@@ -2,7 +2,7 @@
 /**
  * Core\UI — Workspace get-started actions. Five forward-facing shortcuts to the
  * moves that actually get a product shipped (scaffold, brand, ship users,
- * read docs). Not a nav duplicate: AdminLayout's sidebar covers the panel,
+ * read docs). Not a nav duplicate: WorkspaceLayout's sidebar covers the panel,
  * this covers "what to do next" for someone who just installed Core.
  */
 import { computed } from 'vue';

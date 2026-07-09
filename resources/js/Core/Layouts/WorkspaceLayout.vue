@@ -14,10 +14,10 @@
  *
  * Page anatomy (Core pages and Module pages alike):
  *
- *   <AdminLayout title="کاربران">
+ *   <WorkspaceLayout title="کاربران">
  *       <PageHeader title="کاربران"> … </PageHeader>
  *       …content…
- *   </AdminLayout>
+ *   </WorkspaceLayout>
  */
 import { computed, ref } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';

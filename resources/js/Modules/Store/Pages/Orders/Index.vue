@@ -6,7 +6,7 @@
  */
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
@@ -49,7 +49,7 @@ const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
 </script>
 
 <template>
-    <AdminLayout title="فروشگاه — سفارش‌ها">
+    <WorkspaceLayout title="فروشگاه — سفارش‌ها">
         <PageHeader title="سفارش‌ها" subtitle="سفارش‌های ثبت‌شده در فروشگاه" />
 
         <div class="mb-4 flex flex-wrap items-center gap-3">
@@ -131,5 +131,5 @@ const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
                 <Link :href="ws(`/store/orders/${row.id}`)" class="text-brand hover:underline">مشاهده</Link>
             </template>
         </DataTable>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

@@ -4,7 +4,7 @@
  * DataTable pattern every future module table copies.
  */
 import { Link, router } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
 import Button from '@/Core/Components/Button.vue';
@@ -29,7 +29,7 @@ function destroy(user) {
 </script>
 
 <template>
-    <AdminLayout title="کاربران">
+    <WorkspaceLayout title="کاربران">
         <PageHeader title="کاربران" subtitle="مدیریت حساب‌های کاربری میزکار">
             <template #actions>
                 <Button :href="ws('/users/create')">کاربر جدید</Button>
@@ -52,5 +52,5 @@ function destroy(user) {
                 <button class="text-red-600 hover:underline" @click="destroy(row)">حذف</button>
             </template>
         </DataTable>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

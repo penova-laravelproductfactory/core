@@ -5,7 +5,7 @@
  * Same shared form as Create; submits with PUT to store.products.update.
  */
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import Button from '@/Core/Components/Button.vue';
@@ -33,7 +33,7 @@ const form = useForm({
 </script>
 
 <template>
-    <AdminLayout :title="`ویرایش محصول — ${product.name}`">
+    <WorkspaceLayout :title="`ویرایش محصول — ${product.name}`">
         <PageHeader title="ویرایش محصول" :subtitle="product.name">
             <template #actions>
                 <Button variant="secondary" :href="ws('/store/products')">بازگشت به فهرست</Button>
@@ -48,5 +48,5 @@ const form = useForm({
                 @submit="form.put(ws(`/store/products/${props.product.id}`))"
             />
         </Card>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

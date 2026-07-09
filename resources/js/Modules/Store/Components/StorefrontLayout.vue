@@ -1,7 +1,7 @@
 <script setup>
 /**
  * Modules\Store — minimal public (guest) layout for the storefront and
- * checkout pages. Deliberately NOT AdminLayout: no sidebar, no auth
+ * checkout pages. Deliberately NOT WorkspaceLayout: no sidebar, no auth
  * chrome — just a brand bar with the cart shortcut. Products replace
  * this with a themed storefront later.
  */

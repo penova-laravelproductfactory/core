@@ -6,7 +6,7 @@
  * an order is a historical record, not editable state.
  */
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import Button from '@/Core/Components/Button.vue';
@@ -47,7 +47,7 @@ function togglePayment() {
 </script>
 
 <template>
-    <AdminLayout :title="`سفارش ${order.number}`">
+    <WorkspaceLayout :title="`سفارش ${order.number}`">
         <PageHeader title="جزئیات سفارش" :subtitle="order.number">
             <template #actions>
                 <Button variant="secondary" :href="ws('/store/orders')">بازگشت به فهرست</Button>
@@ -173,5 +173,5 @@ function togglePayment() {
                 </Card>
             </div>
         </div>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

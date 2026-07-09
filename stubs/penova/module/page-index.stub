@@ -4,7 +4,7 @@
  * {{ name }}IndexController via Inertia::render('Modules/{{ name }}/Index').
  * Replace the placeholder copy and grow the columns with the domain.
  */
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Button from '@/Core/Components/Button.vue';
 import Pagination from '@/Core/Components/Pagination.vue';
@@ -17,7 +17,7 @@ const formatDateTime = (iso) => (iso ?? '').slice(0, 16).replace('T', ' ');
 </script>
 
 <template>
-    <AdminLayout title="{{ name }}">
+    <WorkspaceLayout title="{{ name }}">
         <PageHeader title="{{ name }}" subtitle="TODO: زیرعنوان فارسی">
             <template #actions>
                 <Button href="/admin/{{ slug }}/create">ایجاد مورد جدید</Button>
@@ -51,5 +51,5 @@ const formatDateTime = (iso) => (iso ?? '').slice(0, 16).replace('T', ' ');
 
             <Pagination :links="items.links" />
         </div>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

@@ -10,6 +10,10 @@
  *
  * Every widget component receives the full descriptor as the `widget`
  * prop; widgets pull their data from the shared/page Inertia props.
+ *
+ * This path-resolution convention is a Core internal, not a declared public
+ * contract — it may change between releases (see app/Modules/README.md,
+ * "Frontend seam stability"). The declared contract is the Manifest (D-023).
  */
 import { computed, defineAsyncComponent } from 'vue';
 

@@ -5,7 +5,7 @@
  */
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
 import Modal from '@/Core/Components/Modal.vue';
@@ -52,7 +52,7 @@ function submit() {
 </script>
 
 <template>
-    <AdminLayout title="نقش‌ها و دسترسی‌ها">
+    <WorkspaceLayout title="نقش‌ها و دسترسی‌ها">
         <PageHeader title="نقش‌ها و دسترسی‌ها" subtitle="کنترل دسترسی مبتنی بر نقش">
             <template #actions>
                 <Button @click="openCreate">نقش جدید</Button>
@@ -94,5 +94,5 @@ function submit() {
                 </div>
             </form>
         </Modal>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

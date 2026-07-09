@@ -1,6 +1,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import TextInput from '@/Core/Components/TextInput.vue';
@@ -21,7 +21,7 @@ const form = useForm({
 </script>
 
 <template>
-    <AdminLayout title="کاربر جدید">
+    <WorkspaceLayout title="کاربر جدید">
         <PageHeader title="کاربر جدید">
             <template #actions>
                 <Button variant="secondary" :href="ws('/users')">بازگشت به فهرست</Button>
@@ -46,5 +46,5 @@ const form = useForm({
                 <Button type="submit" :disabled="form.processing">ایجاد کاربر</Button>
             </form>
         </Card>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

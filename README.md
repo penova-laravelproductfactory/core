@@ -19,18 +19,18 @@ Users and Roles
 
 Settings and White Label  
 - سیستم تنظیمات runtime با SettingsManager.  
-- صفحهٔ Settings شامل بخش Branding / White Label است: نام برند، لوگو، رنگ اصلی و متن فوتر را تنظیم می‌کنید و همان را در AdminLayout و صفحهٔ Welcome می‌بینید.
+- صفحهٔ Settings شامل بخش Branding / White Label است: نام برند، لوگو، رنگ اصلی و متن فوتر را تنظیم می‌کنید و همان را در WorkspaceLayout و صفحهٔ Welcome می‌بینید.
 
 Notifications  
 - استفاده از database notifications لاراول به عنوان سطح مشترک نوتیفیکیشن.  
-- یک صفحهٔ Notifications و badge اعلان‌ها در AdminLayout برای همهٔ ماژول‌ها قابل استفاده است.
+- یک صفحهٔ Notifications و badge اعلان‌ها در WorkspaceLayout برای همهٔ ماژول‌ها قابل استفاده است.
 
 Activity Logs  
 - ثبت خودکار created / updated / deleted برای مدل‌ها با trait RecordsActivity.  
 - صفحهٔ Logs در میزکار برای مشاهدهٔ فعالیت‌ها.
 
 Workspace UI and Components  
-- AdminLayout و GuestLayout آماده، مبتنی بر Vue 3، Inertia 2 و Tailwind 4.  
+- WorkspaceLayout و GuestLayout آماده، مبتنی بر Vue 3، Inertia 2 و Tailwind 4.  
 - کامپوننت‌های مشترک: Button، TextInput، Modal، Toast، Pagination، DataTable.
 
 DataTable Pattern  
@@ -98,7 +98,7 @@ php artisan serve
 
 در میزکار به Settings بروید و بخش White Label / Branding را باز کنید. می‌توانید این موارد را تنظیم کنید:
 
-- Brand name: نامی که در AdminLayout و صفحهٔ Welcome نمایش داده می‌شود.  
+- Brand name: نامی که در WorkspaceLayout و صفحهٔ Welcome نمایش داده می‌شود.  
 - Logo URL: لینک لوگوی برند (اختیاری).  
 - Primary color: رنگ اصلی (برای استفادهٔ آینده در theme).  
 - Footer text: متن پایین میزکار و صفحهٔ Welcome.
@@ -157,7 +157,7 @@ Core از ابتدا برای نصب ماژول‌های بیزنسی آماده
 ساختار frontend
 
 - resources/js/Core  
-  - Layouts: AdminLayout.vue، GuestLayout.vue  
+  - Layouts: WorkspaceLayout.vue، GuestLayout.vue  
   - Components: Button، TextInput، Modal، Toast، Pagination، DataTable  
   - Pages: Auth (Login، Register، Reset)، Workspace، Users، Roles، Settings، Logs، Notifications  
   - Welcome.vue: صفحهٔ خوش‌آمد Core در روت `/`

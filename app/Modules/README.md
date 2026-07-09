@@ -46,6 +46,18 @@ Both resolve automatically — no frontend registration step. The
 `Modules/Store/Widgets/ActiveProductsCard` →
 `resources/js/Modules/Store/Widgets/ActiveProductsCard.vue`.
 
+> **Frontend seam stability — internal, not a public contract.** The frontend
+> side of the Core↔module seam is a **convention, not a declared contract**: the
+> shared Inertia prop shapes (`menu`, `dashboardWidgets`, `widgetAreas`), the Vue
+> component-resolution paths (`Modules/<Name>/Pages|Widgets/**`), and the Core
+> layout/components a module imports (e.g. `WorkspaceLayout`) are **Core internals
+> that may change between releases**. The declared public contract is the
+> **Manifest** — its section shapes (D-023) — *not* the frontend props or paths
+> Core derives from them. Follow the conventions above, but do not treat the prop
+> shapes, resolution paths, or Core component names as stable API. A
+> deliberately-declared frontend extension contract, if ever introduced, will be a
+> separate governed surface.
+
 ## Wiring a module in
 
 Add its provider to `config/penova.php` — the **only** place a module
@@ -110,7 +122,7 @@ by `order`. Use `order >= 100` for module items.
     'key'   => 'store',          // unique across the panel
     'label' => 'فروشگاه',
     'route' => 'store.products.index', // route NAME — Core resolves the URL
-    'icon'  => 'bag',            // icon key; the map lives in AdminLayout.vue
+    'icon'  => 'bag',            // icon key; the map lives in WorkspaceLayout.vue
                                  // (home|users|shield|cog|clock|bell|calendar|bag|clipboard|sparkles|squares)
     'order' => 100,
     'permission' => 'store.view', // optional; hides the item from users

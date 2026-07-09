@@ -22,7 +22,7 @@ export default defineConfig({
     resolve: {
         alias: {
             // "@" resolves to resources/js so Core and Modules import the same way:
-            //   import AdminLayout from '@/Core/Layouts/AdminLayout.vue'
+            //   import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue'
             //   import BookingPage from '@/Modules/Booking/Pages/Index.vue'
             '@': '/resources/js',
         },

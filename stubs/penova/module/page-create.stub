@@ -5,7 +5,7 @@
  * Posts to {{ module }}.store; grow the fields with the domain.
  */
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import Button from '@/Core/Components/Button.vue';
@@ -20,7 +20,7 @@ const form = useForm({
 </script>
 
 <template>
-    <AdminLayout title="{{ name }} — ایجاد">
+    <WorkspaceLayout title="{{ name }} — ایجاد">
         <PageHeader title="ایجاد مورد جدید">
             <template #actions>
                 <Button variant="secondary" :href="ws('/{{ slug }}')">بازگشت به فهرست</Button>
@@ -34,5 +34,5 @@ const form = useForm({
                 <Button type="submit" :disabled="form.processing">ثبت</Button>
             </form>
         </Card>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>

@@ -2,14 +2,14 @@
 /**
  * Core Workspace — the post-install onboarding screen at /admin. Composed of
  * focused section components driven by the single `platform` prop. Navigation
- * stays in AdminLayout's shared `menu` prop, not here.
+ * stays in WorkspaceLayout's shared `menu` prop, not here.
  *
  * Task 5 ships the top of the page (hero, setup progress, get-started actions);
  * Task 6 adds installed modules, overview, health and What's New below.
  */
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
-import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
+import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import WorkspaceHero from '@/Core/Components/Workspace/WorkspaceHero.vue';
 import SetupProgress from '@/Core/Components/Workspace/SetupProgress.vue';
@@ -24,7 +24,7 @@ const platform = computed(() => usePage().props.platform);
 </script>
 
 <template>
-    <AdminLayout title="میزکار">
+    <WorkspaceLayout title="میزکار">
         <PageHeader title="میزکار" subtitle="مدیریت پلتفرم Penova" />
 
         <div class="space-y-8">
@@ -41,5 +41,5 @@ const platform = computed(() => usePage().props.platform);
 
             <WhatsNew :whats-new="platform.whatsNew" />
         </div>
-    </AdminLayout>
+    </WorkspaceLayout>
 </template>
