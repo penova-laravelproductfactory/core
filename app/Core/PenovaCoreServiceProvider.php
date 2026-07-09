@@ -38,12 +38,18 @@ class PenovaCoreServiceProvider extends ServiceProvider
         // user could only 403 on are filtered out of the sidebar
         // (per-request, in HandleInertiaRequests). Workspace and
         // notifications are open to every authenticated panel user.
-        ['key' => 'workspace', 'label' => 'میزکار', 'route' => 'penova.workspace', 'icon' => 'home', 'order' => 10],
-        ['key' => 'users', 'label' => 'کاربران', 'route' => 'penova.users.index', 'icon' => 'users', 'order' => 20, 'permission' => 'users.manage'],
-        ['key' => 'roles', 'label' => 'نقش‌ها و دسترسی‌ها', 'route' => 'penova.roles.index', 'icon' => 'shield', 'order' => 30, 'permission' => 'roles.manage'],
-        ['key' => 'settings', 'label' => 'تنظیمات', 'route' => 'penova.settings.index', 'icon' => 'cog', 'order' => 40, 'permission' => 'settings.manage'],
-        ['key' => 'logs', 'label' => 'گزارش فعالیت‌ها', 'route' => 'penova.logs.index', 'icon' => 'clock', 'order' => 50, 'permission' => 'logs.view'],
-        ['key' => 'notifications', 'label' => 'اعلان‌ها', 'route' => 'penova.notifications.index', 'icon' => 'bell', 'order' => 60],
+        // Core items carry a 'label_key' (a catalog key under ui.nav) instead
+        // of a literal 'label'; HandleInertiaRequests resolves it to the active
+        // locale at share time (RFC-005 / D-027, menu Option B). Module menu
+        // items keep providing a literal 'label' — the presence of 'label_key'
+        // is the explicit Core-origin marker, so Module labels are never
+        // reinterpreted as catalog keys.
+        ['key' => 'workspace', 'label_key' => 'ui.nav.workspace', 'route' => 'penova.workspace', 'icon' => 'home', 'order' => 10],
+        ['key' => 'users', 'label_key' => 'ui.nav.users', 'route' => 'penova.users.index', 'icon' => 'users', 'order' => 20, 'permission' => 'users.manage'],
+        ['key' => 'roles', 'label_key' => 'ui.nav.roles', 'route' => 'penova.roles.index', 'icon' => 'shield', 'order' => 30, 'permission' => 'roles.manage'],
+        ['key' => 'settings', 'label_key' => 'ui.nav.settings', 'route' => 'penova.settings.index', 'icon' => 'cog', 'order' => 40, 'permission' => 'settings.manage'],
+        ['key' => 'logs', 'label_key' => 'ui.nav.logs', 'route' => 'penova.logs.index', 'icon' => 'clock', 'order' => 50, 'permission' => 'logs.view'],
+        ['key' => 'notifications', 'label_key' => 'ui.nav.notifications', 'route' => 'penova.notifications.index', 'icon' => 'bell', 'order' => 60],
     ];
 
     /**

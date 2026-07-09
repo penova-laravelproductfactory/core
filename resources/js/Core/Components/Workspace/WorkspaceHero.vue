@@ -6,8 +6,11 @@
  * live here, that's SetupProgress and GetStartedActions below.
  */
 import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({ platform: { type: Object, required: true } });
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -21,7 +24,7 @@ defineProps({ platform: { type: Object, required: true } });
         <div class="relative">
             <div class="flex flex-wrap items-center gap-3">
                 <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                    Welcome to Penova Core
+                    {{ t('home.hero_welcome') }}
                 </h1>
                 <span class="rounded-full bg-brand/10 px-3 py-1 text-xs font-bold tracking-wide text-brand">
                     v{{ platform.version }}
@@ -29,7 +32,7 @@ defineProps({ platform: { type: Object, required: true } });
             </div>
 
             <p class="mt-3 max-w-2xl text-base leading-relaxed text-slate-600">
-                Start your next Laravel product in minutes instead of weeks.
+                {{ t('home.hero_tagline') }}
             </p>
 
             <div class="mt-7 flex flex-wrap gap-2 text-sm font-semibold">
@@ -39,7 +42,7 @@ defineProps({ platform: { type: Object, required: true } });
                     rel="noopener"
                     class="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-slate-700 transition-colors hover:bg-slate-50 hover:text-brand"
                 >
-                    Documentation
+                    {{ t('home.link_documentation') }}
                     <ArrowTopRightOnSquareIcon class="size-4 text-slate-400" />
                 </a>
                 <a
@@ -57,7 +60,7 @@ defineProps({ platform: { type: Object, required: true } });
                     rel="noopener"
                     class="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-slate-700 transition-colors hover:bg-slate-50 hover:text-brand"
                 >
-                    Release Notes
+                    {{ t('home.link_release_notes') }}
                     <ArrowTopRightOnSquareIcon class="size-4 text-slate-400" />
                 </a>
             </div>

@@ -8,6 +8,7 @@
  */
 import { computed } from 'vue';
 import { Head, usePage } from '@inertiajs/vue3';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({
     // Optional document title, e.g. <GuestLayout title="Log in">.
@@ -15,6 +16,7 @@ defineProps({
 });
 
 const appName = computed(() => usePage().props.app.name);
+const { t } = useI18n();
 </script>
 
 <template>
@@ -24,14 +26,14 @@ const appName = computed(() => usePage().props.app.name);
         <div class="w-full max-w-md rounded-lg bg-white p-8 shadow">
             <div class="mb-6 text-center">
                 <div class="text-2xl font-semibold text-slate-900">{{ appName }}</div>
-                <div class="mt-1 text-sm text-slate-500">کارخانه ساخت محصولات لاراول</div>
+                <div class="mt-1 text-sm text-slate-500">{{ t('shell.tagline') }}</div>
             </div>
 
             <slot />
         </div>
 
         <footer class="mt-6 text-xs text-slate-400">
-            © {{ appName }} – هستهٔ توسعه محصول با لاراول
+            © {{ appName }} – {{ t('shell.guest_footer') }}
         </footer>
     </div>
 </template>

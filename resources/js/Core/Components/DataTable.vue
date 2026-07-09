@@ -10,9 +10,10 @@
  * columns: [{ key: 'name', label: 'نام', sortable: true }, ...]
  * Cell rendering can be customized per column with a #cell-<key> slot.
  */
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
 import Pagination from '@/Core/Components/Pagination.vue';
+import { useI18n } from '@/Core/composables/i18n';
 
 const props = defineProps({
     paginator: { type: Object, required: true }, // Laravel LengthAwarePaginator JSON
@@ -22,10 +23,15 @@ const props = defineProps({
     // Changing a value triggers a reload; empty values are dropped from
     // the URL. DataTableBuilder-side, apply them with ->when() clauses.
     params: { type: Object, default: () => ({}) },
-    // Tell users WHAT the search matches ("جستجو در نام یا SKU…") —
-    // a generic "جستجو…" hides the feature's real reach.
-    searchPlaceholder: { type: String, default: 'جستجو…' },
+    // Tell users WHAT the search matches (e.g. "Search name or SKU…") — a
+    // page passing its own value keeps it; omitted, it falls back to the
+    // generic catalog placeholder below.
+    searchPlaceholder: { type: String, default: '' },
 });
+
+const { t } = useI18n();
+
+const placeholder = computed(() => props.searchPlaceholder || t('table.search_placeholder'));
 
 const search = ref(new URLSearchParams(window.location.search).get('search') ?? '');
 const sort = ref(new URLSearchParams(window.location.search).get('sort') ?? '');
@@ -66,7 +72,7 @@ function toggleSort(column) {
         <input
             v-model="search"
             type="search"
-            :placeholder="searchPlaceholder"
+            :placeholder="placeholder"
             class="block w-64 rounded-md border-0 px-3 py-2 text-sm shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-brand"
         />
 
@@ -102,7 +108,7 @@ function toggleSort(column) {
 
                     <tr v-if="paginator.data.length === 0">
                         <td :colspan="columns.length + 1" class="px-4 py-8 text-center text-slate-400">
-                            موردی یافت نشد.
+                            {{ t('table.no_results') }}
                         </td>
                     </tr>
                 </tbody>

@@ -36,6 +36,7 @@ import {
 } from '@heroicons/vue/24/outline';
 import Toast from '@/Core/Components/Toast.vue';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({
     // Optional document title; pages may also render <Head> themselves.
@@ -44,6 +45,7 @@ defineProps({
 
 const page = usePage();
 const ws = useWorkspacePath();
+const { t } = useI18n();
 
 const user = computed(() => page.props.auth.user);
 const unread = computed(() => page.props.unreadNotifications);
@@ -99,7 +101,7 @@ const isActive = (item) => {
                     <div class="truncate text-lg font-bold tracking-wide">
                         {{ branding.name || 'Penova Core' }}
                     </div>
-                    <div class="text-xs text-slate-400">میزکار محصولات شما</div>
+                    <div class="text-xs text-slate-400">{{ t('shell.workspace_subtitle') }}</div>
                 </div>
             </div>
 
@@ -160,7 +162,7 @@ const isActive = (item) => {
                                 as="button"
                                 class="block w-full px-4 py-2 text-start text-sm text-slate-700 hover:bg-slate-50"
                             >
-                                خروج
+                                {{ t('common.logout') }}
                             </Link>
                         </div>
                     </div>

@@ -6,14 +6,17 @@
  * gets an inviting empty state instead of a blank grid.
  */
 import { PuzzlePieceIcon } from '@heroicons/vue/24/outline';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({ modules: { type: Array, required: true } });
+
+const { t } = useI18n();
 </script>
 
 <template>
     <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
         <div class="flex items-center justify-between gap-4">
-            <h2 class="text-lg font-bold text-slate-900">Installed Modules</h2>
+            <h2 class="text-lg font-bold text-slate-900">{{ t('home.modules_heading') }}</h2>
             <span v-if="modules.length" class="text-sm font-semibold text-slate-500">{{ modules.length }}</span>
         </div>
 
@@ -39,7 +42,7 @@ defineProps({ modules: { type: Array, required: true } });
 
                 <span class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
                     <span class="size-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
-                    Ready
+                    {{ t('status.ready') }}
                 </span>
             </article>
         </div>
@@ -48,8 +51,8 @@ defineProps({ modules: { type: Array, required: true } });
             <span class="flex size-12 items-center justify-center rounded-full bg-slate-50 text-slate-300">
                 <PuzzlePieceIcon class="size-6" />
             </span>
-            <p class="mt-4 text-base font-bold text-slate-900">Your platform is ready.</p>
-            <p class="mt-1 max-w-sm text-sm text-slate-500">Install your first business module to turn Penova Core into a real product.</p>
+            <p class="mt-4 text-base font-bold text-slate-900">{{ t('home.modules_empty_title') }}</p>
+            <p class="mt-1 max-w-sm text-sm text-slate-500">{{ t('home.modules_empty_body') }}</p>
         </div>
     </section>
 </template>

@@ -9,30 +9,32 @@ import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
 import Button from '@/Core/Components/Button.vue';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({ users: Object });
 
 const ws = useWorkspacePath();
+const { t } = useI18n();
 
 const columns = [
-    { key: 'name', label: 'نام', sortable: true },
-    { key: 'email', label: 'ایمیل', sortable: true },
-    { key: 'roles', label: 'نقش' },
-    { key: 'created_at', label: 'تاریخ ایجاد', sortable: true },
+    { key: 'name', label: t('common.name'), sortable: true },
+    { key: 'email', label: t('common.email'), sortable: true },
+    { key: 'roles', label: t('common.role') },
+    { key: 'created_at', label: t('users.col_created'), sortable: true },
 ];
 
 function destroy(user) {
-    if (confirm(`کاربر «${user.name}» حذف شود؟`)) {
+    if (confirm(t('users.confirm_delete', { name: user.name }))) {
         router.delete(ws(`/users/${user.id}`), { preserveScroll: true });
     }
 }
 </script>
 
 <template>
-    <WorkspaceLayout title="کاربران">
-        <PageHeader title="کاربران" subtitle="مدیریت حساب‌های کاربری میزکار">
+    <WorkspaceLayout :title="t('users.title')">
+        <PageHeader :title="t('users.title')" :subtitle="t('users.subtitle')">
             <template #actions>
-                <Button :href="ws('/users/create')">کاربر جدید</Button>
+                <Button :href="ws('/users/create')">{{ t('users.new') }}</Button>
             </template>
         </PageHeader>
 
@@ -48,8 +50,8 @@ function destroy(user) {
             </template>
 
             <template #actions="{ row }">
-                <Link :href="ws(`/users/${row.id}/edit`)" class="me-3 text-brand hover:underline">ویرایش</Link>
-                <button class="text-red-600 hover:underline" @click="destroy(row)">حذف</button>
+                <Link :href="ws(`/users/${row.id}/edit`)" class="me-3 text-brand hover:underline">{{ t('common.edit') }}</Link>
+                <button class="text-red-600 hover:underline" @click="destroy(row)">{{ t('common.delete') }}</button>
             </template>
         </DataTable>
     </WorkspaceLayout>

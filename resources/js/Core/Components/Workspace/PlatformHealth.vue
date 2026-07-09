@@ -6,13 +6,16 @@
  * demand analysis.
  */
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({ health: { type: Array, required: true } });
+
+const { t } = useI18n();
 </script>
 
 <template>
     <section class="rounded-2xl border border-slate-200 bg-white p-5">
-        <h2 class="text-xs font-semibold uppercase tracking-wide text-slate-400">Platform Health</h2>
+        <h2 class="text-xs font-semibold uppercase tracking-wide text-slate-400">{{ t('home.health_heading') }}</h2>
 
         <ul class="mt-2 divide-y divide-slate-100">
             <li v-for="h in health" :key="h.key" class="flex items-center justify-between gap-3 py-2.5">
@@ -29,7 +32,7 @@ defineProps({ health: { type: Array, required: true } });
                     <span
                         class="rounded-full px-2 py-0.5 text-xs font-semibold"
                         :class="h.status === 'ready' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'"
-                    >{{ h.status === 'ready' ? 'Ready' : 'Warning' }}</span>
+                    >{{ h.status === 'ready' ? t('status.ready') : t('status.warning') }}</span>
                 </span>
             </li>
         </ul>

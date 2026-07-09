@@ -10,18 +10,20 @@ import PageHeader from '@/Core/Components/PageHeader.vue';
 import Pagination from '@/Core/Components/Pagination.vue';
 import Button from '@/Core/Components/Button.vue';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({ notifications: Object });
 
 const ws = useWorkspacePath();
+const { t } = useI18n();
 const markRead = (id) => router.put(ws(`/notifications/${id}/read`), {}, { preserveScroll: true });
 </script>
 
 <template>
-    <WorkspaceLayout title="اعلان‌ها">
-        <PageHeader title="اعلان‌ها" subtitle="اعلان‌های حساب کاربری شما">
+    <WorkspaceLayout :title="t('notifications.title')">
+        <PageHeader :title="t('notifications.title')" :subtitle="t('notifications.subtitle')">
             <template #actions>
-                <Button variant="secondary" @click="markRead('all')">علامت‌گذاری همه به‌عنوان خوانده‌شده</Button>
+                <Button variant="secondary" @click="markRead('all')">{{ t('notifications.mark_all_read') }}</Button>
             </template>
         </PageHeader>
 
@@ -44,12 +46,12 @@ const markRead = (id) => router.put(ws(`/notifications/${id}/read`), {}, { prese
                     class="shrink-0 text-sm text-brand hover:underline"
                     @click="markRead(notification.id)"
                 >
-                    خوانده شد
+                    {{ t('notifications.mark_read') }}
                 </button>
             </div>
 
             <p v-if="notifications.data.length === 0" class="py-8 text-center text-slate-400">
-                فعلاً اعلانی ندارید.
+                {{ t('notifications.empty') }}
             </p>
         </div>
 

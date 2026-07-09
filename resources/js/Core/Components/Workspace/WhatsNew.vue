@@ -7,8 +7,11 @@
 import { ref } from 'vue';
 import { SparklesIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { useDismiss } from '@/Core/composables/useDismiss';
+import { useI18n } from '@/Core/composables/i18n';
 
 const props = defineProps({ whatsNew: { type: Object, default: null } });
+
+const { t } = useI18n();
 
 // Only build the key / touch localStorage when there is a changelog entry to
 // dismiss — preserves the null-safe behaviour for fresh installs.
@@ -25,7 +28,7 @@ const { dismissed, dismiss } = props.whatsNew
         <button
             type="button"
             class="absolute inset-e-3 top-3 rounded-lg p-1 text-slate-300 transition-colors hover:bg-slate-100 hover:text-slate-500"
-            aria-label="بستن"
+            :aria-label="t('common.close')"
             @click="dismiss"
         >
             <XMarkIcon class="size-4" />
@@ -37,7 +40,7 @@ const { dismissed, dismiss } = props.whatsNew
             </span>
             <div>
                 <div class="flex flex-wrap items-center gap-2">
-                    <h2 class="text-sm font-bold text-slate-900">What's New in v{{ whatsNew.version }}</h2>
+                    <h2 class="text-sm font-bold text-slate-900">{{ t('home.whats_new', { version: whatsNew.version }) }}</h2>
                     <span class="text-xs text-slate-400">{{ whatsNew.date }}</span>
                 </div>
                 <ul class="mt-2 space-y-1">

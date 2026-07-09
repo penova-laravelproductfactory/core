@@ -17,45 +17,47 @@ import {
     ChevronLeftIcon,
 } from '@heroicons/vue/24/outline';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
+import { useI18n } from '@/Core/composables/i18n';
 
 const props = defineProps({ links: { type: Object, required: true } });
 
 const ws = useWorkspacePath();
+const { t } = useI18n();
 
 const cards = computed(() => [
     {
         key: 'first-module',
         icon: PuzzlePieceIcon,
-        title: 'Create your first Module',
-        description: 'Scaffold a new business module with the generator.',
+        title: t('home.gs_module_title'),
+        description: t('home.gs_module_desc'),
         href: props.links.documentation,
     },
     {
         key: 'branding',
         icon: SwatchIcon,
-        title: 'Configure Branding',
-        description: 'Make the Workspace yours before shipping.',
+        title: t('home.configure_branding'),
+        description: t('home.gs_branding_desc'),
         href: ws('/settings'),
     },
     {
         key: 'first-resource',
         icon: RectangleStackIcon,
-        title: 'Create your first Resource',
-        description: 'Generate a CRUD resource in minutes.',
+        title: t('home.gs_resource_title'),
+        description: t('home.gs_resource_desc'),
         href: props.links.documentation,
     },
     {
         key: 'users-roles',
         icon: UserGroupIcon,
-        title: 'Manage Users & Roles',
-        description: 'Control who can access what.',
+        title: t('home.gs_users_title'),
+        description: t('home.gs_users_desc'),
         href: ws('/users'),
     },
     {
         key: 'documentation',
         icon: BookOpenIcon,
-        title: 'Read Documentation',
-        description: 'Everything you need to ship faster.',
+        title: t('home.gs_docs_title'),
+        description: t('home.gs_docs_desc'),
         href: props.links.documentation,
     },
 ].map((card) => ({ ...card, internal: card.href.startsWith('/') })));
@@ -63,7 +65,7 @@ const cards = computed(() => [
 
 <template>
     <section>
-        <h2 class="text-lg font-bold text-slate-900">برای شروع</h2>
+        <h2 class="text-lg font-bold text-slate-900">{{ t('home.get_started') }}</h2>
 
         <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <component

@@ -8,10 +8,12 @@
 
 /*
 |--------------------------------------------------------------------------
-| Yekan Bakh (FaNum) — the Penova panel typeface
+| Yekan Bakh (FaNum) — the Persian presentation typeface
 |--------------------------------------------------------------------------
 | Served from public/fonts/Yekan-Bakh. The FaNum cut renders Persian
-| numerals, which is what the panel wants everywhere.
+| numerals. It is applied ONLY under the Persian locale (see the
+| html[lang="fa"] rule below), never as a global default — Core's default
+| presentation is locale-neutral (RFC-005 / D-027).
 */
 @font-face {
     font-family: 'Yekan Bakh';
@@ -41,13 +43,15 @@
 |--------------------------------------------------------------------------
 | Design tokens (Tailwind 4 @theme)
 |--------------------------------------------------------------------------
-| --font-sans: Yekan Bakh becomes the global default (font-sans).
-| --font-yekan: explicit alias, usable as `font-yekan`.
+| --font-sans: the locale-neutral base font (font-sans), Latin numerals.
+|   This is the default for every locale; the Persian face is layered on
+|   top only under html[lang="fa"] (RFC-005 / D-027).
+| --font-yekan: explicit Persian (Yekan Bakh) alias, usable as `font-yekan`.
 | --color-brand: the Penova red — generates bg-brand, text-brand,
 |   ring-brand, … `brand-hover` is the pressed/hover shade.
 */
 @theme {
-    --font-sans: 'Yekan Bakh', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     --font-yekan: 'Yekan Bakh', ui-sans-serif, system-ui, sans-serif;
 
@@ -74,10 +78,22 @@
 }
 
 /*
-| RTL baseline — the <html> element carries dir="rtl" (see
-| resources/views/app.blade.php). Flex/grid and logical utilities
-| (ms-*, me-*, start-*, end-*, text-start) follow it automatically, so
-| adding an LTR locale later only means switching that attribute.
+| Persian presentation layer (RFC-005 / D-027) — the Yekan Bakh (FaNum)
+| face applies ONLY when the active locale is Persian. The <html lang>
+| attribute is locale-driven (resources/views/app.blade.php), so any non-fa
+| install keeps the neutral base font and Latin numerals. Written unlayered
+| so it wins over the `font-sans` utility on <body> regardless of Tailwind's
+| layer order; presentation only — no number/date formatting machinery.
+*/
+html[lang="fa"] body {
+    font-family: var(--font-yekan);
+}
+
+/*
+| Direction baseline — the <html> element's dir follows the active locale
+| (resources/views/app.blade.php): rtl for Persian, ltr by default. Flex/grid
+| and logical utilities (ms-*, me-*, start-*, end-*, text-start) follow that
+| attribute automatically, so no locale hardcodes a direction here.
 */
 @layer base {
     body {

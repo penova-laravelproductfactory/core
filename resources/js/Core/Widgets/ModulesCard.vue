@@ -8,19 +8,19 @@
  * the edges as Modules, never inside Core.
  */
 import Card from '@/Core/Components/Card.vue';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({
     widget: Object,
 });
+
+const { t } = useI18n();
 </script>
 
 <template>
     <Card :title="widget.title">
-        <p class="text-sm leading-relaxed text-slate-600">
-            قابلیت‌های تجاری Penova به‌صورت <strong>ماژول</strong> اضافه
-            می‌شوند (مثل فروشگاه، رزرو، CRM، CMS و …). هر ماژول ویجت‌هایش را با
-            یک descriptor ساده از service provider خودش ثبت می‌کند و در همین
-            grid ظاهر می‌شود — بدون دست‌زدن به Core.
-        </p>
+        <!-- Body carries one inline <strong>; the catalog value is
+             developer-authored (not user input), so v-html is safe here. -->
+        <p class="text-sm leading-relaxed text-slate-600" v-html="t('widgets.modules_body')" />
     </Card>
 </template>

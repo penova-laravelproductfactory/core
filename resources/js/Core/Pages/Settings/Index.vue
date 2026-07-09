@@ -12,8 +12,10 @@ import TextInput from '@/Core/Components/TextInput.vue';
 import TextArea from '@/Core/Components/TextArea.vue';
 import Button from '@/Core/Components/Button.vue';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
+import { useI18n } from '@/Core/composables/i18n';
 
 const ws = useWorkspacePath();
+const { t } = useI18n();
 
 const props = defineProps({ settings: Object });
 
@@ -35,42 +37,42 @@ const form = useForm({
 </script>
 
 <template>
-    <WorkspaceLayout title="تنظیمات">
-        <PageHeader title="تنظیمات" subtitle="پیکربندی سایت، قابل ویرایش توسط مدیران" />
+    <WorkspaceLayout :title="t('settings.title')">
+        <PageHeader :title="t('settings.title')" :subtitle="t('settings.subtitle')" />
 
         <form class="max-w-3xl space-y-6" @submit.prevent="form.put(ws('/settings'))">
             <Card>
                 <div class="space-y-4">
-                    <TextInput v-model="form.settings.site_name" label="نام سایت" />
-                    <TextInput v-model="form.settings.contact_email" label="ایمیل تماس" type="email" />
+                    <TextInput v-model="form.settings.site_name" :label="t('settings.site_name')" />
+                    <TextInput v-model="form.settings.contact_email" :label="t('settings.contact_email')" type="email" />
                 </div>
             </Card>
 
-            <Card title="White Label / Branding">
+            <Card :title="t('settings.branding_card')">
                 <p class="mb-4 text-sm text-slate-500">
-                    نام برند و برندینگ Core را برای میزکار و صفحهٔ خوش‌آمد تنظیم کنید.
+                    {{ t('settings.branding_help') }}
                 </p>
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <TextInput
                         v-model="form.settings.branding.name"
-                        label="Brand name"
+                        :label="t('settings.brand_name')"
                         :error="form.errors['settings.branding.name']"
                     />
                     <TextInput
                         v-model="form.settings.branding.logo_url"
-                        label="Logo URL"
+                        :label="t('settings.logo_url')"
                         :error="form.errors['settings.branding.logo_url']"
                     />
                     <TextInput
                         v-model="form.settings.branding.primary_color"
-                        label="Primary color (hex)"
+                        :label="t('settings.primary_color')"
                         :error="form.errors['settings.branding.primary_color']"
                     />
                     <div class="md:col-span-2">
                         <TextArea
                             v-model="form.settings.branding.footer_text"
-                            label="Footer text"
+                            :label="t('settings.footer_text')"
                             :rows="2"
                             :error="form.errors['settings.branding.footer_text']"
                         />
@@ -78,7 +80,7 @@ const form = useForm({
                 </div>
             </Card>
 
-            <Button type="submit" :disabled="form.processing">ذخیره تنظیمات</Button>
+            <Button type="submit" :disabled="form.processing">{{ t('settings.save') }}</Button>
         </form>
     </WorkspaceLayout>
 </template>

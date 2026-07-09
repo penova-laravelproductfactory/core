@@ -33,3 +33,45 @@ Core is complete on its own; commerce is a Module you opt into.
 
   No code was removed — Store still ships in the repository — so recovery is a
   configuration/composition change only.
+
+---
+
+## Core is locale-neutral, English by default (RFC-005 / D-027)
+
+**Default changed.** Core no longer ships Persian as its built-in language and
+identity. The panel is now internationalized: user-facing text lives in
+per-locale catalogs (`lang/en`, `lang/fa`), the base and fallback language is
+**English**, and the default install renders **English, left-to-right, with
+Latin numerals**. Persian is a first-party, opt-in **supported locale** — never
+the default.
+
+- **Impact.** A deployment that relied on Core rendering Persian out of the box
+  will, after upgrading, render English until Persian is selected. Text
+  direction follows the active locale (LTR by default, RTL under Persian), and
+  the Persian font (Yekan Bakh) plus Persian numerals apply only under the
+  Persian locale.
+- **Why MAJOR.** No API, route, config key, or identifier changed, but the
+  shipped *default language and direction* change in a way every user observes —
+  so it lands in a MAJOR release with this migration note.
+- **Recovery path.** To keep the Persian experience, select Persian as the
+  application locale:
+  ```dotenv
+  # .env
+  APP_LOCALE=fa
+  ```
+  That restores Persian copy, right-to-left layout, the Persian font, and
+  Persian numerals. The English base remains the fallback: any catalog key not
+  translated in `lang/fa` falls back to its English value rather than showing a
+  raw key.
+
+**Out of scope (unchanged by this release).** Core internationalizes *language*,
+not *regional behavior*. Jalali calendars, locale-aware number/currency
+formatting, and other regional conventions are not part of Core; the only locale
+metadata Core standardizes is text direction. Persian-Indic number formatting a
+Module performs (e.g. `toLocaleString('fa-IR')` in Module pages) is the Module's
+own concern and is untouched.
+
+**No identifiers moved.** Route names, permission slugs, menu keys, config keys,
+and every other contract identifier are locale-invariant — only the human-facing
+label a user reads is translated. Menu labels Core owns are resolved per-locale;
+labels a Module provides remain the Module's own literal text.

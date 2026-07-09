@@ -43,6 +43,19 @@ class HandleInertiaRequests extends Middleware
                 'prefix' => config('penova.workspace.prefix'),
             ],
 
+            // The active locale, its text direction (the only locale metadata
+            // Core standardizes — RFC-005 / D-027), and the frontend message
+            // catalog for that locale with the English base merged under it so a
+            // missing translation falls back to English. Laravel PHP catalogs
+            // (lang/en, lang/fa) are the single source of truth; the SPA reads
+            // these via the useI18n() composable.
+            'locale' => $locale = app()->getLocale(),
+            'direction' => \App\Core\Support\Locale::direction($locale),
+            'messages' => array_replace_recursive(
+                is_array($base = trans('ui', [], config('app.fallback_locale'))) ? $base : [],
+                is_array($active = trans('ui', [], $locale)) ? $active : [],
+            ),
+
             // Resolved White Label branding: runtime settings (admin-owned)
             // layered over config/penova.php defaults, so every page — the
             // admin shell and the public welcome page — always gets complete
@@ -65,10 +78,16 @@ class HandleInertiaRequests extends Middleware
             // Sidebar items (Core + Modules, order-sorted, permission-
             // filtered). Route names are resolved to URLs here — at
             // request time, when all module routes are registered.
+            //
+            // Core items carry a 'label_key' resolved to the active locale
+            // here (RFC-005 / D-027, menu Option B); Module items carry a
+            // literal 'label' and pass through untouched — the 'label_key'
+            // marker is Core-only, so Module labels are never translated.
             'menu' => collect(app('penova.menu'))
                 ->filter($allowed)
                 ->map(fn (array $item) => [
                     ...$item,
+                    'label' => isset($item['label_key']) ? __($item['label_key']) : ($item['label'] ?? ''),
                     'href' => Route::has($item['route']) ? route($item['route'], absolute: false) : '#',
                 ])
                 ->values()

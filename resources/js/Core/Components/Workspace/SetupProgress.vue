@@ -9,8 +9,11 @@
 import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { CheckIcon, ChevronLeftIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
+import { useI18n } from '@/Core/composables/i18n';
 
 const props = defineProps({ onboarding: { type: Object, required: true } });
+
+const { t } = useI18n();
 
 const done = computed(() => props.onboarding.steps.filter((s) => s.done).length);
 const total = computed(() => props.onboarding.steps.length);
@@ -21,7 +24,7 @@ const isInternal = (href) => href?.startsWith('/');
 <template>
     <section class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
         <div class="flex items-center justify-between gap-4">
-            <h2 class="text-lg font-bold text-slate-900">راه‌اندازی پلتفرم</h2>
+            <h2 class="text-lg font-bold text-slate-900">{{ t('home.setup_heading') }}</h2>
             <span class="text-sm font-semibold text-slate-500">{{ done }}/{{ total }}</span>
         </div>
 
@@ -72,7 +75,7 @@ const isInternal = (href) => href?.startsWith('/');
         </ul>
 
         <div class="mt-6 border-t border-slate-100 pt-5">
-            <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Keep building</p>
+            <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">{{ t('home.keep_building') }}</p>
             <ul class="space-y-1">
                 <li
                     v-for="g in onboarding.guidance"

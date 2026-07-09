@@ -19,13 +19,15 @@ import PlatformOverview from '@/Core/Components/Workspace/PlatformOverview.vue';
 import PlatformHealth from '@/Core/Components/Workspace/PlatformHealth.vue';
 import BrandingReminder from '@/Core/Components/Workspace/BrandingReminder.vue';
 import WhatsNew from '@/Core/Components/Workspace/WhatsNew.vue';
+import { useI18n } from '@/Core/composables/i18n';
 
 const platform = computed(() => usePage().props.platform);
+const { t } = useI18n();
 </script>
 
 <template>
-    <WorkspaceLayout title="میزکار">
-        <PageHeader title="میزکار" subtitle="مدیریت پلتفرم Penova" />
+    <WorkspaceLayout :title="t('workspace.title')">
+        <PageHeader :title="t('workspace.title')" :subtitle="t('workspace.subtitle')" />
 
         <div class="space-y-8">
             <WorkspaceHero :platform="platform" />

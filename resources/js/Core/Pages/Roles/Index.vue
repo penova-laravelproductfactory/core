@@ -12,15 +12,17 @@ import Modal from '@/Core/Components/Modal.vue';
 import TextInput from '@/Core/Components/TextInput.vue';
 import Button from '@/Core/Components/Button.vue';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
+import { useI18n } from '@/Core/composables/i18n';
 
 const props = defineProps({ roles: Object, permissions: Array });
 
 const ws = useWorkspacePath();
+const { t } = useI18n();
 
 const columns = [
-    { key: 'name', label: 'نام', sortable: true },
-    { key: 'slug', label: 'شناسه (slug)' },
-    { key: 'users_count', label: 'تعداد کاربران' },
+    { key: 'name', label: t('common.name'), sortable: true },
+    { key: 'slug', label: t('roles.col_slug') },
+    { key: 'users_count', label: t('roles.col_users_count') },
 ];
 
 const showModal = ref(false);
@@ -52,26 +54,26 @@ function submit() {
 </script>
 
 <template>
-    <WorkspaceLayout title="نقش‌ها و دسترسی‌ها">
-        <PageHeader title="نقش‌ها و دسترسی‌ها" subtitle="کنترل دسترسی مبتنی بر نقش">
+    <WorkspaceLayout :title="t('roles.title')">
+        <PageHeader :title="t('roles.title')" :subtitle="t('roles.subtitle')">
             <template #actions>
-                <Button @click="openCreate">نقش جدید</Button>
+                <Button @click="openCreate">{{ t('roles.new') }}</Button>
             </template>
         </PageHeader>
 
         <DataTable :paginator="props.roles" :columns="columns">
             <template #actions="{ row }">
-                <button class="text-brand hover:underline" @click="openEdit(row)">ویرایش</button>
+                <button class="text-brand hover:underline" @click="openEdit(row)">{{ t('common.edit') }}</button>
             </template>
         </DataTable>
 
-        <Modal :show="showModal" :title="editing ? 'ویرایش نقش' : 'نقش جدید'" @close="showModal = false">
+        <Modal :show="showModal" :title="editing ? t('roles.edit_title') : t('roles.new')" @close="showModal = false">
             <form class="space-y-4" @submit.prevent="submit">
-                <TextInput v-model="form.name" label="نام" required :error="form.errors.name" />
-                <TextInput v-if="!editing" v-model="form.slug" label="شناسه (slug)" required :error="form.errors.slug" />
+                <TextInput v-model="form.name" :label="t('common.name')" required :error="form.errors.name" />
+                <TextInput v-if="!editing" v-model="form.slug" :label="t('roles.col_slug')" required :error="form.errors.slug" />
 
                 <fieldset>
-                    <legend class="mb-1 text-sm font-medium text-slate-700">دسترسی‌ها</legend>
+                    <legend class="mb-1 text-sm font-medium text-slate-700">{{ t('roles.permissions_legend') }}</legend>
                     <label
                         v-for="permission in props.permissions"
                         :key="permission.id"
@@ -89,8 +91,8 @@ function submit() {
                 </fieldset>
 
                 <div class="flex justify-end gap-2">
-                    <Button variant="secondary" @click="showModal = false">انصراف</Button>
-                    <Button type="submit" :disabled="form.processing">ذخیره</Button>
+                    <Button variant="secondary" @click="showModal = false">{{ t('common.cancel') }}</Button>
+                    <Button type="submit" :disabled="form.processing">{{ t('common.save') }}</Button>
                 </div>
             </form>
         </Modal>

@@ -6,10 +6,13 @@
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import Card from '@/Core/Components/Card.vue';
+import { useI18n } from '@/Core/composables/i18n';
 
 defineProps({
     widget: Object,
 });
+
+const { t } = useI18n();
 
 const items = computed(() => usePage().props.recentActivity ?? []);
 </script>
@@ -22,6 +25,6 @@ const items = computed(() => usePage().props.recentActivity ?? []);
                 <span class="shrink-0 text-xs text-slate-400">{{ item.time }}</span>
             </li>
         </ul>
-        <p v-else class="text-sm leading-relaxed text-slate-400">فعلاً فعالیتی ثبت نشده است.</p>
+        <p v-else class="text-sm leading-relaxed text-slate-400">{{ t('widgets.no_activity') }}</p>
     </Card>
 </template>

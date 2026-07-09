@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-{{-- Persian-only for now; when more locales land, derive dir/lang from
-     the active locale instead of hard-coding. --}}
-<html lang="fa" dir="rtl">
+{{-- lang + dir follow the active locale (RFC-005 / D-027): Core is
+     locale-neutral, English by default, and honours APP_LOCALE. --}}
+@php($locale = app()->getLocale())
+<html lang="{{ $locale }}" dir="{{ \App\Core\Support\Locale::direction($locale) }}">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

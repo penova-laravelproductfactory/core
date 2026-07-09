@@ -16,10 +16,13 @@
  * "Frontend seam stability"). The declared contract is the Manifest (D-023).
  */
 import { computed, defineAsyncComponent } from 'vue';
+import { useI18n } from '@/Core/composables/i18n';
 
 const props = defineProps({
     widget: { type: Object, required: true },
 });
+
+const { t } = useI18n();
 
 const coreWidgets = import.meta.glob('../Widgets/**/*.vue');
 const moduleWidgets = import.meta.glob('../../Modules/*/Widgets/**/*.vue');
@@ -41,6 +44,6 @@ const resolved = computed(() => (loader.value ? defineAsyncComponent(loader.valu
     <!-- A registered descriptor whose .vue file is missing: fail soft and
          visibly, so a typo in `component` never blanks the widget grid. -->
     <div v-else class="rounded-lg border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-400">
-        ویجت «<span dir="ltr">{{ widget.component }}</span>» پیدا نشد.
+        {{ t('render.widget_missing_before') }}<span dir="ltr">{{ widget.component }}</span>{{ t('render.widget_missing_after') }}
     </div>
 </template>

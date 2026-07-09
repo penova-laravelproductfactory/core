@@ -6,19 +6,22 @@
  * Installed Modules or Platform Health for attention.
  */
 import { computed } from 'vue';
+import { useI18n } from '@/Core/composables/i18n';
 
 const props = defineProps({ overview: { type: Object, required: true } });
 
+const { t } = useI18n();
+
 const items = computed(() => [
-    { key: 'users', label: 'Users', value: props.overview.users },
-    { key: 'roles', label: 'Roles', value: props.overview.roles },
-    { key: 'unread', label: 'Unread Notifications', value: props.overview.unread },
+    { key: 'users', label: t('home.overview_users'), value: props.overview.users },
+    { key: 'roles', label: t('home.overview_roles'), value: props.overview.roles },
+    { key: 'unread', label: t('home.overview_unread'), value: props.overview.unread },
 ]);
 </script>
 
 <template>
     <section class="rounded-2xl border border-slate-200 bg-white p-5">
-        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Overview</p>
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">{{ t('home.overview_heading') }}</p>
 
         <dl class="mt-3 flex items-start gap-6">
             <div
