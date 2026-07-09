@@ -24,8 +24,8 @@ test('the full Workspace experience works end to end', function () {
 
     // 2) Log in with the seeded admin credentials (config-driven).
     $this->post('/login', [
-        'email' => config('penova.admin.email'),
-        'password' => config('penova.admin.password'),
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
     ])->assertRedirect(route('penova.workspace'));
 
     $this->assertAuthenticated();
@@ -83,8 +83,8 @@ test('module menu items and widgets are permission-filtered', function () {
     $this->seed(PenovaCoreSeeder::class);
 
     $this->post('/login', [
-        'email' => config('penova.admin.email'),
-        'password' => config('penova.admin.password'),
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
     ]);
 
     // Without store.view: no sidebar item, no dashboard widget, 403.
@@ -93,7 +93,7 @@ test('module menu items and widgets are permission-filtered', function () {
             ->where('menu', fn ($menu) => ! collect($menu)->contains('key', 'store'))
             ->where('dashboardWidgets', fn ($widgets) => ! collect($widgets)->contains('key', 'store-active-products')));
 
-    $this->get('/admin/store/products')->assertForbidden();
+    $this->get('/workspace/store/products')->assertForbidden();
 
     // Grant the module permissions the product-composition way.
     $this->seed(\App\Modules\Store\Database\Seeders\StorePermissionsSeeder::class);
@@ -108,5 +108,5 @@ test('module menu items and widgets are permission-filtered', function () {
             ->where('menu', fn ($menu) => collect($menu)->contains('key', 'store'))
             ->where('dashboardWidgets', fn ($widgets) => collect($widgets)->contains('key', 'store-active-products')));
 
-    $this->get('/admin/store/products')->assertOk();
+    $this->get('/workspace/store/products')->assertOk();
 });

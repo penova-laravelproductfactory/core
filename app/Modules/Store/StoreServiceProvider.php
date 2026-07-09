@@ -15,7 +15,7 @@ use Illuminate\Support\ServiceProvider;
  * in later versions.
  *
  * Data contract: ActiveProductsCard.vue (resources/js/Modules/Store/
- * Widgets) fetches GET /admin/store/products/active-count (route
+ * Widgets) fetches GET <workspace-prefix>/store/products/active-count (route
  * "store.products.active-count"); the response is always
  * { count: number }.
  *
@@ -31,9 +31,10 @@ class StoreServiceProvider extends ServiceProvider implements PenovaModule
         // panel group (URI prefix + auth middleware) is applied here.
         // Cache guard mirrors loadRoutesFrom() so route:cache stays safe.
         if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
-            // Admin surface: /admin/store/... (web + auth + permissions).
-            Route::middleware(config('penova.admin.middleware'))
-                ->prefix(config('penova.admin.prefix'))
+            // Workspace surface: store routes register under the configured
+            // Workspace prefix (default /workspace/store/...), web + auth.
+            Route::middleware(config('penova.workspace.middleware'))
+                ->prefix(config('penova.workspace.prefix'))
                 ->group(__DIR__.'/routes.php');
 
             // Public surface: /store/... — guest storefront + checkout,

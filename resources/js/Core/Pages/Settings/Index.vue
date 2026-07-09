@@ -11,6 +11,9 @@ import Card from '@/Core/Components/Card.vue';
 import TextInput from '@/Core/Components/TextInput.vue';
 import TextArea from '@/Core/Components/TextArea.vue';
 import Button from '@/Core/Components/Button.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
+
+const ws = useWorkspacePath();
 
 const props = defineProps({ settings: Object });
 
@@ -35,7 +38,7 @@ const form = useForm({
     <AdminLayout title="تنظیمات">
         <PageHeader title="تنظیمات" subtitle="پیکربندی سایت، قابل ویرایش توسط مدیران" />
 
-        <form class="max-w-3xl space-y-6" @submit.prevent="form.put('/admin/settings')">
+        <form class="max-w-3xl space-y-6" @submit.prevent="form.put(ws('/settings'))">
             <Card>
                 <div class="space-y-4">
                     <TextInput v-model="form.settings.site_name" label="نام سایت" />

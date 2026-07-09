@@ -110,6 +110,7 @@ class PenovaCoreServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        self::warnOnLegacyAdminEnv();
         $this->registerMiddlewareAliases();
         $this->registerPolicies();
         $this->registerRoutes();
@@ -125,6 +126,23 @@ class PenovaCoreServiceProvider extends ServiceProvider
         // "penova::" namespace exists so a future package build keeps
         // working without view changes.
         $this->loadViewsFrom(resource_path('views'), 'penova');
+    }
+
+    /**
+     * One-cycle deprecation signal for the retired PENOVA_ADMIN_* env vars
+     * (RFC-002 / D-024). config/penova.php still honours them as a fallback
+     * (new key first, legacy second); they are removed at the next MAJOR.
+     */
+    public static function warnOnLegacyAdminEnv(): void
+    {
+        foreach (['PENOVA_ADMIN_PREFIX', 'PENOVA_ADMIN_EMAIL', 'PENOVA_ADMIN_PASSWORD'] as $legacy) {
+            if (env($legacy) !== null) {
+                trigger_error(sprintf(
+                    'Env var [%s] is deprecated (RFC-002 / D-024); rename to its PENOVA_WORKSPACE_* / PENOVA_OPERATOR_* equivalent. Removed at the next MAJOR.',
+                    $legacy,
+                ), E_USER_DEPRECATED);
+            }
+        }
     }
 
     private function registerMiddlewareAliases(): void

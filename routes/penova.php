@@ -18,9 +18,10 @@ use Illuminate\Support\Facades\Route;
 // Guest-facing auth (login, password reset, optional registration).
 require app_path('Core/Auth/routes.php');
 
-// Authenticated Workspace: /admin/... with route names penova.*
-Route::middleware(config('penova.admin.middleware'))
-    ->prefix(config('penova.admin.prefix'))
+// Authenticated Workspace: routes register under the configured Workspace
+// prefix (default /workspace), with route names penova.*
+Route::middleware(config('penova.workspace.middleware'))
+    ->prefix(config('penova.workspace.prefix'))
     ->as('penova.')
     ->group(function () {
         Route::get('/', WorkspaceController::class)->name('workspace');

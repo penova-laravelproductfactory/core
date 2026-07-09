@@ -8,6 +8,7 @@
  */
 import { computed } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 const user = computed(() => usePage().props.auth?.user);
 
@@ -18,9 +19,10 @@ const footerText = computed(
     () => branding.value.footer_text || 'Penova Core · Laravel Product Factory',
 );
 
-// Guest → login; signed-in → straight to the panel (no login round-trip).
-// Literal paths: the app has no Ziggy in JS.
-const panelHref = computed(() => (user.value ? '/admin' : '/login'));
+// Guest → login; signed-in → straight to the Workspace (no login round-trip),
+// built from the configured Workspace prefix (shared prop).
+const ws = useWorkspacePath();
+const panelHref = computed(() => (user.value ? ws() : '/login'));
 
 const repoUrl = 'https://github.com/penova-laravelproductfactory/core';
 

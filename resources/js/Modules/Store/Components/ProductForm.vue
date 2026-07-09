@@ -14,6 +14,9 @@
 import { computed } from 'vue';
 import TextInput from '@/Core/Components/TextInput.vue';
 import Button from '@/Core/Components/Button.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
+
+const ws = useWorkspacePath();
 
 const props = defineProps({
     form: { type: Object, required: true }, // Inertia useForm object
@@ -144,7 +147,7 @@ const downloadUrlMissing = computed(
 
         <div class="flex items-center gap-2">
             <Button type="submit" :disabled="form.processing">{{ submitLabel }}</Button>
-            <Button variant="secondary" href="/admin/store/products">انصراف</Button>
+            <Button variant="secondary" :href="ws('/store/products')">انصراف</Button>
         </div>
     </form>
 </template>

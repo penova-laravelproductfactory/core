@@ -216,8 +216,8 @@ apply the group in the provider:
 public function boot(): void
 {
     if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
-        Route::middleware(config('penova.admin.middleware'))
-            ->prefix(config('penova.admin.prefix'))
+        Route::middleware(config('penova.workspace.middleware'))
+            ->prefix(config('penova.workspace.prefix'))
             ->group(__DIR__.'/routes.php');
     }
 }

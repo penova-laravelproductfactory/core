@@ -8,10 +8,12 @@
 import { Link } from '@inertiajs/vue3';
 import { SwatchIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { useDismiss } from '@/Core/composables/useDismiss';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 defineProps({ brandingConfigured: { type: Boolean, required: true } });
 
 const { dismissed, dismiss } = useDismiss('penova.dismiss.branding');
+const ws = useWorkspacePath();
 </script>
 
 <template>
@@ -36,7 +38,7 @@ const { dismissed, dismiss } = useDismiss('penova.dismiss.branding');
                 <p class="font-bold text-amber-900">Your product still uses the default Penova branding.</p>
                 <p class="mt-1 text-sm text-amber-800">Configure your logo, application name and footer before shipping.</p>
                 <Link
-                    href="/admin/settings"
+                    :href="ws('/settings')"
                     class="mt-3 inline-block rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-brand-hover"
                 >
                     Configure Branding

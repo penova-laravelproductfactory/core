@@ -19,8 +19,8 @@ test('an owner can save branding and it overrides the config defaults', function
     $this->seed(\Database\Seeders\PenovaCoreSeeder::class);
 
     $this->post('/login', [
-        'email' => config('penova.admin.email'),
-        'password' => config('penova.admin.password'),
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
     ]);
 
     $this->put(route('penova.settings.update'), [
@@ -49,8 +49,8 @@ test('a blank branding field falls back to the config default, not an empty stri
     $this->seed(\Database\Seeders\PenovaCoreSeeder::class);
 
     $this->post('/login', [
-        'email' => config('penova.admin.email'),
-        'password' => config('penova.admin.password'),
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
     ]);
 
     $this->put(route('penova.settings.update'), [
@@ -76,8 +76,8 @@ test('an invalid logo url is rejected and nothing is saved', function () {
     $this->seed(\Database\Seeders\PenovaCoreSeeder::class);
 
     $this->post('/login', [
-        'email' => config('penova.admin.email'),
-        'password' => config('penova.admin.password'),
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
     ]);
 
     $this->put(route('penova.settings.update'), [
@@ -96,8 +96,8 @@ test('saving branding alongside generic settings persists all of them', function
     $this->seed(\Database\Seeders\PenovaCoreSeeder::class);
 
     $this->post('/login', [
-        'email' => config('penova.admin.email'),
-        'password' => config('penova.admin.password'),
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
     ]);
 
     $this->put(route('penova.settings.update'), [

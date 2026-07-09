@@ -124,7 +124,7 @@ test('account-based checkout creates an order and the admin manages its lifecycl
     $this->get('/store/checkout')->assertRedirect(route('store.front'));
 
     // A customer without store permissions never reaches admin orders.
-    $this->get('/admin/store/orders')->assertForbidden();
+    $this->get('/workspace/store/orders')->assertForbidden();
 
     // Another account cannot read someone else's confirmation.
     User::create([
@@ -139,31 +139,31 @@ test('account-based checkout creates an order and the admin manages its lifecycl
     // 6) Admin side: list (with the owning account), detail, lifecycle.
     $this->post('/logout');
     $this->post('/login', [
-        'email' => config('penova.admin.email'),
-        'password' => config('penova.admin.password'),
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
     ]);
 
-    $this->get('/admin/store/orders')
+    $this->get('/workspace/store/orders')
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Modules/Store/Orders/Index')
             ->where('orders.data.0.number', $order->number)
             ->where('orders.data.0.user_name', 'مشتری تستی'));
 
-    $this->get("/admin/store/orders/{$order->id}")
+    $this->get("/workspace/store/orders/{$order->id}")
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Modules/Store/Orders/Show')
             ->where('order.user.id', $customer->id)
             ->where('order.total', $order->total));
 
-    $this->put("/admin/store/orders/{$order->id}", ['status' => 'confirmed'])->assertRedirect();
-    $this->put("/admin/store/orders/{$order->id}", ['payment_status' => 'paid'])->assertRedirect();
+    $this->put("/workspace/store/orders/{$order->id}", ['status' => 'confirmed'])->assertRedirect();
+    $this->put("/workspace/store/orders/{$order->id}", ['payment_status' => 'paid'])->assertRedirect();
 
     $order->refresh();
     expect($order->status)->toBe('confirmed')
         ->and($order->payment_status)->toBe('paid');
 
     // Lifecycle-only contract: unknown statuses are rejected.
-    $this->put("/admin/store/orders/{$order->id}", ['status' => 'shipped'])->assertSessionHasErrors('status');
+    $this->put("/workspace/store/orders/{$order->id}", ['status' => 'shipped'])->assertSessionHasErrors('status');
 });

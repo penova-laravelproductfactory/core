@@ -36,6 +36,13 @@ class HandleInertiaRequests extends Middleware
                 'name' => config('penova.name'),
             ],
 
+            // The configured Workspace URI prefix, shared so the SPA builds
+            // Workspace paths from it (useWorkspacePath) instead of hardcoding
+            // "/admin" — honours PENOVA_WORKSPACE_PREFIX end to end (D-024).
+            'workspace' => [
+                'prefix' => config('penova.workspace.prefix'),
+            ],
+
             // Resolved White Label branding: runtime settings (admin-owned)
             // layered over config/penova.php defaults, so every page — the
             // admin shell and the public welcome page — always gets complete

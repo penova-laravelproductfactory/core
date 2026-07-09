@@ -34,7 +34,7 @@ class StorePermissionsSeeder extends Seeder
                 ['slug' => $slug, 'name' => self::LABELS[$slug] ?? Str::of($slug)->replace('.', ' ')->headline()],
             ));
 
-        Role::where('slug', 'admin')->first()
+        Role::where('slug', 'operator')->first()
             ?->permissions()->syncWithoutDetaching($permissions->pluck('id'));
     }
 }

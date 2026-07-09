@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 | Modules\Store — PUBLIC routes (storefront + checkout)
 |--------------------------------------------------------------------------
 | Loaded by StoreServiceProvider::boot() under the plain "web" group —
-| NO admin prefix. URIs live at /store/... , names at store.front /
-| store.cart.* / store.checkout.* — distinct from the admin surface
-| (store.products.* / store.orders.* at /admin/store/...).
+| NO Workspace prefix. URIs live at /store/... , names at store.front /
+| store.cart.* / store.checkout.* — distinct from the Workspace surface
+| (store.products.* / store.orders.* under the Workspace prefix).
 |
 | Browsing and the cart stay guest-friendly (zero friction); checkout
 | and order pages require an account. A guest hitting checkout is sent

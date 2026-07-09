@@ -10,6 +10,9 @@ import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import Button from '@/Core/Components/Button.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
+
+const ws = useWorkspacePath();
 
 const props = defineProps({
     order: Object,
@@ -34,12 +37,12 @@ const paymentForm = useForm({
 const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
 
 function saveStatus() {
-    form.put(`/admin/store/orders/${props.order.id}`, { preserveScroll: true });
+    form.put(ws(`/store/orders/${props.order.id}`), { preserveScroll: true });
 }
 
 function togglePayment() {
     paymentForm.payment_status = props.order.payment_status === 'paid' ? 'unpaid' : 'paid';
-    paymentForm.put(`/admin/store/orders/${props.order.id}`, { preserveScroll: true });
+    paymentForm.put(ws(`/store/orders/${props.order.id}`), { preserveScroll: true });
 }
 </script>
 
@@ -47,7 +50,7 @@ function togglePayment() {
     <AdminLayout :title="`سفارش ${order.number}`">
         <PageHeader title="جزئیات سفارش" :subtitle="order.number">
             <template #actions>
-                <Button variant="secondary" href="/admin/store/orders">بازگشت به فهرست</Button>
+                <Button variant="secondary" :href="ws('/store/orders')">بازگشت به فهرست</Button>
             </template>
         </PageHeader>
 
@@ -61,7 +64,7 @@ function togglePayment() {
                     <div v-if="order.user" class="mb-4 rounded-md bg-slate-50 px-3 py-2.5">
                         <div class="text-xs text-slate-400">حساب کاربری</div>
                         <Link
-                            :href="`/admin/users/${order.user.id}/edit`"
+                            :href="ws(`/users/${order.user.id}/edit`)"
                             class="mt-0.5 block text-sm font-medium text-brand hover:underline"
                         >
                             {{ order.user.name }}

@@ -5,6 +5,9 @@ import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import TextInput from '@/Core/Components/TextInput.vue';
 import Button from '@/Core/Components/Button.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
+
+const ws = useWorkspacePath();
 
 const props = defineProps({ user: Object, roles: Array });
 
@@ -21,12 +24,12 @@ const form = useForm({
     <AdminLayout :title="`ویرایش کاربر — ${user.name}`">
         <PageHeader title="ویرایش کاربر" :subtitle="user.email">
             <template #actions>
-                <Button variant="secondary" href="/admin/users">بازگشت به فهرست</Button>
+                <Button variant="secondary" :href="ws('/users')">بازگشت به فهرست</Button>
             </template>
         </PageHeader>
 
         <Card class="max-w-lg">
-            <form class="space-y-4" @submit.prevent="form.put(`/admin/users/${user.id}`)">
+            <form class="space-y-4" @submit.prevent="form.put(ws(`/users/${user.id}`))">
                 <TextInput v-model="form.name" label="نام" required :error="form.errors.name" />
                 <TextInput v-model="form.email" label="ایمیل" type="email" required :error="form.errors.email" />
                 <TextInput v-model="form.password" label="رمز عبور جدید (برای حفظ رمز فعلی خالی بگذارید)" type="password" :error="form.errors.password" />

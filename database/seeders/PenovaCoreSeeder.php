@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * Seeds the Core baseline every product starts from:
- * permissions, the admin role, and one admin account.
+ * permissions, the Operator role, and one Operator account.
  *
- * The admin credentials come from config('penova.admin.email/password')
- * (env: PENOVA_ADMIN_EMAIL / PENOVA_ADMIN_PASSWORD). The defaults are a
+ * The seed Operator credentials come from config('penova.operator.email/password')
+ * (env: PENOVA_OPERATOR_EMAIL / PENOVA_OPERATOR_PASSWORD). The defaults are a
  * dev/test convenience only — override or rotate them anywhere real.
  *
  * Product Modules seed their OWN permissions in their own seeders
@@ -34,15 +34,15 @@ class PenovaCoreSeeder extends Seeder
             $permission,
         ));
 
-        $admin = Role::firstOrCreate(
-            ['slug' => 'admin'],
+        $operator = Role::firstOrCreate(
+            ['slug' => 'operator'],
             ['name' => 'Operator', 'description' => 'Full access to the Workspace.'],
         );
 
         // syncWithoutDetaching: re-running the Core seeder alone must
         // never strip module permissions (booking.view, …) that module
-        // seeders granted to the admin role.
-        $admin->permissions()->syncWithoutDetaching($permissions->pluck('id'));
+        // seeders granted to the Operator role.
+        $operator->permissions()->syncWithoutDetaching($permissions->pluck('id'));
 
         // Plain member role with no Core permissions — products attach
         // their own module permissions (booking.view, ...) to it.
@@ -51,17 +51,17 @@ class PenovaCoreSeeder extends Seeder
             ['name' => 'User', 'description' => 'Regular account without panel management access.'],
         );
 
-        $email = config('penova.admin.email');
+        $email = config('penova.operator.email');
 
         $user = User::firstOrCreate(
             ['email' => $email],
             [
-                'name' => 'Admin',
-                'password' => Hash::make(config('penova.admin.password')),
+                'name' => 'Operator',
+                'password' => Hash::make(config('penova.operator.password')),
             ],
         );
 
-        $user->roles()->syncWithoutDetaching($admin);
+        $user->roles()->syncWithoutDetaching($operator);
 
         $this->command?->info("Admin account ready: {$email} (role: admin — dev credentials, rotate in production).");
     }

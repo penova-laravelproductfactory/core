@@ -10,6 +10,9 @@ import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import Button from '@/Core/Components/Button.vue';
 import ProductForm from '@/Modules/Store/Components/ProductForm.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
+
+const ws = useWorkspacePath();
 
 const props = defineProps({
     types: Array, // ProductType::values() from the controller
@@ -32,7 +35,7 @@ const form = useForm({
     <AdminLayout title="محصول جدید">
         <PageHeader title="محصول جدید">
             <template #actions>
-                <Button variant="secondary" href="/admin/store/products">بازگشت به فهرست</Button>
+                <Button variant="secondary" :href="ws('/store/products')">بازگشت به فهرست</Button>
             </template>
         </PageHeader>
 
@@ -41,7 +44,7 @@ const form = useForm({
                 :form="form"
                 :types="props.types"
                 mode="create"
-                @submit="form.post('/admin/store/products')"
+                @submit="form.post(ws('/store/products'))"
             />
         </Card>
     </AdminLayout>

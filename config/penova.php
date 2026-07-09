@@ -62,20 +62,32 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Admin Panel
+    | Workspace
     |--------------------------------------------------------------------------
-    | All Core panel routes (users, roles, settings, logs, ...) are grouped
-    | under this URI prefix and route-name prefix ("penova.").
+    | All Core Workspace routes (users, roles, settings, logs, ...) are grouped
+    | under this URI prefix and the "penova." route-name prefix.
+    |
+    | The legacy PENOVA_ADMIN_PREFIX env var is honoured for one MAJOR line
+    | (new key first, legacy second); PenovaCoreServiceProvider emits a
+    | deprecation notice when a legacy PENOVA_ADMIN_* value answers. See
+    | RFC-002 / D-024.
     */
-    'admin' => [
-        'prefix' => env('PENOVA_ADMIN_PREFIX', 'admin'),
+    'workspace' => [
+        'prefix' => env('PENOVA_WORKSPACE_PREFIX', env('PENOVA_ADMIN_PREFIX', 'workspace')),
         'middleware' => ['web', 'auth'],
+    ],
 
-        // Seed credentials for the initial admin account (used only by
-        // PenovaCoreSeeder). Dev/test convenience — override via env in
-        // any real environment and rotate after first login.
-        'email' => env('PENOVA_ADMIN_EMAIL', 'admin@example.com'),
-        'password' => env('PENOVA_ADMIN_PASSWORD', 'password'),
+    /*
+    |--------------------------------------------------------------------------
+    | Seed Operator
+    |--------------------------------------------------------------------------
+    | Credentials for the initial seeded Operator (used only by
+    | PenovaCoreSeeder). Dev/test convenience — override via env in any real
+    | environment and rotate after first login (builder-owned; D-014 / 15).
+    */
+    'operator' => [
+        'email' => env('PENOVA_OPERATOR_EMAIL', env('PENOVA_ADMIN_EMAIL', 'operator@example.com')),
+        'password' => env('PENOVA_OPERATOR_PASSWORD', env('PENOVA_ADMIN_PASSWORD', 'password')),
     ],
 
     /*

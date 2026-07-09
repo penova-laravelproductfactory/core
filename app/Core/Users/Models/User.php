@@ -53,7 +53,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_user')->withTimestamps();
     }
 
-    /** Check a role by slug, e.g. $user->hasRole('admin'). */
+    /** Check a role by slug, e.g. $user->hasRole('operator'). */
     public function hasRole(string $slug): bool
     {
         return $this->roles->contains('slug', $slug);

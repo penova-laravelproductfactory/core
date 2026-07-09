@@ -9,10 +9,12 @@ import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Pagination from '@/Core/Components/Pagination.vue';
 import Button from '@/Core/Components/Button.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 defineProps({ notifications: Object });
 
-const markRead = (id) => router.put(`/admin/notifications/${id}/read`, {}, { preserveScroll: true });
+const ws = useWorkspacePath();
+const markRead = (id) => router.put(ws(`/notifications/${id}/read`), {}, { preserveScroll: true });
 </script>
 
 <template>

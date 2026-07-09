@@ -12,7 +12,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * The Workspace — the post-install onboarding screen at /admin.
+ * The Workspace — the post-install onboarding screen at the Workspace root.
  *
  * Assembles one first-class `platform` view-model (status only; navigation
  * stays the separate shared `menu` prop). Onboarding, installed modules,
@@ -41,7 +41,7 @@ class WorkspaceController extends Controller
                         ['key' => 'authentication', 'label' => 'Authentication ready', 'done' => true],
                         ['key' => 'admin-panel', 'label' => 'Workspace ready', 'done' => true],
                         ['key' => 'branding', 'label' => 'Configure branding', 'done' => $brandingConfigured,
-                            'cta' => ['label' => 'Configure', 'href' => '/admin/settings']],
+                            'cta' => ['label' => 'Configure', 'href' => '/'.config('penova.workspace.prefix').'/settings']],
                         ['key' => 'first-module', 'label' => 'Install your first module', 'done' => $hasModule,
                             'cta' => ['label' => 'Browse docs', 'href' => $links['documentation']]],
                     ],

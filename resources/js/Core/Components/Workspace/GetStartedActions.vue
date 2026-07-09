@@ -16,8 +16,11 @@ import {
     ArrowTopRightOnSquareIcon,
     ChevronLeftIcon,
 } from '@heroicons/vue/24/outline';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 const props = defineProps({ links: { type: Object, required: true } });
+
+const ws = useWorkspacePath();
 
 const cards = computed(() => [
     {
@@ -31,8 +34,8 @@ const cards = computed(() => [
         key: 'branding',
         icon: SwatchIcon,
         title: 'Configure Branding',
-        description: 'Make the panel yours before shipping.',
-        href: '/admin/settings',
+        description: 'Make the Workspace yours before shipping.',
+        href: ws('/settings'),
     },
     {
         key: 'first-resource',
@@ -46,7 +49,7 @@ const cards = computed(() => [
         icon: UserGroupIcon,
         title: 'Manage Users & Roles',
         description: 'Control who can access what.',
-        href: '/admin/users',
+        href: ws('/users'),
     },
     {
         key: 'documentation',

@@ -11,8 +11,11 @@ import DataTable from '@/Core/Components/DataTable.vue';
 import Modal from '@/Core/Components/Modal.vue';
 import TextInput from '@/Core/Components/TextInput.vue';
 import Button from '@/Core/Components/Button.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 const props = defineProps({ roles: Object, permissions: Array });
+
+const ws = useWorkspacePath();
 
 const columns = [
     { key: 'name', label: 'نام', sortable: true },
@@ -43,8 +46,8 @@ function submit() {
     const options = { preserveScroll: true, onSuccess: () => (showModal.value = false) };
 
     editing.value
-        ? form.put(`/admin/roles/${editing.value.id}`, options)
-        : form.post('/admin/roles', options);
+        ? form.put(ws(`/roles/${editing.value.id}`), options)
+        : form.post(ws('/roles'), options);
 }
 </script>
 

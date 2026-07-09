@@ -28,8 +28,8 @@ class PenovaInstallCommand extends Command
 
         $this->components->info(sprintf(
             'Done. Log in at /%s with %s (see docs/getting-started.md).',
-            config('penova.admin.prefix'),
-            config('penova.admin.email'),
+            config('penova.workspace.prefix'),
+            config('penova.operator.email'),
         ));
 
         return self::SUCCESS;

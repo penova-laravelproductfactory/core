@@ -14,8 +14,8 @@ function loginWorkspaceAdmin(): void
 {
     test()->seed(PenovaCoreSeeder::class);
     test()->post('/login', [
-        'email' => config('penova.admin.email'),
-        'password' => config('penova.admin.password'),
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
     ]);
 }
 

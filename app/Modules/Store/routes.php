@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 | Modules\Store Routes
 |--------------------------------------------------------------------------
 | Plain route definitions only — StoreServiceProvider::boot() loads this
-| file inside the panel group (admin URI prefix + auth middleware from
-| config('penova.admin')), so URIs land at /admin/store/products/... .
+| file inside the Workspace group (URI prefix + auth middleware from
+| config('penova.workspace')), so URIs land under the configured Workspace
+| prefix, e.g. /workspace/store/products/... .
 | Route names carry the module's own "store." prefix explicitly.
 |
 | Permissions (seeded by StorePermissionsSeeder):

@@ -10,6 +10,9 @@ import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import Button from '@/Core/Components/Button.vue';
 import TextInput from '@/Core/Components/TextInput.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
+
+const ws = useWorkspacePath();
 
 const form = useForm({
     name: '',
@@ -20,12 +23,12 @@ const form = useForm({
     <AdminLayout title="{{ name }} — ایجاد">
         <PageHeader title="ایجاد مورد جدید">
             <template #actions>
-                <Button variant="secondary" href="/admin/{{ slug }}">بازگشت به فهرست</Button>
+                <Button variant="secondary" :href="ws('/{{ slug }}')">بازگشت به فهرست</Button>
             </template>
         </PageHeader>
 
         <Card class="max-w-lg">
-            <form class="space-y-4" @submit.prevent="form.post('/admin/{{ slug }}')">
+            <form class="space-y-4" @submit.prevent="form.post(ws('/{{ slug }}'))">
                 <TextInput v-model="form.name" label="نام" required :error="form.errors.name" />
 
                 <Button type="submit" :disabled="form.processing">ثبت</Button>

@@ -8,8 +8,11 @@ import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
 import Button from '@/Core/Components/Button.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 defineProps({ users: Object });
+
+const ws = useWorkspacePath();
 
 const columns = [
     { key: 'name', label: 'نام', sortable: true },
@@ -20,7 +23,7 @@ const columns = [
 
 function destroy(user) {
     if (confirm(`کاربر «${user.name}» حذف شود؟`)) {
-        router.delete(`/admin/users/${user.id}`, { preserveScroll: true });
+        router.delete(ws(`/users/${user.id}`), { preserveScroll: true });
     }
 }
 </script>
@@ -29,7 +32,7 @@ function destroy(user) {
     <AdminLayout title="کاربران">
         <PageHeader title="کاربران" subtitle="مدیریت حساب‌های کاربری میزکار">
             <template #actions>
-                <Button href="/admin/users/create">کاربر جدید</Button>
+                <Button :href="ws('/users/create')">کاربر جدید</Button>
             </template>
         </PageHeader>
 
@@ -45,7 +48,7 @@ function destroy(user) {
             </template>
 
             <template #actions="{ row }">
-                <Link :href="`/admin/users/${row.id}/edit`" class="me-3 text-brand hover:underline">ویرایش</Link>
+                <Link :href="ws(`/users/${row.id}/edit`)" class="me-3 text-brand hover:underline">ویرایش</Link>
                 <button class="text-red-600 hover:underline" @click="destroy(row)">حذف</button>
             </template>
         </DataTable>

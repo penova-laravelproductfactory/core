@@ -9,11 +9,14 @@ import { Link } from '@inertiajs/vue3';
 import AdminLayout from '@/Core/Layouts/AdminLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 const props = defineProps({
     orders: Object, // Laravel LengthAwarePaginator JSON
     filters: Object, // { search, status, payment_status }
 });
+
+const ws = useWorkspacePath();
 
 const columns = [
     { key: 'number', label: 'شمارهٔ سفارش', sortable: true },
@@ -78,7 +81,7 @@ const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
             search-placeholder="جستجو در شمارهٔ سفارش، نام یا ایمیل مشتری…"
         >
             <template #cell-number="{ row }">
-                <Link :href="`/admin/store/orders/${row.id}`" class="font-mono font-medium text-brand hover:underline" dir="ltr">
+                <Link :href="ws(`/store/orders/${row.id}`)" class="font-mono font-medium text-brand hover:underline" dir="ltr">
                     {{ row.number }}
                 </Link>
             </template>
@@ -88,7 +91,7 @@ const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
             <template #cell-user="{ row }">
                 <Link
                     v-if="row.user_id"
-                    :href="`/admin/users/${row.user_id}/edit`"
+                    :href="ws(`/users/${row.user_id}/edit`)"
                     class="text-brand hover:underline"
                 >
                     {{ row.user_name }}
@@ -125,7 +128,7 @@ const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
             </template>
 
             <template #actions="{ row }">
-                <Link :href="`/admin/store/orders/${row.id}`" class="text-brand hover:underline">مشاهده</Link>
+                <Link :href="ws(`/store/orders/${row.id}`)" class="text-brand hover:underline">مشاهده</Link>
             </template>
         </DataTable>
     </AdminLayout>

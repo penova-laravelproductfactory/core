@@ -10,6 +10,9 @@ import PageHeader from '@/Core/Components/PageHeader.vue';
 import Card from '@/Core/Components/Card.vue';
 import Button from '@/Core/Components/Button.vue';
 import ProductForm from '@/Modules/Store/Components/ProductForm.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
+
+const ws = useWorkspacePath();
 
 const props = defineProps({
     product: Object, // { id, name, slug, type, price, sku, stock, is_active, description, download_url }
@@ -33,7 +36,7 @@ const form = useForm({
     <AdminLayout :title="`ویرایش محصول — ${product.name}`">
         <PageHeader title="ویرایش محصول" :subtitle="product.name">
             <template #actions>
-                <Button variant="secondary" href="/admin/store/products">بازگشت به فهرست</Button>
+                <Button variant="secondary" :href="ws('/store/products')">بازگشت به فهرست</Button>
             </template>
         </PageHeader>
 
@@ -42,7 +45,7 @@ const form = useForm({
                 :form="form"
                 :types="props.types"
                 mode="edit"
-                @submit="form.put(`/admin/store/products/${props.product.id}`)"
+                @submit="form.put(ws(`/store/products/${props.product.id}`))"
             />
         </Card>
     </AdminLayout>

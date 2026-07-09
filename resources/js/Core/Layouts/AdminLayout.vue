@@ -35,6 +35,7 @@ import {
     UsersIcon,
 } from '@heroicons/vue/24/outline';
 import Toast from '@/Core/Components/Toast.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 defineProps({
     // Optional document title; pages may also render <Head> themselves.
@@ -42,6 +43,7 @@ defineProps({
 });
 
 const page = usePage();
+const ws = useWorkspacePath();
 
 const user = computed(() => page.props.auth.user);
 const unread = computed(() => page.props.unreadNotifications);
@@ -127,7 +129,7 @@ const isActive = (item) => {
 
                 <div class="flex items-center gap-5">
                     <!-- Notification bell -->
-                    <Link href="/admin/notifications" class="relative text-slate-500 hover:text-slate-700">
+                    <Link :href="ws('/notifications')" class="relative text-slate-500 hover:text-slate-700">
                         <BellIcon class="size-6" />
                         <span
                             v-if="unread > 0"

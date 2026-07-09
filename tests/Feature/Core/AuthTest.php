@@ -29,11 +29,11 @@ class AuthTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect('/admin');
+        $response->assertRedirect('/workspace');
     }
 
     public function test_guests_are_redirected_from_the_panel(): void
     {
-        $this->get('/admin')->assertRedirect('/login');
+        $this->get('/workspace')->assertRedirect('/login');
     }
 }

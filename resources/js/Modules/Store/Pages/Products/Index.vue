@@ -16,11 +16,14 @@ import PageHeader from '@/Core/Components/PageHeader.vue';
 import DataTable from '@/Core/Components/DataTable.vue';
 import Button from '@/Core/Components/Button.vue';
 import Modal from '@/Core/Components/Modal.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 const props = defineProps({
     products: Object, // Laravel LengthAwarePaginator JSON
     filters: Object, // { search, type, status } echoed by the controller
 });
+
+const ws = useWorkspacePath();
 
 const columns = [
     { key: 'name', label: 'نام', sortable: true },
@@ -56,7 +59,7 @@ const formatPrice = (price) => Number(price ?? 0).toLocaleString('fa-IR');
 const deleting = ref(null);
 
 function confirmDelete() {
-    router.delete(`/admin/store/products/${deleting.value.id}`, {
+    router.delete(ws(`/store/products/${deleting.value.id}`), {
         preserveScroll: true,
         onFinish: () => (deleting.value = null),
     });
@@ -67,7 +70,7 @@ function confirmDelete() {
     <AdminLayout title="فروشگاه — محصولات">
         <PageHeader title="محصولات" subtitle="مدیریت محصولات فروشگاه">
             <template #actions>
-                <Button href="/admin/store/products/create">محصول جدید</Button>
+                <Button :href="ws('/store/products/create')">محصول جدید</Button>
             </template>
         </PageHeader>
 
@@ -101,7 +104,7 @@ function confirmDelete() {
         >
             <!-- Name links straight to the edit page (fast path for admins). -->
             <template #cell-name="{ row }">
-                <Link :href="`/admin/store/products/${row.id}/edit`" class="font-medium text-slate-900 hover:text-brand hover:underline">
+                <Link :href="ws(`/store/products/${row.id}/edit`)" class="font-medium text-slate-900 hover:text-brand hover:underline">
                     {{ row.name }}
                 </Link>
             </template>
@@ -134,7 +137,7 @@ function confirmDelete() {
             </template>
 
             <template #actions="{ row }">
-                <Link :href="`/admin/store/products/${row.id}/edit`" class="me-3 text-brand hover:underline">ویرایش</Link>
+                <Link :href="ws(`/store/products/${row.id}/edit`)" class="me-3 text-brand hover:underline">ویرایش</Link>
                 <button class="text-red-600 hover:underline" @click="deleting = row">حذف</button>
             </template>
         </DataTable>

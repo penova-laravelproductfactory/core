@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Route;
 | Modules\{{ name }} Routes
 |--------------------------------------------------------------------------
 | Plain route definitions only — {{ name }}ServiceProvider::boot() loads
-| this file inside the panel group (admin URI prefix + auth middleware
-| from config('penova.admin')), so URIs land at /admin/{{ slug }}/... .
+| this file inside the Workspace group (URI prefix + auth middleware
+| from config('penova.workspace')), so URIs land under the configured
+| Workspace prefix, e.g. /workspace/{{ slug }}/... .
 | Route names carry the module's own "{{ module }}." prefix explicitly;
 | "penova.*" names are reserved for Core.
 |

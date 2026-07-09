@@ -24,7 +24,7 @@ class RolePolicy
 
     public function delete(User $user, Role $role): bool
     {
-        // The "admin" role is seeded and must never be deleted from the UI.
-        return $role->slug !== 'admin' && $user->hasPermission('roles.manage');
+        // The "operator" role is seeded and must never be deleted from the UI.
+        return $role->slug !== 'operator' && $user->hasPermission('roles.manage');
     }
 }
