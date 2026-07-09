@@ -260,6 +260,21 @@ Do not modify strategy directly from this repository.
 
 ---
 
+# Disclosure and attribution rule
+
+Repository outputs must read as normal project-authored material. Do not mention
+AI, Claude, Anthropic, or assistant usage anywhere that is committed or pushed —
+commit messages, branch names, pull-request titles and descriptions, code
+comments, source files, generated documentation, changelog entries, release
+notes, and TODO notes — and do not add co-author lines, attribution signatures,
+or assistant-signature text to commits or pull requests.
+
+Disclose AI involvement only when the user explicitly asks for it. This governs
+authorship formatting, not honesty about the change itself: state what changed as
+plainly as every other rule here requires.
+
+---
+
 # When unsure
 
 Stop.
