@@ -77,36 +77,37 @@ test('the full Workspace experience works end to end', function () {
     $this->get(route('penova.workspace'))->assertRedirect(route('login'));
 });
 
-test('module menu items and widgets are permission-filtered', function () {
-    // Core baseline only — the admin has Core permissions but none of
-    // the module ones (those come from the module seeders).
-    $this->seed(PenovaCoreSeeder::class);
+test('Core ships with no business module enabled by default (D-026)', function () {
+    // Core is complete on its own: the modules default is empty, so the
+    // Workspace composition carries only Core contributions — no module menu
+    // items or widgets. (The Store-enabled half is in the Store lane —
+    // Feature/Store/ModuleCompositionTest.)
+    expect(config('penova.modules'))->toBe([]);
 
+    $this->seed(PenovaCoreSeeder::class);
     $this->post('/login', [
         'email' => config('penova.operator.email'),
         'password' => config('penova.operator.password'),
     ]);
 
-    // Without store.view: no sidebar item, no widget, 403.
     $this->get(route('penova.workspace'))
+        ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->where('menu', fn ($menu) => ! collect($menu)->contains('key', 'store'))
             ->where('widgets', fn ($widgets) => ! collect($widgets)->contains('key', 'store-active-products')));
+});
 
-    $this->get('/workspace/store/products')->assertForbidden();
+test('login returns the guest to the originally-requested Workspace URL (generic intended redirect)', function () {
+    $this->seed(PenovaCoreSeeder::class);
 
-    // Grant the module permissions the product-composition way.
-    $this->seed(\App\Modules\Store\Database\Seeders\StorePermissionsSeeder::class);
+    // A guest deep-linking into the Workspace is bounced to login; Laravel
+    // stores the intended URL.
+    $this->get(route('penova.users.index'))->assertRedirect(route('login'));
 
-    // Feature tests reuse one app instance, so the session guard still
-    // holds the pre-seeding user model (with stale cached relations).
-    // Real requests are fresh processes — simulate that.
-    $this->app['auth']->forgetGuards();
-
-    $this->get(route('penova.workspace'))
-        ->assertInertia(fn (Assert $page) => $page
-            ->where('menu', fn ($menu) => collect($menu)->contains('key', 'store'))
-            ->where('widgets', fn ($widgets) => collect($widgets)->contains('key', 'store-active-products')));
-
-    $this->get('/workspace/store/products')->assertOk();
+    // After login the framework-generic intended() redirect returns them
+    // there — Core auth carries no module/checkout-specific handling (D-026).
+    $this->post('/login', [
+        'email' => config('penova.operator.email'),
+        'password' => config('penova.operator.password'),
+    ])->assertRedirect(route('penova.users.index'));
 });

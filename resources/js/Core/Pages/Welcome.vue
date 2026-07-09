@@ -49,21 +49,23 @@ const features = [
     },
 ];
 
+// Illustrative capability categories a Module can add — not specific or
+// regional product names (Core names no Module; D-026 / D-007).
 const modules = [
     {
-        title: 'Store Module',
-        fa: 'Core را به یک فروشگاه واقعی تبدیل می‌کند: محصولات، سبد خرید، checkout و سفارش‌ها.',
-        en: 'Turn Core into a real store: products, cart, checkout and orders.',
+        title: 'Commerce',
+        fa: 'قابلیت فروش را به‌صورت یک ماژول اضافه کنید: محصولات، سبد خرید، پرداخت و سفارش‌ها.',
+        en: 'Add selling as a module — products, cart, checkout and orders.',
     },
     {
-        title: 'SMS Module',
-        fa: 'ارسال پیامک سفارش‌ها و OTP با چندین پروایدر ایرانی از طریق یک ماژول یکپارچه.',
-        en: 'Send order and OTP SMS using multiple Iranian providers from one unified module.',
+        title: 'Messaging',
+        fa: 'ارسال پیامک و اعلان‌های تراکنشی از طریق یک ماژول یکپارچه.',
+        en: 'SMS and transactional notifications through one module.',
     },
     {
-        title: 'Payment Module',
-        fa: 'اتصال فروشگاه به درگاه‌های پرداخت ایران از طریق یک لایهٔ یکپارچه و قابل‌گسترش.',
-        en: 'Connect your store to Iranian payment gateways through a single, extensible integration layer.',
+        title: 'Payments',
+        fa: 'اتصال به درگاه‌های پرداخت به‌صورت یک لایهٔ ماژولار و قابل‌گسترش.',
+        en: 'Payment-gateway integration as an extensible module layer.',
     },
 ];
 </script>
@@ -91,12 +93,12 @@ const modules = [
 
                 <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-sand-700">
                     یک هستهٔ آماده برای محصولات لاراولی شما؛ با احراز هویت، مدیریت کاربران و نقش‌ها،
-                    تنظیمات، نوتیفیکیشن‌ها و یک میزکار تمیز که آمادهٔ نصب ماژول فروشگاه، پیامک و
-                    پرداخت است.
+                    تنظیمات، نوتیفیکیشن‌ها و یک میزکار تمیز که آمادهٔ نصب ماژول‌های محصول
+                    شماست.
                 </p>
                 <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-sand-600" dir="ltr">
                     A production-ready core for your Laravel products — auth, users, roles, settings,
-                    notifications and a clean Workspace, ready to host your Store, SMS and Payment modules.
+                    notifications and a clean Workspace, ready to host your product modules.
                 </p>
 
                 <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -151,8 +153,8 @@ const modules = [
 
                 <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-sand-600">
                     Penova Core به‌صورت یک هستهٔ رایگان می‌آید. هر زمان به محصول واقعی نیاز داشتی،
-                    ماژول‌هایی مثل فروشگاه، پیامک و پرداخت را روی همین هسته اضافه می‌کنی، بدون این‌که
-                    دوباره همه‌چیز را بنویسی.
+                    ماژول‌های محصول را روی همین هسته اضافه می‌کنی، بدون این‌که دوباره همه‌چیز را
+                    بنویسی.
                 </p>
 
                 <div class="mt-8 grid gap-4 sm:grid-cols-3">

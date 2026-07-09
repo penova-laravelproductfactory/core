@@ -7,17 +7,16 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Core baseline first; product Module seeders run after it so their
-     * permissions/roles can build on the Core ones.
+     * Core seeds only the Core baseline. Core names no Module seeder (D-026):
+     * an application that enables a Module composes that Module's seeding
+     * itself — at the application layer, the same place it wires the Module
+     * into config/penova.php 'modules'. This keeps Core independent of any
+     * Module (13); it is builder-owned composition, not a Core contract.
      */
     public function run(): void
     {
         $this->call([
             PenovaCoreSeeder::class,
-
-            // Module permission seeders (product-level composition — the
-            // same place modules get wired in as config/penova.php).
-            \App\Modules\Store\Database\Seeders\StorePermissionsSeeder::class,
         ]);
     }
 }

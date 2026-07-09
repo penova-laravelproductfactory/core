@@ -61,15 +61,14 @@ test('account-based checkout creates an order and the admin manages its lifecycl
     $this->post('/store/cart/add', ['product_id' => $product->id])->assertRedirect();
     $this->post('/store/cart/add', ['product_id' => $inactive->id])->assertSessionHasErrors('product_id');
 
-    // 2) Checkout is auth-only: the guest is sent to login, and the
-    //    login page knows why (checkout notice).
+    // 2) Checkout is auth-only: the guest is sent to login. Core auth no
+    //    longer carries checkout-specific copy (D-026); the framework-generic
+    //    intended() redirect brings the guest back to checkout (asserted next).
     $this->get('/store/checkout')->assertRedirect(route('login'));
 
     $this->get(route('login'))
         ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page
-            ->component('Core/Auth/Login')
-            ->where('checkoutIntent', true));
+        ->assertInertia(fn (Assert $page) => $page->component('Core/Auth/Login'));
 
     // 3) Logging in returns the user to checkout (intended URL), and
     //    the guest-filled cart survives the login.

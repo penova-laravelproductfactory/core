@@ -1,7 +1,6 @@
 <?php
 
 use App\Core\Settings\Services\SettingsManager;
-use App\Core\Support\ManifestRegistry;
 use App\Core\Roles\Models\Role;
 use App\Models\User;
 use Database\Seeders\PenovaCoreSeeder;
@@ -44,20 +43,12 @@ test('platform health lists its subsystems', function () {
                 && collect($health)->every(fn ($item) => isset($item['key'], $item['status']))));
 });
 
-test('platform lists installed module manifests', function () {
+test('platform lists no installed modules by default (D-026)', function () {
     loginWorkspaceAdmin();
 
-    $this->get(route('penova.workspace'))
-        ->assertInertia(fn (Assert $page) => $page
-            ->where('platform.modules', fn ($modules) => collect($modules)->contains('key', 'store')));
-});
-
-test('platform modules is empty when no modules are installed', function () {
-    loginWorkspaceAdmin();
-
-    config(['penova.modules' => []]);
-    app()->forgetInstance(ManifestRegistry::class);
-
+    // Core enables no business module by default, so the platform view-model
+    // lists none. (The Store-enabled half lives in the Store lane —
+    // Feature/Store/ModuleCompositionTest.)
     $this->get(route('penova.workspace'))
         ->assertInertia(fn (Assert $page) => $page->where('platform.modules', []));
 });

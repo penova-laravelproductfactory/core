@@ -8,8 +8,6 @@ defineProps({
     canRegister: Boolean,
     // e.g. "Your password has been reset." after the reset flow.
     status: String,
-    // True when the guest was redirected here from the store checkout.
-    checkoutIntent: Boolean,
 });
 
 const form = useForm({
@@ -24,15 +22,6 @@ const submit = () => form.post('/login', { onFinish: () => form.reset('password'
 <template>
     <GuestLayout title="ورود به میزکار">
         <h1 class="mb-4 text-center text-lg font-semibold text-slate-800">ورود</h1>
-
-        <p v-if="checkoutIntent" class="mb-4 rounded-md bg-sky-50 px-3 py-2 text-sm leading-relaxed text-sky-800">
-            برای تکمیل سفارش، وارد شوید —
-            <template v-if="canRegister">
-                یا اگر حساب ندارید،
-                <Link href="/register" class="font-semibold underline">در چند ثانیه ثبت‌نام کنید</Link>؛
-            </template>
-            سفارش شما پس از ورود ادامه پیدا می‌کند.
-        </p>
 
         <p v-if="status" class="mb-4 text-sm font-medium text-green-600">{{ status }}</p>
 

@@ -32,14 +32,14 @@ test('the admin→operator role-slug migration preserves grants and assignments'
     expect($user->fresh()->roles()->where('slug', 'operator')->exists())->toBeTrue();
 });
 
-test('Workspace and Module routes resolve from the configured Workspace prefix', function () {
+test('Workspace routes resolve from the configured Workspace prefix', function () {
     $prefix = config('penova.workspace.prefix');
 
     expect($prefix)->not->toBeEmpty();
-    // Config-driven, not a hardcoded "/admin": both a Core and a Module route
-    // live under whatever prefix is configured.
+    // Config-driven, not a hardcoded "/admin": Core Workspace routes live under
+    // whatever prefix is configured. (A Module route honoring the same prefix
+    // is covered in the Store lane — Feature/Store/ModuleCompositionTest.)
     expect(route('penova.users.index', absolute: false))->toStartWith("/{$prefix}/");
-    expect(route('store.products.index', absolute: false))->toStartWith("/{$prefix}/");
 });
 
 test('a legacy PENOVA_ADMIN_* env resolves via the fallback and is flagged deprecated', function () {

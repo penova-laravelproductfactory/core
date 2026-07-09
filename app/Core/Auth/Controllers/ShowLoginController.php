@@ -28,9 +28,10 @@ class ShowLoginController extends Controller
             'canRegister' => (bool) config('penova.auth.registration'),
             // Status messages from other auth flows, e.g. "password reset".
             'status' => session('status'),
-            // A guest bounced here from the store checkout gets a small
-            // contextual notice ("log in to continue your order").
-            'checkoutIntent' => str_contains(session('url.intended', ''), '/store/checkout'),
         ]);
+        // Core auth carries no Module-specific context (D-026). "Return where
+        // you were going" after login is the framework-generic intended()
+        // redirect (see the class docblock); a Module needing login-context
+        // messaging is a Module/login-seam concern, not Core's.
     }
 }
