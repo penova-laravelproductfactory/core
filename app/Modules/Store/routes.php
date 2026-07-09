@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('permission:store.view')->group(function () {
-    // Dashboard-widget data endpoint. Registered before the {product}
+    // Widget data endpoint. Registered before the {product}
     // parameterised routes so "active-count" is never captured as a
     // model key.
     Route::get('/store/products/active-count', ActiveProductsCountController::class)->name('store.products.active-count');

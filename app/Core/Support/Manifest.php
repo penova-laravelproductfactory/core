@@ -16,7 +16,7 @@ use JsonSerializable;
  * Sections:
  *   identity    — key, name, description, version
  *   menu        — sidebar item descriptors
- *   widgets     — dashboard widget descriptors
+ *   widgets     — widget descriptors
  *   permissions — the permission slugs the Module declares
  *
  * Future contribution categories (policies, settings, logs) are added here
@@ -70,7 +70,7 @@ final class Manifest implements Arrayable, JsonSerializable
         return new self($this->key, $this->name, $this->description, $this->version, array_values($items), $this->widgets, $this->permissions);
     }
 
-    /** Declare the dashboard widget descriptors this Module contributes. */
+    /** Declare the widget descriptors this Module contributes. */
     public function widgets(array $descriptors): self
     {
         return new self($this->key, $this->name, $this->description, $this->version, $this->menu, array_values($descriptors), $this->permissions);

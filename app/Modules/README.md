@@ -37,7 +37,7 @@ Frontend lives in `resources/js/Modules/Store/`:
 resources/js/Modules/Store/
   Pages/       ← Inertia pages: Inertia::render('Modules/Store/Products/Index')
                  resolves to Pages/Products/Index.vue (the resolver adds "Pages/")
-  Widgets/     ← dashboard widgets referenced by widget descriptors
+  Widgets/     ← widgets referenced by widget descriptors
   Components/  ← module-private components (e.g. a shared form)
 ```
 
@@ -48,7 +48,7 @@ Both resolve automatically — no frontend registration step. The
 
 > **Frontend seam stability — internal, not a public contract.** The frontend
 > side of the Core↔module seam is a **convention, not a declared contract**: the
-> shared Inertia prop shapes (`menu`, `dashboardWidgets`, `widgetAreas`), the Vue
+> shared Inertia prop shapes (`menu`, `widgets`, `widgetAreas`), the Vue
 > component-resolution paths (`Modules/<Name>/Pages|Widgets/**`), and the Core
 > layout/components a module imports (e.g. `WorkspaceLayout`) are **Core internals
 > that may change between releases**. The declared public contract is the
@@ -103,7 +103,7 @@ class StoreServiceProvider extends ServiceProvider implements PenovaModule
             version: '0.1.0',
         )
             ->menu([ /* sidebar items — see below */ ])
-            ->widgets([ /* dashboard widgets — see below */ ])
+            ->widgets([ /* widgets — see below */ ])
             ->permissions([ /* permission slugs — see below */ ]);
     }
 }
@@ -131,9 +131,9 @@ by `order`. Use `order >= 100` for module items.
 ]])
 ```
 
-### The `widgets` section — dashboard widgets
+### The `widgets` section — widgets
 
-Widget **descriptors**; the dashboard grid renders them sorted by `order`.
+Widget **descriptors**; the widget grid renders them sorted by `order`.
 Core's own widgets use orders 10–30 (and 900 for the Modules card), so
 modules land in the middle with `order >= 100`.
 
@@ -145,14 +145,14 @@ modules land in the middle with `order >= 100`.
     'component' => 'Modules/Store/Widgets/ActiveProductsCard',
     'cols'      => 1,                 // 1 | 2 | 'full' (whole row, any grid width)
     'order'     => 100,
-    'area'      => 'store',           // optional dashboard group (see below)
+    'area'      => 'store',           // optional widget area (see below)
     'permission' => 'store.view',     // optional; widget is dropped for users
                                       // without it (match the data endpoint's
                                       // middleware so it never 403s)
 ]])
 ```
 
-**Areas.** The dashboard renders one headed section per `area`, so a
+**Areas.** The widget grid renders one headed section per `area`, so a
 module's widgets stay visually grouped. Recommended: give your module its
 own area named after it (`'area' => 'store'`) and reuse it on every
 widget the module ships. Omitting `area` drops the widget into the
@@ -196,7 +196,7 @@ Seed the permissions from the module's own seeder
 `firstOrCreate` + `syncWithoutDetaching` onto the admin role) and
 register it in `database/seeders/DatabaseSeeder.php` after
 `PenovaCoreSeeder`. Put the same slug in the `permission` field of the
-module's menu items and widget descriptors so the sidebar and dashboard
+module's menu items and widget descriptors so the sidebar and widgets
 never show what the routes would 403.
 
 ## Routes: invokable controllers only

@@ -47,14 +47,14 @@ class PenovaCoreServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Dashboard widgets Core itself ships — the dashboard is built
+     * Widgets Core itself ships — the widget set is built
      * entirely from these descriptors, through the exact pipeline module
      * widgets use, so the pattern devs copy is the one Core runs.
      */
     private const CORE_WIDGETS = [
-        // The 'core' area renders as a 3-column grid (see Dashboard
-        // Index.vue): stats + the two feeds share one row, the Modules
-        // card spans the full row via cols 'full'.
+        // The 'core' area is laid out as a 3-column grid: stats + the two
+        // feeds share one row, the Modules card spans the full row via
+        // cols 'full'.
         ['key' => 'core-stats', 'type' => 'card', 'title' => 'آمار کلی', 'component' => 'Core/Widgets/UsersStats', 'cols' => 1, 'order' => 10],
         ['key' => 'core-recent-activity', 'type' => 'list', 'title' => 'فعالیت‌های اخیر', 'component' => 'Core/Widgets/RecentActivity', 'cols' => 1, 'order' => 20],
         ['key' => 'core-recent-notifications', 'type' => 'list', 'title' => 'اعلان‌های اخیر', 'component' => 'Core/Widgets/RecentNotifications', 'cols' => 1, 'order' => 30],
@@ -94,7 +94,7 @@ class PenovaCoreServiceProvider extends ServiceProvider
             ->all());
 
         // Widgets are normalised so 'area' is always present ('core' when a
-        // descriptor omits it) — the dashboard groups by this field.
+        // descriptor omits it) — the widget areas by this field.
         $this->app->singleton('penova.widgets', fn () => collect(self::CORE_WIDGETS)
             ->concat(app(Support\ManifestRegistry::class)->widgetDescriptors())
             ->map(fn (array $widget) => [...$widget, 'area' => $widget['area'] ?? 'core'])

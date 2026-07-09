@@ -11,7 +11,7 @@ use Inertia\Middleware;
  * Shares global props with every Inertia page (Core and Module pages
  * alike): the authenticated user, flash messages, unread notification
  * count for the layout bell, the product name, and the panel composition
- * (sidebar menu + dashboard widgets) collected from Core + Modules by
+ * (sidebar menu + widgets) collected from Core + Modules by
  * PenovaCoreServiceProvider.
  */
 class HandleInertiaRequests extends Middleware
@@ -57,7 +57,7 @@ class HandleInertiaRequests extends Middleware
                 ),
             ),
 
-            // Frontend seam (menu / dashboardWidgets / widgetAreas): these
+            // Frontend seam (menu / widgets / widgetAreas): these
             // prop shapes are Core internals, not a declared public contract —
             // the Manifest is the contract (D-023). See app/Modules/README.md,
             // "Frontend seam stability".
@@ -74,15 +74,15 @@ class HandleInertiaRequests extends Middleware
                 ->values()
                 ->all(),
 
-            // Dashboard widget descriptors (Core + Modules, order-sorted,
+            // Widget descriptors (Core + Modules, order-sorted,
             // permission-filtered). Kept dormant for future use — the
             // Workspace panel root does not render these.
-            'dashboardWidgets' => collect(app('penova.widgets'))
+            'widgets' => collect(app('penova.widgets'))
                 ->filter($allowed)
                 ->values()
                 ->all(),
 
-            // Widget area → heading map for the dashboard sections; keys
+            // Widget area → heading map for the widget areas; keys
             // missing here get a label formatted from the key itself.
             'widgetAreas' => config('penova.widgets.areas', []),
 

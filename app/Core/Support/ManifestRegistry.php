@@ -14,7 +14,7 @@ namespace App\Core\Support;
  *
  * Everything the Platform composes from Modules — the readable identity
  * manifests (Workspace + future tooling), the sidebar menu items, the
- * dashboard widget descriptors, and the declared permission slugs — derives
+ * widget descriptors, and the declared permission slugs — derives
  * from this one resolved set, so the module list is never iterated in
  * parallel (D-023). Registered as a singleton by PenovaCoreServiceProvider.
  */
@@ -105,7 +105,7 @@ final class ManifestRegistry
     }
 
     /**
-     * The dashboard widget descriptors every installed Module contributes.
+     * The widget descriptors every installed Module contributes.
      *
      * @return list<array<string, mixed>>
      */

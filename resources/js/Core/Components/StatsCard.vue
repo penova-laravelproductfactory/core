@@ -1,6 +1,6 @@
 <script setup>
 /**
- * Core\UI — small numeric stat tile for the dashboard grid.
+ * Core\UI — small numeric stat tile for the widget grid.
  * Modules reuse it for their own counters (bookings today, open
  * deals, …) instead of building bespoke tiles.
  */

@@ -7,7 +7,7 @@ use App\Modules\Store\Models\Product;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Modules\Store — tiny JSON endpoint backing the dashboard widget
+ * Modules\Store — tiny JSON endpoint backing the widget
  * (store.products.active-count): how many products are active.
  *
  * Response shape is guaranteed: { "count": number }.

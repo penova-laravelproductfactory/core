@@ -1,16 +1,16 @@
 <script setup>
 /**
- * Modules\Store — dashboard widget: how many products are active.
+ * Modules\Store — widget: how many products are active.
  * Registered by StoreServiceProvider::widgets() (key
  * "store-active-products", area "store").
  *
- * The props-only DashboardCard case: fetch
+ * The props-only WidgetCard case: fetch
  * GET <workspace-prefix>/store/products/active-count ({ count }) on mount and hand
  * title/value/loading/error to the base card.
  */
 import { computed, onMounted, ref } from 'vue';
 import axios from 'axios';
-import DashboardCard from '@/Core/Components/DashboardCard.vue';
+import WidgetCard from '@/Core/Components/WidgetCard.vue';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 const props = defineProps({
@@ -38,7 +38,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <DashboardCard :title="title" icon="bag" :value="count" :loading="loading" :error="error">
+    <WidgetCard :title="title" icon="bag" :value="count" :loading="loading" :error="error">
         محصولات فعالِ قابل نمایش در فروشگاه
-    </DashboardCard>
+    </WidgetCard>
 </template>

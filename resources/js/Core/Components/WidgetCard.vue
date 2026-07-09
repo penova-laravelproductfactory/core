@@ -1,11 +1,11 @@
 <script setup>
 /**
- * Core\UI — base card for dashboard widgets: title + optional icon
+ * Core\UI — base card for widgets: title + optional icon
  * badge + value, with loading/error states handled once for every
  * widget. The 90% case is props-only:
  *
- *   <DashboardCard title="…" icon="users" :value="count"
- *                  :loading="loading" :error="error">زیرنویس</DashboardCard>
+ *   <WidgetCard title="…" icon="users" :value="count"
+ *                  :loading="loading" :error="error">زیرنویس</WidgetCard>
  *
  * No trend logic here (by design, for now): widgets needing richer
  * visuals override the slots instead of forking the card —

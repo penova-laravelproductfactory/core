@@ -11,7 +11,7 @@ use Illuminate\Support\ServiceProvider;
 /**
  * Store — minimal but real e-commerce module: product management
  * (physical / virtual / downloadable) plus an "active products"
- * dashboard widget. Orders, cart and checkout build on this skeleton
+ * widget. Orders, cart and checkout build on this skeleton
  * in later versions.
  *
  * Data contract: ActiveProductsCard.vue (resources/js/Modules/Store/

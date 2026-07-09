@@ -128,10 +128,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Dashboard Widgets
+    | Widgets
     |--------------------------------------------------------------------------
-    | 'areas' maps a widget area key to the heading the dashboard shows
-    | above that group. Modules are free to introduce new area keys (the
+    | 'areas' maps a widget area key to the heading shown above that
+    | group. Modules are free to introduce new area keys (the
     | recommendation is one area per module, named after it); a key
     | missing from this map falls back to a label formatted from the key
     | itself ("store-extras" → "Store Extras") on the frontend.

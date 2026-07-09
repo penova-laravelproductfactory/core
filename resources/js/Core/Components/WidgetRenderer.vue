@@ -1,6 +1,6 @@
 <script setup>
 /**
- * Core\UI — renders one dashboard widget from its descriptor (the shape
+ * Core\UI — renders one widget from its descriptor (the shape
  * documented in app/Core/Support/PenovaModule.php).
  *
  * `component` in the descriptor is a path-like name resolved against the
@@ -39,7 +39,7 @@ const resolved = computed(() => (loader.value ? defineAsyncComponent(loader.valu
     <component :is="resolved" v-if="resolved" :widget="widget" />
 
     <!-- A registered descriptor whose .vue file is missing: fail soft and
-         visibly, so a typo in `component` never blanks the dashboard. -->
+         visibly, so a typo in `component` never blanks the widget grid. -->
     <div v-else class="rounded-lg border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-400">
         ویجت «<span dir="ltr">{{ widget.component }}</span>» پیدا نشد.
     </div>

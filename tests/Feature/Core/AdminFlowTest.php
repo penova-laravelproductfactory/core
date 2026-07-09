@@ -33,7 +33,7 @@ test('the full Workspace experience works end to end', function () {
     // 3) The workspace renders its Inertia page, with the panel
     //    composition props shared by HandleInertiaRequests: the sidebar
     //    menu (Core items first — lowest order — plus module items) and
-    //    the dashboard widget descriptors (Core + modules, order-sorted).
+    //    the widget descriptors (Core + modules, order-sorted).
     $this->get(route('penova.workspace'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
@@ -41,7 +41,7 @@ test('the full Workspace experience works end to end', function () {
             ->where('menu', fn ($menu) => collect($menu)
                 ->contains(fn ($item) => $item['key'] === 'workspace' && filled($item['href'] ?? null)))
             // Core widgets omit 'area'; the provider normalises it to 'core'.
-            ->where('dashboardWidgets', fn ($widgets) => collect($widgets)
+            ->where('widgets', fn ($widgets) => collect($widgets)
                 ->contains(fn ($widget) => $widget['key'] === 'core-stats' && ($widget['area'] ?? null) === 'core'))
             ->has('widgetAreas.core'));
 
@@ -87,11 +87,11 @@ test('module menu items and widgets are permission-filtered', function () {
         'password' => config('penova.operator.password'),
     ]);
 
-    // Without store.view: no sidebar item, no dashboard widget, 403.
+    // Without store.view: no sidebar item, no widget, 403.
     $this->get(route('penova.workspace'))
         ->assertInertia(fn (Assert $page) => $page
             ->where('menu', fn ($menu) => ! collect($menu)->contains('key', 'store'))
-            ->where('dashboardWidgets', fn ($widgets) => ! collect($widgets)->contains('key', 'store-active-products')));
+            ->where('widgets', fn ($widgets) => ! collect($widgets)->contains('key', 'store-active-products')));
 
     $this->get('/workspace/store/products')->assertForbidden();
 
@@ -106,7 +106,7 @@ test('module menu items and widgets are permission-filtered', function () {
     $this->get(route('penova.workspace'))
         ->assertInertia(fn (Assert $page) => $page
             ->where('menu', fn ($menu) => collect($menu)->contains('key', 'store'))
-            ->where('dashboardWidgets', fn ($widgets) => collect($widgets)->contains('key', 'store-active-products')));
+            ->where('widgets', fn ($widgets) => collect($widgets)->contains('key', 'store-active-products')));
 
     $this->get('/workspace/store/products')->assertOk();
 });
