@@ -63,6 +63,6 @@ class PenovaCoreSeeder extends Seeder
 
         $user->roles()->syncWithoutDetaching($operator);
 
-        $this->command?->info("Admin account ready: {$email} (role: admin — dev credentials, rotate in production).");
+        $this->command?->info("Operator account ready: {$email} (role: operator — dev credentials, rotate in production).");
     }
 }

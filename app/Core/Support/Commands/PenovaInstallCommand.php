@@ -17,7 +17,7 @@ class PenovaInstallCommand extends Command
 {
     protected $signature = 'penova:install {--fresh : Drop all tables and re-run every migration}';
 
-    protected $description = 'Install Penova Core: run migrations and seed the Core baseline (admin role, permissions, admin user)';
+    protected $description = 'Install Penova Core: run migrations and seed the Core baseline (operator role, permissions, operator user)';
 
     public function handle(): int
     {

@@ -21,6 +21,12 @@ npm run build       # or keep Vite running via the dev script below
 composer run dev    # serves the app + queue + logs + Vite
 ```
 
+> **Front-end build.** `npm run build`, `npm run dev`, and `composer run dev` all
+> regenerate the module-frontend registry (`php artisan penova:frontend-registry`)
+> before Vite runs. Build the front-end through these scripts — a bare `vite build`
+> fails because the generated registry is git-ignored and absent on a fresh
+> checkout (see `app/Modules/README.md`).
+
 ## Tests
 
 ```bash
@@ -32,15 +38,15 @@ it walks the whole admin experience (fresh DB → seed → login →
 Workspace → create a user → see it listed + audit-logged → logout) and
 must always be green.
 
-## Default admin account
+## Default operator account
 
 `PenovaCoreSeeder` (called from `DatabaseSeeder`) creates:
 
 | | |
 |---|---|
-| Email | `admin@example.com` |
+| Email | `operator@example.com` |
 | Password | `password` |
-| Role | `admin` (holds all four Core permissions: `users.manage`, `roles.manage`, `settings.manage`, `logs.view`) |
+| Role | `operator` (holds all four Core permissions: `users.manage`, `roles.manage`, `settings.manage`, `logs.view`) |
 
 > **Dev/test only.** These credentials exist so a fresh checkout is usable
 > immediately. In any real environment, change the email/password right
@@ -50,16 +56,19 @@ must always be green.
 The defaults can be overridden per environment before seeding:
 
 ```env
-PENOVA_ADMIN_EMAIL=owner@yourproduct.com
-PENOVA_ADMIN_PASSWORD=a-strong-generated-secret
+PENOVA_OPERATOR_EMAIL=owner@yourproduct.com
+PENOVA_OPERATOR_PASSWORD=a-strong-generated-secret
 ```
 
-The seeder reads `config('penova.admin.email')` / `config('penova.admin.password')`,
-so no code changes are needed to seed real credentials.
+The seeder reads `config('penova.operator.email')` / `config('penova.operator.password')`,
+so no code changes are needed to seed real credentials. The legacy
+`PENOVA_ADMIN_EMAIL` / `PENOVA_ADMIN_PASSWORD` variables are still honoured as a
+one-cycle fallback and will be removed at the next MAJOR — prefer the
+`PENOVA_OPERATOR_*` names.
 
 ## Auth flow
 
-- Guests hitting any `/admin` URL are redirected to `/login`.
+- Guests hitting any Workspace URL (the `/workspace` prefix by default, from `penova.workspace.prefix`) are redirected to `/login`.
 - Successful login redirects to the intended URL, falling back to the
   Workspace (`penova.workspace`).
 - Logout invalidates the session and returns to `/login`.

@@ -46,14 +46,14 @@ app/
     Support/       Traits/RecordsActivity.php                 (cross-cutting helpers)
   Modules/         (see app/Modules/README.md for module anatomy)
   Http/            app-level glue only (base Controller, HandleInertiaRequests, WorkspaceController)
-config/penova.php  admin prefix, registration toggle, datatable defaults, modules list
+config/penova.php  workspace prefix, registration toggle, datatable defaults, modules list
 routes/penova.php  composes each Core module's own routes.php
 ```
 
 Each Core module is **self-contained**: its controllers, models,
 requests, policies and its own `routes.php` live together.
 `routes/penova.php` only composes them — auth routes on the plain `web`
-group, everything else under `/{admin-prefix}` + `auth` middleware with
+group, everything else under `/{workspace-prefix}` + `auth` middleware with
 route names `penova.*`.
 
 Key seams modules program against:
@@ -97,7 +97,7 @@ Core migrations (beyond the Laravel defaults): `roles`, `permissions`,
 `role_user`, `permission_role`, `settings`, `activity_logs`,
 `notifications`. `PenovaCoreSeeder` seeds the four Core permissions
 (`users.manage`, `roles.manage`, `settings.manage`, `logs.view`), the
-`admin` role, and an `admin@example.com / password` account (change it).
+`operator` role, and an `operator@example.com / password` account (change it).
 
 Module migrations live inside the module
 (`app/Modules/<Name>/Database/Migrations`, loaded by its provider).

@@ -59,8 +59,8 @@ Modular Monolith Architecture
 نصب
 
 ```bash
-git clone https://github.com/your-vendor/penova-core.git
-cd penova-core
+git clone https://github.com/penova-laravelproductfactory/core.git
+cd core
 
 cp .env.example .env
 composer install
@@ -73,6 +73,9 @@ npm run build   # یا npm run dev برای توسعه
 php artisan serve
 ```
 
+> نکته: `npm run build` و `npm run dev` ابتدا رجیستریِ فرانت‌اندِ ماژول‌ها را می‌سازند؛
+> اجرای مستقیمِ `vite build` بدون آن با خطا مواجه می‌شود — همیشه از همین اسکریپت‌ها استفاده کنید.
+
 ورود به میزکار
 
 بعد از اجرای سرور:
@@ -82,7 +85,7 @@ php artisan serve
 
 هویت پیش‌فرض (برای محیط توسعه):
 
-- ایمیل: `admin@example.com`  
+- ایمیل: `operator@example.com`  
 - رمز: `password`
 
 بعد از ورود، میزکار را می‌بینید با:
