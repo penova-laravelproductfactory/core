@@ -76,7 +76,7 @@ Key seams modules program against:
 resources/js/
   app.js               ← Inertia entry; resolves pages from BOTH roots below
   Core/
-    Layouts/           AdminLayout.vue (sidebar, bell, toasts), GuestLayout.vue
+    Layouts/           WorkspaceLayout.vue (sidebar, bell, toasts), GuestLayout.vue
     Components/        Button, TextInput, Modal, Toast, Pagination, DataTable
     Pages/             Auth/, Workspace/, Users/, Roles/, Settings/, Logs/, Notifications/
   Modules/             (one folder per product module, mirrors app/Modules)

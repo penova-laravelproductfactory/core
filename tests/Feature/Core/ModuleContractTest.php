@@ -20,7 +20,7 @@ class FakeContractModule implements PenovaModule
             version: '1.2.3',
         )
             ->menu([['key' => 'fake', 'label' => 'Fake', 'route' => 'fake.index', 'icon' => 'squares', 'order' => 700, 'permission' => 'fake.view']])
-            ->widgets([['key' => 'fake-widget', 'type' => 'card', 'title' => 'Fake', 'component' => 'Modules/Fake/Widgets/Fake', 'cols' => 1, 'order' => 700, 'area' => 'fake', 'permission' => 'fake.view']])
+            ->widgets([['key' => 'fake-widget', 'type' => 'card', 'title' => 'Fake', 'cols' => 1, 'order' => 700, 'area' => 'fake', 'permission' => 'fake.view']])
             ->permissions(['fake.view', 'fake.manage']);
     }
 }

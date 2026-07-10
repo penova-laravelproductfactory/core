@@ -8,10 +8,15 @@ import WorkspaceLayout from '@/Core/Layouts/WorkspaceLayout.vue';
 import PageHeader from '@/Core/Components/PageHeader.vue';
 import Button from '@/Core/Components/Button.vue';
 import Pagination from '@/Core/Components/Pagination.vue';
+import { useWorkspacePath } from '@/Core/composables/workspacePath';
 
 defineProps({
     items: Object, // Laravel LengthAwarePaginator JSON
 });
+
+// Build Workspace-prefixed URLs from config — never hardcode the prefix. This
+// targets the '{{ module }}.create' route (GET {{ slug }}/create).
+const ws = useWorkspacePath();
 
 const formatDateTime = (iso) => (iso ?? '').slice(0, 16).replace('T', ' ');
 </script>
@@ -20,7 +25,7 @@ const formatDateTime = (iso) => (iso ?? '').slice(0, 16).replace('T', ' ');
     <WorkspaceLayout title="{{ name }}">
         <PageHeader title="{{ name }}" subtitle="TODO: زیرعنوان فارسی">
             <template #actions>
-                <Button href="/admin/{{ slug }}/create">ایجاد مورد جدید</Button>
+                <Button :href="ws('/{{ slug }}/create')">ایجاد مورد جدید</Button>
             </template>
         </PageHeader>
 

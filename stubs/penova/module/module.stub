@@ -2,6 +2,7 @@
 
 namespace App\Modules\{{ name }};
 
+use App\Core\Support\DeclaresFrontendSource;
 use App\Core\Support\Manifest;
 use App\Core\Support\PenovaModule;
 use Illuminate\Contracts\Foundation\CachesRoutes;
@@ -17,11 +18,15 @@ use Illuminate\Support\ServiceProvider;
  * routes and migrations are ordinary provider mechanics in boot(), NOT
  * Manifest contributions. Start from app/Modules/README.md.
  *
- * Frontend lives in resources/js/Modules/{{ name }}/:
- *   Pages/   → Inertia::render('Modules/{{ name }}/Index') → Pages/Index.vue
- *   Widgets/ → referenced by widget descriptors in the Manifest
+ * Frontend lives in resources/js/Modules/{{ name }}/ and resolves through the
+ * EXPERIMENTAL module-frontend registry (RFC-006 / D-028), not an auto-glob:
+ *   Pages/   → each page is declared in the Manifest `frontend` section and
+ *              resolves against this Module's own coordinate (frontendSource());
+ *              a build runs `php artisan penova:frontend-registry` first.
+ *   Widgets/ → a widget's Vue entry is declared in `frontend`, joined to its
+ *              backend descriptor by `key` (see app/Modules/README.md).
  */
-class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
+class {{ name }}ServiceProvider extends ServiceProvider implements DeclaresFrontendSource, PenovaModule
 {
     public function register(): void
     {
@@ -71,17 +76,33 @@ class {{ name }}ServiceProvider extends ServiceProvider implements PenovaModule
                     'permission' => '{{ module }}.view',
                 ],
             ])
-            // Add widget descriptors when the module ships them, e.g.:
-            //   ->widgets([[
-            //       'key' => '{{ module }}-stats', 'type' => 'card', 'title' => '…',
-            //       'component' => 'Modules/{{ name }}/Widgets/StatsCard',
-            //       'cols' => 1, 'order' => 500, 'area' => '{{ module }}',
-            //       'permission' => '{{ module }}.view',
-            //   ]])
-            // (label the '{{ module }}' area in config/penova.php → widgets.areas)
+            // Every Module page Core renders MUST be declared here as a typed
+            // {name, entry} pair (EXPERIMENTAL frontend seam — RFC-006 / D-028); the
+            // entry resolves against this Module's coordinate (frontendSource()
+            // below). To add a widget: declare its descriptor in ->widgets([...])
+            // AND a paired {key, entry} under 'widgets' here — see app/Modules/README.md.
+            ->frontend([
+                'pages' => [
+                    ['name' => 'Modules/{{ name }}/Index', 'entry' => 'Pages/Index'],
+                    ['name' => 'Modules/{{ name }}/Create', 'entry' => 'Pages/Create'],
+                ],
+            ])
             ->permissions([
                 '{{ module }}.view',
                 '{{ module }}.manage',
             ]);
+    }
+
+    /**
+     * This Module's OWN frontend coordinate root (EXPERIMENTAL — RFC-006 / D-028):
+     * where its Vue frontend lives. Declared explicitly because the Module key
+     * ('{{ module }}', kebab-case) differs from the frontend directory
+     * ('{{ name }}', StudlyCase) — the default key-based coordinate would not
+     * resolve on a case-sensitive filesystem. Module-owned build metadata, never a
+     * Manifest field.
+     */
+    public static function frontendSource(): string
+    {
+        return '@/Modules/{{ name }}';
     }
 }
