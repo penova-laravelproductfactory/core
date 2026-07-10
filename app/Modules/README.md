@@ -36,27 +36,80 @@ Frontend lives in `resources/js/Modules/Store/`:
 ```
 resources/js/Modules/Store/
   Pages/       ← Inertia pages: Inertia::render('Modules/Store/Products/Index')
-                 resolves to Pages/Products/Index.vue (the resolver adds "Pages/")
-  Widgets/     ← widgets referenced by widget descriptors
+  Widgets/     ← widget components, one per declared widget
   Components/  ← module-private components (e.g. a shared form)
 ```
 
-Both resolve automatically — no frontend registration step. The
-`component` field of a widget descriptor must match this layout:
-`Modules/Store/Widgets/ActiveProductsCard` →
-`resources/js/Modules/Store/Widgets/ActiveProductsCard.vue`.
+> **⚠ EXPERIMENTAL — the module-frontend seam (RFC-006 / D-028).** The frontend
+> half of the Core↔module seam is now a **declared contract, but an experimental
+> one**: it may change or be withdrawn **without a MAJOR bump**, and is not yet
+> SemVer-frozen. It graduates to a stable, SemVer-governed contract only once a
+> **second independent Module** exercises it (the graduation trigger); until then,
+> treat it as provisional. Everything below is under that stance.
 
-> **Frontend seam stability — internal, not a public contract.** The frontend
-> side of the Core↔module seam is a **convention, not a declared contract**: the
-> shared Inertia prop shapes (`menu`, `widgets`, `widgetAreas`), the Vue
-> component-resolution paths (`Modules/<Name>/Pages|Widgets/**`), and the Core
-> layout/components a module imports (e.g. `WorkspaceLayout`) are **Core internals
-> that may change between releases**. The declared public contract is the
-> **Manifest** — its section shapes (D-023) — *not* the frontend props or paths
-> Core derives from them. Follow the conventions above, but do not treat the prop
-> shapes, resolution paths, or Core component names as stable API. A
-> deliberately-declared frontend extension contract, if ever introduced, will be a
-> separate governed surface.
+A module no longer relies on an automatic path glob. Instead it **declares** its
+frontend contributions, and a **generated, git-ignored registry** resolves them:
+
+1. **Declare the entries** in the Manifest's experimental `frontend` section —
+   typed `entry` tokens (never paths or globs), joined to widgets by `key` and to
+   pages by their Inertia `name`:
+
+   ```php
+   ->frontend([
+       'widgets' => [
+           ['key' => 'store-active-products', 'entry' => 'Widgets/ActiveProductsCard'],
+       ],
+       'pages' => [
+           ['name' => 'Modules/Store/Products/Index', 'entry' => 'Pages/Products/Index'],
+       ],
+   ])
+   ```
+
+   Every enabled backend widget needs exactly one frontend entry with the same
+   `key` (no missing entry, no orphan); page `name`s must be globally unique and
+   must not start with `Core/`. The `entry` token is module-internal — no `..`, no
+   leading/trailing slash.
+
+2. **Own the coordinate.** Where the frontend physically lives is *module* build
+   metadata, not a Manifest field. An in-repo module gets the default
+   `@/Modules/{key}`; a module whose directory differs from its key (or that ships
+   its frontend elsewhere) declares its own root by implementing
+   `App\Core\Support\DeclaresFrontendSource`:
+
+   ```php
+   public static function frontendSource(): string
+   {
+       return '@/Modules/Store';
+   }
+   ```
+
+3. **Regenerate the registry** — one command, run automatically by every frontend
+   build (`npm run build` / `npm run dev` invoke it first):
+
+   ```
+   php artisan penova:frontend-registry
+   ```
+
+   The output (`resources/js/generated/…`) is a build artifact: git-ignored,
+   never hand-edited, regenerated on any add / enable / disable / update / remove
+   of a module. `--check` fails a build whose registry is missing, tampered, or
+   stale. Malformed descriptors, a broken widget join, duplicate contributions,
+   an unknown widget area, or an unresolvable entry all fail **loudly** at
+   generation — never silently at runtime.
+
+**Externally-packaged modules (forward-looking).** A module whose frontend ships
+as its own package may also implement `App\Core\Support\DeclaresFrontendPackage`
+to declare the backend↔frontend package pairing and its framework peers; Core
+then fails loudly, before runtime, on a *module frontend package mismatch* or an
+incompatible *peer*. In-repo modules ship their frontend in the same tree and
+declare none.
+
+> **Still internal, even so.** The shared Inertia prop shapes (`menu`, `widgets`,
+> `widgetAreas`) and the Core layout/components a module imports (e.g.
+> `WorkspaceLayout`) remain **Core internals that may change between releases**.
+> The governed public contract is the **Manifest** — its section shapes (D-023),
+> now including the experimental `frontend` descriptor — *not* the props or Core
+> component names derived from them.
 
 ## Wiring a module in
 
@@ -139,18 +192,22 @@ modules land in the middle with `order >= 100`.
 
 ```php
 ->widgets([[
-    'key'       => 'store-active-products',
+    'key'       => 'store-active-products', // joins to the frontend entry (below)
     'type'      => 'card',            // 'card' | 'list'
     'title'     => 'محصولات فعال',    // arrives as widget.title in Vue
-    'component' => 'Modules/Store/Widgets/ActiveProductsCard',
     'cols'      => 1,                 // 1 | 2 | 'full' (whole row, any grid width)
     'order'     => 100,
-    'area'      => 'store',           // optional widget area (see below)
+    'area'      => 'store',           // widget area (see below)
     'permission' => 'store.view',     // optional; widget is dropped for users
                                       // without it (match the data endpoint's
                                       // middleware so it never 403s)
 ]])
 ```
+
+The widget descriptor carries the widget's **placement** (area, title, order,
+permission) — its single authority. The Vue component it renders is declared
+separately, in the experimental `frontend` section, and joined by the shared
+`key` (see *Anatomy of a module* above). There is no `component` path field.
 
 **Areas.** The widget grid renders one headed section per `area`, so a
 module's widgets stay visually grouped. Recommended: give your module its

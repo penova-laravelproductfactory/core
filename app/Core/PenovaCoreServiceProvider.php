@@ -125,6 +125,7 @@ class PenovaCoreServiceProvider extends ServiceProvider
             $this->commands([
                 Support\Commands\PenovaInstallCommand::class,
                 Support\Commands\MakePenovaModuleCommand::class,
+                Support\Commands\GenerateFrontendRegistryCommand::class,
             ]);
         }
 

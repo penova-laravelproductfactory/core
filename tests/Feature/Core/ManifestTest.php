@@ -57,5 +57,5 @@ test('a manifest is declaration-like: declaring a section does not mutate the or
 test('a manifest serialises to its named sections', function () {
     $manifest = Manifest::for('store', 'Store', 'x', '0.1.0')->permissions(['store.view']);
 
-    expect(array_keys($manifest->toArray()))->toBe(['identity', 'menu', 'widgets', 'permissions']);
+    expect(array_keys($manifest->toArray()))->toBe(['identity', 'menu', 'widgets', 'permissions', 'frontend']);
 });

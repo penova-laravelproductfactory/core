@@ -2,8 +2,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite"
+        "frontend-registry": "php artisan penova:frontend-registry",
+        "build": "php artisan penova:frontend-registry && vite build",
+        "dev": "php artisan penova:frontend-registry && vite"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

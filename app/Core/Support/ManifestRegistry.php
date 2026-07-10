@@ -23,13 +23,44 @@ final class ManifestRegistry
     /** @var list<Manifest> */
     private array $manifests;
 
+    /**
+     * Module key → its OWN frontend coordinate root (EXPERIMENTAL — RFC-006 /
+     * D-028). Read from the provider boundary, not the Manifest: it is module-owned
+     * build/install metadata, never a Manifest contribution.
+     *
+     * @var array<string, string>
+     */
+    private array $frontendSources = [];
+
+    /**
+     * Module key → its declared frontend package pairing (EXPERIMENTAL — RFC-006 /
+     * D-028), for Modules whose provider implements {@see DeclaresFrontendPackage}.
+     * Also read from the provider boundary, never the Manifest.
+     *
+     * @var array<string, array{name: string, version: string, peers?: array<string, string>}>
+     */
+    private array $frontendPackages = [];
+
     public function __construct()
     {
-        $this->manifests = collect(config('penova.modules', []))
-            ->map(fn (string $provider) => $this->resolve($provider))
-            ->filter()
-            ->values()
-            ->all();
+        $manifests = [];
+
+        foreach (config('penova.modules', []) as $provider) {
+            $manifest = $this->resolve($provider);
+
+            if ($manifest === null) {
+                continue;
+            }
+
+            $manifests[] = $manifest;
+            $this->frontendSources[$manifest->key()] = $this->frontendSource($provider, $manifest->key());
+
+            if (is_subclass_of($provider, DeclaresFrontendPackage::class)) {
+                $this->frontendPackages[$manifest->key()] = $provider::frontendPackage();
+            }
+        }
+
+        $this->manifests = $manifests;
     }
 
     /**
@@ -65,6 +96,22 @@ final class ManifestRegistry
         }
 
         return null;
+    }
+
+    /**
+     * A Module's OWN frontend coordinate root (EXPERIMENTAL — RFC-006 / D-028) —
+     * module-owned build metadata read from the PROVIDER, never the Manifest. A
+     * provider MAY declare it by implementing {@see DeclaresFrontendSource};
+     * otherwise the in-repo default `@/Modules/{key}` is derived from the key.
+     * Core names no specific Module: it reads the provider generically.
+     */
+    private function frontendSource(string $provider, string $key): string
+    {
+        if (is_subclass_of($provider, DeclaresFrontendSource::class)) {
+            return $provider::frontendSource();
+        }
+
+        return "@/Modules/{$key}";
     }
 
     /**
@@ -126,5 +173,43 @@ final class ManifestRegistry
             ->unique()
             ->values()
             ->all();
+    }
+
+    /**
+     * Each installed Module's generic frontend-registry input (RFC-006 / D-028):
+     * its key, its OWN coordinate root (from the provider boundary, not the
+     * Manifest), its backend widget descriptors (for the widget join + area
+     * checks), and its EXPERIMENTAL frontend contributions. Iterates the resolved
+     * manifests; names no specific Module.
+     *
+     * @return list<array{key: string, source: string, widgets: list<array<string, mixed>>, frontend: array{widgets: list<array{key: string, entry: string}>, pages: list<array{name: string, entry: string}>}}>
+     */
+    public function frontendModules(): array
+    {
+        return array_map(fn (Manifest $manifest) => [
+            'key' => $manifest->key(),
+            'source' => $this->frontendSources[$manifest->key()] ?? "@/Modules/{$manifest->key()}",
+            'widgets' => $manifest->widgetDescriptors(),
+            'frontend' => $manifest->frontendContributions(),
+        ], $this->manifests);
+    }
+
+    /**
+     * The declared frontend PACKAGE pairings of the installed Modules that have one
+     * (EXPERIMENTAL — RFC-006 / D-028), for the pairing + peer checks. Read from
+     * the provider boundary; Modules that ship their frontend in-repo declare none
+     * and are absent here. Names no specific Module.
+     *
+     * @return list<array{key: string, package: array{name: string, version: string, peers?: array<string, string>}}>
+     */
+    public function frontendPackages(): array
+    {
+        $out = [];
+
+        foreach ($this->frontendPackages as $key => $package) {
+            $out[] = ['key' => $key, 'package' => $package];
+        }
+
+        return $out;
     }
 }

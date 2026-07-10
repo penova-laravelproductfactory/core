@@ -157,14 +157,14 @@ return [
     | ONLY place modules get wired in.
     |
     | 'modules' => [
-    |     App\Modules\Store\StoreServiceProvider::class,
+    |     App\Modules\<Name>\<Name>ServiceProvider::class,
     | ],
     */
     'modules' => [
         // Core ships with NO business module enabled (D-026): Core is complete
-        // on its own. Add a Module's provider here to wire it in — e.g. the
-        // in-repo Store reference module:
-        //     App\Modules\Store\StoreServiceProvider::class,
+        // on its own. Add a Module's provider class-string here to wire it in —
+        // Core registers providers opaquely and names no specific Module:
+        //     App\Modules\<Name>\<Name>ServiceProvider::class,
     ],
 
 ];

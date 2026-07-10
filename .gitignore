@@ -1,5 +1,8 @@
 /.phpunit.cache
 /node_modules
+# Generated build artifacts — never source-controlled (RFC-006 / D-028):
+# the experimental module-frontend registry is regenerated from enabled Modules.
+/resources/js/generated
 /public/build
 /public/hot
 /public/storage

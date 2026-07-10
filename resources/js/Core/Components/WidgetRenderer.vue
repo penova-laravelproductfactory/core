@@ -1,22 +1,21 @@
 <script setup>
 /**
- * Core\UI — renders one widget from its descriptor (the shape
- * documented in app/Core/Support/PenovaModule.php).
+ * Core\UI — renders one widget from its descriptor.
  *
- * `component` in the descriptor is a path-like name resolved against the
- * two widget roots Vite knows about at build time:
- *   Core/Widgets/X          → resources/js/Core/Widgets/X.vue
- *   Modules/<Name>/Widgets/X → resources/js/Modules/<Name>/Widgets/X.vue
+ * Resolution (RFC-006 / D-028):
+ *   Core widgets   → their own `component` ("Core/Widgets/X") against Core's glob.
+ *   Module widgets → ONLY through the generated module-frontend registry, keyed by
+ *     the widget's globally-unique `key`. Core keeps NO module-directory glob and
+ *     no `component` path for Module widgets; the registry (a git-ignored build
+ *     artifact — registry output) is the only resolver, and Core names no Module.
+ *     The declared contract is the Manifest `frontend` section.
  *
- * Every widget component receives the full descriptor as the `widget`
- * prop; widgets pull their data from the shared/page Inertia props.
- *
- * This path-resolution convention is a Core internal, not a declared public
- * contract — it may change between releases (see app/Modules/README.md,
- * "Frontend seam stability"). The declared contract is the Manifest (D-023).
+ * A validly-registered widget whose component later fails to load fails SOFT
+ * (visible placeholder). Registration errors are caught at generation, never here.
  */
 import { computed, defineAsyncComponent } from 'vue';
 import { useI18n } from '@/Core/composables/i18n';
+import { moduleWidgets } from '@/generated/module-frontend-registry.js';
 
 const props = defineProps({
     widget: { type: Object, required: true },
@@ -25,14 +24,21 @@ const props = defineProps({
 const { t } = useI18n();
 
 const coreWidgets = import.meta.glob('../Widgets/**/*.vue');
-const moduleWidgets = import.meta.glob('../../Modules/*/Widgets/**/*.vue');
 
 const loader = computed(() => {
-    const name = props.widget.component;
+    const { key, component } = props.widget;
 
-    return name.startsWith('Modules/')
-        ? moduleWidgets[`../../${name}.vue`]
-        : coreWidgets[`../${name.replace(/^Core\//, '')}.vue`];
+    // Module widget: resolved by key from the registry (registry output).
+    if (moduleWidgets[key]) {
+        return moduleWidgets[key];
+    }
+
+    // Core widget: its own "Core/Widgets/X" component against Core's own glob.
+    if (typeof component === 'string' && component.startsWith('Core/')) {
+        return coreWidgets[`../${component.replace(/^Core\//, '')}.vue`];
+    }
+
+    return null;
 });
 
 const resolved = computed(() => (loader.value ? defineAsyncComponent(loader.value) : null));
@@ -41,9 +47,9 @@ const resolved = computed(() => (loader.value ? defineAsyncComponent(loader.valu
 <template>
     <component :is="resolved" v-if="resolved" :widget="widget" />
 
-    <!-- A registered descriptor whose .vue file is missing: fail soft and
-         visibly, so a typo in `component` never blanks the widget grid. -->
+    <!-- A validly-registered widget whose component fails to load: fail soft and
+         visibly, so a runtime miss never blanks the widget grid. -->
     <div v-else class="rounded-lg border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-400">
-        {{ t('render.widget_missing_before') }}<span dir="ltr">{{ widget.component }}</span>{{ t('render.widget_missing_after') }}
+        {{ t('render.widget_missing_before') }}<span dir="ltr">{{ widget.key }}</span>{{ t('render.widget_missing_after') }}
     </div>
 </template>
