@@ -35,23 +35,28 @@ class WorkspaceController extends Controller
                 'version' => config('penova.version'),
                 'links' => $links,
 
+                // Onboarding copy is resolved to the active locale via __()
+                // against the ui.home.onboarding catalog (RFC-005 / D-027 /
+                // D-AUDIT-006) — English base, Persian under APP_LOCALE=fa — so the
+                // Workspace home is not English-hardcoded. Step keys stay stable
+                // identifiers; only labels/descriptions/CTAs are localized.
                 'onboarding' => [
                     'steps' => [
-                        ['key' => 'core-installed', 'label' => 'Penova Core installed', 'done' => true],
-                        ['key' => 'authentication', 'label' => 'Authentication ready', 'done' => true],
-                        ['key' => 'admin-panel', 'label' => 'Workspace ready', 'done' => true],
-                        ['key' => 'branding', 'label' => 'Configure branding', 'done' => $brandingConfigured,
-                            'cta' => ['label' => 'Configure', 'href' => '/'.config('penova.workspace.prefix').'/settings']],
-                        ['key' => 'first-module', 'label' => 'Install your first module', 'done' => $hasModule,
-                            'cta' => ['label' => 'Browse docs', 'href' => $links['documentation']]],
+                        ['key' => 'core-installed', 'label' => __('ui.home.onboarding.step_core_installed'), 'done' => true],
+                        ['key' => 'authentication', 'label' => __('ui.home.onboarding.step_authentication'), 'done' => true],
+                        ['key' => 'admin-panel', 'label' => __('ui.home.onboarding.step_workspace_ready'), 'done' => true],
+                        ['key' => 'branding', 'label' => __('ui.home.onboarding.step_branding'), 'done' => $brandingConfigured,
+                            'cta' => ['label' => __('ui.home.onboarding.cta_configure'), 'href' => '/'.config('penova.workspace.prefix').'/settings']],
+                        ['key' => 'first-module', 'label' => __('ui.home.onboarding.step_first_module'), 'done' => $hasModule,
+                            'cta' => ['label' => __('ui.home.onboarding.cta_browse_docs'), 'href' => $links['documentation']]],
                     ],
                     'guidance' => [
-                        ['key' => 'first-resource', 'label' => 'Create your first Resource',
-                            'description' => 'Scaffold a CRUD resource with the module generator.',
-                            'cta' => ['label' => 'Guide', 'href' => $links['documentation']]],
-                        ['key' => 'first-product', 'label' => 'Build your first Product',
-                            'description' => 'Compose modules into a shippable Laravel product.',
-                            'cta' => ['label' => 'Guide', 'href' => $links['documentation']]],
+                        ['key' => 'first-resource', 'label' => __('ui.home.onboarding.guide_resource_label'),
+                            'description' => __('ui.home.onboarding.guide_resource_desc'),
+                            'cta' => ['label' => __('ui.home.onboarding.cta_guide'), 'href' => $links['documentation']]],
+                        ['key' => 'first-product', 'label' => __('ui.home.onboarding.guide_product_label'),
+                            'description' => __('ui.home.onboarding.guide_product_desc'),
+                            'cta' => ['label' => __('ui.home.onboarding.cta_guide'), 'href' => $links['documentation']]],
                     ],
                 ],
 

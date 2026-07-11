@@ -187,6 +187,24 @@ return [
         'branding_reminder_title' => 'Your product still uses the default Penova branding.',
         'branding_reminder_body' => 'Configure your logo, application name and footer before shipping.',
         'whats_new' => 'What’s New in v:version',
+
+        // Onboarding steps + guidance assembled by WorkspaceController (RFC-005 /
+        // D-027 / D-AUDIT-006). Keyed so the Workspace home is locale-aware rather
+        // than English-hardcoded; resolved server-side via __() against these keys.
+        'onboarding' => [
+            'step_core_installed' => 'Penova Core installed',
+            'step_authentication' => 'Authentication ready',
+            'step_workspace_ready' => 'Workspace ready',
+            'step_branding' => 'Configure branding',
+            'step_first_module' => 'Install your first module',
+            'guide_resource_label' => 'Create your first Resource',
+            'guide_resource_desc' => 'Scaffold a CRUD resource with the module generator.',
+            'guide_product_label' => 'Build your first Product',
+            'guide_product_desc' => 'Compose modules into a shippable Laravel product.',
+            'cta_configure' => 'Configure',
+            'cta_browse_docs' => 'Browse docs',
+            'cta_guide' => 'Guide',
+        ],
     ],
 
     // Core widget copy (the widgets Core itself ships). Widget descriptor
@@ -200,5 +218,31 @@ return [
         'no_activity' => 'No activity recorded yet.',
         'no_notifications' => 'You have no new notifications.',
         'modules_body' => 'Penova business capabilities are added as <strong>Modules</strong> (e.g. Store, Booking, CRM, CMS, …). Each module registers its widgets with a simple descriptor from its own service provider and appears in this grid — without touching Core.',
+    ],
+
+    // Public landing page at "/" (RFC-005 / D-027 / D-AUDIT-006). Rendered in the
+    // active locale via useI18n — English base, Persian when APP_LOCALE=fa — so the
+    // page is locale-neutral, not Persian-hardcoded. 'Laravel Product Factory' (the
+    // positioning tagline) and command snippets stay language-neutral by design.
+    'welcome' => [
+        'hero_intro' => 'A production-ready core for your Laravel products — authentication, users and roles, settings, notifications and a clean Workspace, ready to host your product modules.',
+        'cta_workspace' => 'Go to the Workspace',
+        'cta_docs' => 'View documentation',
+        'features_heading' => 'What you get with Penova Core',
+        'modules_heading' => 'Plug-in modules when you’re ready',
+        'modules_intro' => 'Penova Core ships as a free foundation. Whenever you need a real product, you add product modules on top of this core — without rewriting everything.',
+        'coming_soon' => 'Coming soon',
+        'footer_docs' => 'Documentation',
+        'features' => [
+            'auth' => ['title' => 'Authentication & Accounts', 'desc' => 'Full login, registration and password reset flow, ready to drop into any product Workspace.'],
+            'users' => ['title' => 'Users & Roles', 'desc' => 'Workspace screens to manage users, roles and permissions without any extra packages.'],
+            'settings' => ['title' => 'Settings & Notifications', 'desc' => 'Runtime settings and a shared notification feed, so every module can reuse the same surface.'],
+            'ui' => ['title' => 'Workspace UI & DataTable', 'desc' => 'A clean Workspace layout, reusable components and a server-side DataTable pattern for any CRUD page.'],
+        ],
+        'modules' => [
+            'commerce' => ['title' => 'Commerce', 'desc' => 'Add selling as a module — products, cart, checkout and orders.'],
+            'messaging' => ['title' => 'Messaging', 'desc' => 'SMS and transactional notifications through one module.'],
+            'payments' => ['title' => 'Payments', 'desc' => 'Payment-gateway integration as an extensible module layer.'],
+        ],
     ],
 ];

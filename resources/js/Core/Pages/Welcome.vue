@@ -1,14 +1,21 @@
 <script setup>
 /**
- * Core — public landing page at "/". Introduces Penova Core as a
- * "Laravel Product Factory". Shown to everyone; the primary CTA
- * adapts to auth state (panel when signed in, login otherwise). Uses the
- * Penova brand palette (@theme: brand / accent / sand). Self-contained
- * (own full-screen shell, not GuestLayout).
+ * Core — public landing page at "/". Introduces Penova Core as a "Laravel
+ * Product Factory". Shown to everyone; the primary CTA adapts to auth state
+ * (Workspace when signed in, login otherwise). Uses the Penova brand palette
+ * (@theme: brand / accent / sand). Self-contained (own full-screen shell).
+ *
+ * Locale-neutral (RFC-005 / D-027 / D-AUDIT-006): all copy renders in the active
+ * locale via useI18n — English base, Persian when APP_LOCALE=fa — instead of the
+ * former Persian-hardcoded layout. Page direction follows <html dir> from the
+ * locale; only command snippets and proper nouns stay LTR.
  */
 import { computed } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import { useWorkspacePath } from '@/Core/composables/workspacePath';
+import { useI18n } from '@/Core/composables/i18n';
+
+const { t } = useI18n();
 
 const user = computed(() => usePage().props.auth?.user);
 
@@ -26,48 +33,11 @@ const panelHref = computed(() => (user.value ? ws() : '/login'));
 
 const repoUrl = 'https://github.com/penova-laravelproductfactory/core';
 
-const features = [
-    {
-        title: 'Authentication & Accounts',
-        fa: 'جریان کامل ورود، ثبت‌نام و بازیابی رمز عبور، آمادهٔ استفاده در هر میزکار محصول.',
-        en: 'Full login, registration and password reset flow, ready to drop into any product Workspace.',
-    },
-    {
-        title: 'Users & Roles',
-        fa: 'مدیریت کاربران، نقش‌ها و permissionها بدون نیاز به پکیج خارجی.',
-        en: 'Workspace screens to manage users, roles and permissions without any extra packages.',
-    },
-    {
-        title: 'Settings & Notifications',
-        fa: 'تنظیمات runtime و یک feed مشترک نوتیفیکیشن که همهٔ ماژول‌ها می‌توانند روی آن سوار شوند.',
-        en: 'Runtime settings and a shared notification feed, so every module can reuse the same surface.',
-    },
-    {
-        title: 'Workspace UI & DataTable',
-        fa: 'یک میزکار تمیز، کامپوننت‌های تکرارپذیر و الگوی DataTable سمت سرور برای هر صفحهٔ CRUD.',
-        en: 'A clean Workspace layout, reusable components and a server-side DataTable pattern for any CRUD page.',
-    },
-];
-
-// Illustrative capability categories a Module can add — not specific or
-// regional product names (Core names no Module; D-026 / D-007).
-const modules = [
-    {
-        title: 'Commerce',
-        fa: 'قابلیت فروش را به‌صورت یک ماژول اضافه کنید: محصولات، سبد خرید، پرداخت و سفارش‌ها.',
-        en: 'Add selling as a module — products, cart, checkout and orders.',
-    },
-    {
-        title: 'Messaging',
-        fa: 'ارسال پیامک و اعلان‌های تراکنشی از طریق یک ماژول یکپارچه.',
-        en: 'SMS and transactional notifications through one module.',
-    },
-    {
-        title: 'Payments',
-        fa: 'اتصال به درگاه‌های پرداخت به‌صورت یک لایهٔ ماژولار و قابل‌گسترش.',
-        en: 'Payment-gateway integration as an extensible module layer.',
-    },
-];
+// Keys into the ui.welcome catalog; copy itself lives in lang/{en,fa}/ui.php.
+const features = ['auth', 'users', 'settings', 'ui'];
+// Illustrative capability categories a Module can add — not specific or regional
+// product names (Core names no Module; D-026 / D-007).
+const modules = ['commerce', 'messaging', 'payments'];
 </script>
 
 <template>
@@ -89,16 +59,10 @@ const modules = [
                 <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-sand-900 sm:text-5xl">
                     {{ brandName }}
                 </h1>
-                <p class="mt-2 text-lg font-medium text-sand-600">Laravel Product Factory</p>
+                <p class="mt-2 text-lg font-medium text-sand-600" dir="ltr">Laravel Product Factory</p>
 
                 <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-sand-700">
-                    یک هستهٔ آماده برای محصولات لاراولی شما؛ با احراز هویت، مدیریت کاربران و نقش‌ها،
-                    تنظیمات، نوتیفیکیشن‌ها و یک میزکار تمیز که آمادهٔ نصب ماژول‌های محصول
-                    شماست.
-                </p>
-                <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-sand-600" dir="ltr">
-                    A production-ready core for your Laravel products — auth, users, roles, settings,
-                    notifications and a clean Workspace, ready to host your product modules.
+                    {{ t('welcome.hero_intro') }}
                 </p>
 
                 <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -106,7 +70,7 @@ const modules = [
                         :href="panelHref"
                         class="rounded-lg bg-brand px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-hover"
                     >
-                        ورود به میزکار
+                        {{ t('welcome.cta_workspace') }}
                     </Link>
                     <a
                         :href="repoUrl"
@@ -114,7 +78,7 @@ const modules = [
                         rel="noopener"
                         class="rounded-lg border border-brand px-5 py-2.5 text-sm font-bold text-brand hover:bg-brand/5"
                     >
-                        مشاهدهٔ مستندات
+                        {{ t('welcome.cta_docs') }}
                     </a>
                 </div>
 
@@ -127,48 +91,42 @@ const modules = [
 
             <!-- What you get -->
             <section class="mt-20">
-                <h2 class="text-center text-2xl font-bold text-sand-900" dir="ltr">What you get with Penova Core</h2>
-                <p class="mt-1 text-center text-sm text-sand-600">Core چه چیزهایی برایت آماده کرده است؟</p>
+                <h2 class="text-center text-2xl font-bold text-sand-900">{{ t('welcome.features_heading') }}</h2>
 
                 <div class="mt-8 grid gap-4 sm:grid-cols-2">
                     <article
-                        v-for="feature in features"
-                        :key="feature.title"
+                        v-for="key in features"
+                        :key="key"
                         class="rounded-xl border border-sand-300 bg-white p-5"
                     >
-                        <h3 class="flex items-center gap-2 text-base font-bold text-sand-900" dir="ltr">
+                        <h3 class="flex items-center gap-2 text-base font-bold text-sand-900">
                             <span class="text-accent">✓</span>
-                            {{ feature.title }}
+                            {{ t(`welcome.features.${key}.title`) }}
                         </h3>
-                        <p class="mt-2 text-sm leading-relaxed text-sand-600">{{ feature.fa }}</p>
-                        <p class="mt-1 text-xs leading-relaxed text-sand-600" dir="ltr">{{ feature.en }}</p>
+                        <p class="mt-2 text-sm leading-relaxed text-sand-600">{{ t(`welcome.features.${key}.desc`) }}</p>
                     </article>
                 </div>
             </section>
 
             <!-- Modules -->
             <section class="mt-20">
-                <h2 class="text-center text-2xl font-bold text-sand-900" dir="ltr">Plug-in modules when you're ready</h2>
-                <p class="mt-1 text-center text-sm text-sand-600">وقتی آمادهٔ محصول شدی، ماژول‌ها را اضافه کن</p>
+                <h2 class="text-center text-2xl font-bold text-sand-900">{{ t('welcome.modules_heading') }}</h2>
 
                 <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-sand-600">
-                    Penova Core به‌صورت یک هستهٔ رایگان می‌آید. هر زمان به محصول واقعی نیاز داشتی،
-                    ماژول‌های محصول را روی همین هسته اضافه می‌کنی، بدون این‌که دوباره همه‌چیز را
-                    بنویسی.
+                    {{ t('welcome.modules_intro') }}
                 </p>
 
                 <div class="mt-8 grid gap-4 sm:grid-cols-3">
                     <article
-                        v-for="mod in modules"
-                        :key="mod.title"
+                        v-for="key in modules"
+                        :key="key"
                         class="rounded-xl border border-sand-300 bg-white p-5"
                     >
                         <div class="flex items-center justify-between">
-                            <h3 class="text-base font-bold text-sand-900" dir="ltr">{{ mod.title }}</h3>
-                            <span class="rounded bg-sand-100 px-2 py-0.5 text-xs font-medium text-sand-600">به‌زودی</span>
+                            <h3 class="text-base font-bold text-sand-900">{{ t(`welcome.modules.${key}.title`) }}</h3>
+                            <span class="rounded bg-sand-100 px-2 py-0.5 text-xs font-medium text-sand-600">{{ t('welcome.coming_soon') }}</span>
                         </div>
-                        <p class="mt-2 text-sm leading-relaxed text-sand-600">{{ mod.fa }}</p>
-                        <p class="mt-1 text-xs leading-relaxed text-sand-600" dir="ltr">{{ mod.en }}</p>
+                        <p class="mt-2 text-sm leading-relaxed text-sand-600">{{ t(`welcome.modules.${key}.desc`) }}</p>
                     </article>
                 </div>
             </section>
@@ -177,8 +135,8 @@ const modules = [
             <footer class="mt-20 border-t border-sand-200 pt-6 text-center">
                 <p class="text-xs text-sand-600">{{ footerText }}</p>
                 <div class="mt-2 flex items-center justify-center gap-4 text-sm">
-                    <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent-hover hover:text-accent">GitHub ↗</a>
-                    <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent-hover hover:text-accent">Documentation ↗</a>
+                    <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent-hover hover:text-accent" dir="ltr">GitHub ↗</a>
+                    <a :href="repoUrl" target="_blank" rel="noopener" class="text-accent-hover hover:text-accent">{{ t('welcome.footer_docs') }} ↗</a>
                 </div>
             </footer>
 
