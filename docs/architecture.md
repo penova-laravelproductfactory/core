@@ -82,10 +82,22 @@ resources/js/
   Modules/             (one folder per product module, mirrors app/Modules)
 ```
 
-Page resolution is convention-only: `Inertia::render('Core/Users/Index')`
-→ `Core/Pages/Users/Index.vue`; `Inertia::render('Modules/Store/Products/Index')`
-→ `Modules/Store/Pages/Products/Index.vue`. New modules need zero frontend
-registration.
+Page resolution differs by owner. **Core** pages are convention-resolved:
+`Inertia::render('Core/Users/Index')` → `Core/Pages/Users/Index.vue` (Core's own
+glob).
+
+**Module** pages and widgets resolve through the **experimental module-frontend
+seam** (RFC-006 / D-028), not an auto-glob. A Module declares each page/widget as a
+typed entry in its Manifest `frontend` section, and its own frontend coordinate via
+`DeclaresFrontendSource` (plus `DeclaresFrontendPackage` when its frontend ships as
+a separate package). `php artisan penova:frontend-registry` compiles those
+declarations into a deterministic, git-ignored generated registry that `app.js`
+imports; a page name with no registry entry fails loudly.
+
+> **Experimental.** This module-frontend seam is experimental (RFC-006 / D-028): it
+> is conspicuously labelled and may change or be withdrawn without a MAJOR until a
+> second independent Module graduates it — it is not yet under the stability
+> promise. See `app/Modules/README.md` (the primary seam doc for Module authors).
 
 Shared Inertia props (`HandleInertiaRequests`): `app.name`, `auth.user`
 (+ role slugs), `flash.success/error` (rendered by `Toast.vue`), and
