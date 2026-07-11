@@ -250,7 +250,7 @@ Route::middleware('permission:store.manage')->group(...);
 
 Seed the permissions from the module's own seeder
 (`app/Modules/<Name>/Database/Seeders/<Name>PermissionsSeeder.php`,
-`firstOrCreate` + `syncWithoutDetaching` onto the admin role) and
+`firstOrCreate` + `syncWithoutDetaching` onto the Operator role) and
 register it in `database/seeders/DatabaseSeeder.php` after
 `PenovaCoreSeeder`. Put the same slug in the `permission` field of the
 module's menu items and widget descriptors so the sidebar and widgets

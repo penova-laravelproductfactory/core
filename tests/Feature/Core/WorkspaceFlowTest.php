@@ -22,7 +22,7 @@ test('the full Workspace experience works end to end', function () {
     // 1) Fresh database: RefreshDatabase migrated it; seed the Core baseline.
     $this->seed(PenovaCoreSeeder::class);
 
-    // 2) Log in with the seeded admin credentials (config-driven).
+    // 2) Log in with the seeded Operator credentials (config-driven).
     $this->post('/login', [
         'email' => config('penova.operator.email'),
         'password' => config('penova.operator.password'),
@@ -45,7 +45,7 @@ test('the full Workspace experience works end to end', function () {
                 ->contains(fn ($widget) => $widget['key'] === 'core-stats' && ($widget['area'] ?? null) === 'core'))
             ->has('widgetAreas.core'));
 
-    // 4) Users index is reachable (permission middleware + policy allow admin).
+    // 4) Users index is reachable (permission middleware + policy allow the Operator).
     $this->get(route('penova.users.index'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page->component('Core/Users/Index'));

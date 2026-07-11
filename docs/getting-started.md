@@ -12,7 +12,9 @@ npm install
 cp .env.example .env
 php artisan key:generate
 
-# point .env at your MySQL database, then either:
+# .env.example defaults to SQLite — no database setup needed. (Prefer MySQL? Set
+# DB_CONNECTION=mysql and the DB_* values first; see guides/troubleshooting-core.md.)
+# Then either:
 php artisan penova:install          # = migrate + seed (add --fresh to start over)
 # or the underlying commands yourself:
 php artisan migrate --seed
@@ -33,8 +35,8 @@ composer run dev    # serves the app + queue + logs + Vite
 php artisan test
 ```
 
-`tests/Feature/Core/AdminFlowTest.php` is the **release gate** for Core:
-it walks the whole admin experience (fresh DB → seed → login →
+`tests/Feature/Core/WorkspaceFlowTest.php` is the **release gate** for Core:
+it walks the whole Workspace experience (fresh DB → seed → login →
 Workspace → create a user → see it listed + audit-logged → logout) and
 must always be green.
 

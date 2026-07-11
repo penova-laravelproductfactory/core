@@ -24,6 +24,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+# Local architecture scratch — a stale v0.1 snapshot, never a shipped surface.
 /PENOVA_CORE_STRUCTURE.md
 /docs/superpowers
 /.superpowers
