@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 /**
  * Modules\Store — seeds the module's permissions and grants them to the
- * Core admin role (kept simple for now: every admin gets full Store
+ * Core Operator role (kept simple for now: every operator gets full Store
  * access). Called by DatabaseSeeder after PenovaCoreSeeder. Idempotent.
  *
  * The set of slugs is NOT declared here — it is read from the Store
