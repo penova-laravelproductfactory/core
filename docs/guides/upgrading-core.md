@@ -5,6 +5,37 @@ Each section is a task: what changed, and the path forward.
 
 ---
 
+## Admin namespace retired: Workspace / Operator (RFC-002 / D-024)
+
+**Renamed and split.** The authenticated environment is the **Workspace** and the
+seeded person is the **Operator** — "admin" is retired for both (D-004 / D-006):
+
+- The Workspace URL prefix is `/workspace` (was `/admin`), from
+  `penova.workspace.prefix` (`PENOVA_WORKSPACE_PREFIX`).
+- The seed account is `operator@example.com` with the **`operator`** role slug (was
+  `admin@example.com` / `admin`), from `penova.operator.*` (`PENOVA_OPERATOR_EMAIL`
+  / `PENOVA_OPERATOR_PASSWORD`).
+- The former single `penova.admin.*` key (which conflated routing and seed
+  credentials) is split into `penova.workspace.*` and `penova.operator.*`.
+
+- **Impact.** Links and scripts hitting `/admin` no longer resolve; the seed login
+  account and role slug changed; `.env` files using `PENOVA_ADMIN_*` still work for
+  now but are deprecated.
+- **Why MAJOR.** A public config namespace, a URL, and a persisted role slug
+  changed — breaking, so it lands on a MAJOR with this note and a one-cycle
+  fallback.
+- **Recovery path.**
+  1. Prefer the new env vars: `PENOVA_WORKSPACE_PREFIX`, `PENOVA_OPERATOR_EMAIL`,
+     `PENOVA_OPERATOR_PASSWORD`. The legacy `PENOVA_ADMIN_PREFIX` /
+     `PENOVA_ADMIN_EMAIL` / `PENOVA_ADMIN_PASSWORD` are honoured for one cycle (with
+     a deprecation notice) and removed at the next MAJOR.
+  2. Update any hardcoded `/admin` links to `/workspace` (or your configured
+     prefix).
+  3. No manual data migration is required — the `operator` role slug is migrated in
+     place, preserving existing permission grants and user assignments.
+
+---
+
 ## Store is no longer enabled by default (RFC-004 / D-026)
 
 **Default changed.** Core enables no business module by default — the

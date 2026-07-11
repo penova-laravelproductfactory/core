@@ -90,3 +90,9 @@ This registers the `/register` routes and shows the "Register" link on the
 login page. The toggle is evaluated when routes load — if you cache routes
 in production (`php artisan route:cache`), rebuild the cache after
 changing it.
+
+## If something goes wrong
+
+First-run problems (wrong login, wrong prefix, a build that fails on the missing
+front-end registry, or a database mis-config) and their fixes are collected in
+[guides/troubleshooting-core.md](guides/troubleshooting-core.md).

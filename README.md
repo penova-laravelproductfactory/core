@@ -97,6 +97,8 @@ php artisan serve
 - Notifications  
 - Logs  
 
+> اگر در نصب یا ورود مشکلی پیش آمد، [راهنمای عیب‌یابی](docs/guides/troubleshooting-core.md) را ببینید.
+
 ## White Label / Branding
 
 در میزکار به Settings بروید و بخش White Label / Branding را باز کنید. می‌توانید این موارد را تنظیم کنید:
