@@ -71,10 +71,12 @@ frontend contributions, and a **generated, git-ignored registry** resolves them:
    leading/trailing slash.
 
 2. **Own the coordinate.** Where the frontend physically lives is *module* build
-   metadata, not a Manifest field. An in-repo module gets the default
-   `@/Modules/{key}`; a module whose directory differs from its key (or that ships
-   its frontend elsewhere) declares its own root by implementing
-   `App\Core\Support\DeclaresFrontendSource`:
+   metadata, not a Manifest field. `@/Modules/{key}` is only the **optional default
+   convention** — not a guaranteed Core coordinate (D-AUDIT-008); the governed
+   surfaces are the Manifest `frontend` descriptor and
+   `App\Core\Support\DeclaresFrontendSource`. An in-repo module gets that default; a
+   module whose directory differs from its key (or that ships its frontend
+   elsewhere) declares its own root:
 
    ```php
    public static function frontendSource(): string
@@ -186,9 +188,15 @@ by `order`. Use `order >= 100` for module items.
 
 ### The `widgets` section — widgets
 
-Widget **descriptors**; the widget grid renders them sorted by `order`.
-Core's own widgets use orders 10–30 (and 900 for the Modules card), so
-modules land in the middle with `order >= 100`.
+> **v1: the widget grid is dormant (D-AUDIT-007).** The `widgets` descriptor is a
+> valid Manifest section you may declare, but Core v1 does **not** render a
+> user-visible widget grid or dashboard — the widget pipeline is internal and
+> dormant. Declaring widgets is safe and forward-looking; do not rely on a live
+> grid until Penova declares a Workspace-widget contract through a dedicated RFC.
+
+Widget **descriptors** carry a widget's placement; when a widget grid is enabled it
+positions them sorted by `order`. Core's own widgets use orders 10–30 (and 900 for
+the Modules card), so modules land in the middle with `order >= 100`.
 
 ```php
 ->widgets([[
@@ -209,7 +217,7 @@ permission) — its single authority. The Vue component it renders is declared
 separately, in the experimental `frontend` section, and joined by the shared
 `key` (see *Anatomy of a module* above). There is no `component` path field.
 
-**Areas.** The widget grid renders one headed section per `area`, so a
+**Areas.** A widget grid, when enabled, groups one headed section per `area`, so a
 module's widgets stay visually grouped. Recommended: give your module its
 own area named after it (`'area' => 'store'`) and reuse it on every
 widget the module ships. Omitting `area` drops the widget into the
