@@ -31,7 +31,7 @@ const footerText = computed(
 const ws = useWorkspacePath();
 const panelHref = computed(() => (user.value ? ws() : '/login'));
 
-const repoUrl = 'https://github.com/penova-laravelproductfactory/core';
+const repoUrl = 'https://github.com/penovaio/core';
 
 // Keys into the ui.welcome catalog; copy itself lives in lang/{en,fa}/ui.php.
 const features = ['auth', 'users', 'settings', 'ui'];

@@ -6,7 +6,7 @@ Composer package yet): clone it, then install.
 ## Setup
 
 ```bash
-git clone https://github.com/penova-laravelproductfactory/core.git && cd core
+git clone https://github.com/penovaio/core.git && cd core
 composer install
 npm install
 cp .env.example .env

@@ -28,9 +28,9 @@ return [
     | reuses this shape.
     */
     'links' => [
-        'documentation' => env('PENOVA_DOCS_URL', 'https://github.com/penova-laravelproductfactory/core'),
-        'github' => env('PENOVA_GITHUB_URL', 'https://github.com/penova-laravelproductfactory/core'),
-        'release_notes' => env('PENOVA_RELEASES_URL', 'https://github.com/penova-laravelproductfactory/core/releases'),
+        'documentation' => env('PENOVA_DOCS_URL', 'https://github.com/penovaio/core'),
+        'github' => env('PENOVA_GITHUB_URL', 'https://github.com/penovaio/core'),
+        'release_notes' => env('PENOVA_RELEASES_URL', 'https://github.com/penovaio/core/releases'),
     ],
 
     'changelog' => [

@@ -59,7 +59,7 @@ Modular Monolith Architecture
 نصب
 
 ```bash
-git clone https://github.com/penova-laravelproductfactory/core.git
+git clone https://github.com/penovaio/core.git
 cd core
 
 cp .env.example .env
