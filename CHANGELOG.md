@@ -8,9 +8,24 @@ misbehaves see [docs/guides/troubleshooting-core.md](docs/guides/troubleshooting
 Penova Core uses semantic versioning: breaking changes to the public contract land
 only on a MAJOR, always with a documented migration path.
 
-## [Unreleased] — toward the first tagged release
+## [1.0.0-rc.1] — 2026-07-12
 
-The following strategy-backed changes are in the current Core codebase.
+First release candidate toward Penova Core 1.0.0. Nothing here is frozen yet — the
+surfaces below are the ones **expected to become stable at 1.0.0**, stated as a
+candidate so builders can plan. SemVer stability guarantees begin at the 1.0.0
+release, not at this release candidate.
+
+### Candidate public contract for 1.0.0 (intended-stable, not yet frozen)
+- **Intended-stable** (to be SemVer-guaranteed once 1.0.0 ships): the Manifest
+  sections (`identity`, `menu`, `widgets`, `permissions`), the configuration format,
+  and the Workspace routes/prefix (`penova.workspace.*`) with the Operator role.
+- **Experimental** (may change or be withdrawn without a MAJOR): the module-frontend
+  seam — the Manifest `frontend` section and its coordinate (RFC-006 / D-028;
+  D-AUDIT-008).
+- **Internal / not a contract**: the concrete Resource shape (D-AUDIT-009) and the
+  Workspace widget pipeline (D-AUDIT-007).
+
+The following strategy-backed changes ship in this release candidate.
 
 ### Admin namespace retired — Workspace / Operator (D-024)
 - **What changed.** The authenticated environment is the **Workspace** at the
